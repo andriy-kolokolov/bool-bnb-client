@@ -6,16 +6,23 @@
 @import "bootstrap/scss/bootstrap";
 
 /*    BOOTSTRAP ICONS    */
-@import '/node_modules/bootstrap-icons/font/bootstrap-icons';
+@import "/node_modules/bootstrap-icons/font/bootstrap-icons";
 @font-face {
-  font-family: 'bootstrap-icons';
-  src: url('node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2') format('woff2'),
-  url('node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff') format('woff')
+	font-family: "bootstrap-icons";
+	src: url("node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2")
+			format("woff2"),
+		url("node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff")
+			format("woff");
 }
 
 /*    FONTAWESOME ICONS    */
 $fa-font-path: "/node_modules/@fortawesome/fontawesome-free/webfonts";
-@import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
-@import 'node_modules/@fortawesome/fontawesome-free/scss/solid';
-@import '/node_modules/@fortawesome/fontawesome-free/scss/regular';
-@import 'node_modules/@fortawesome/fontawesome-free/scss/brands';
+@import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+@import "node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "/node_modules/@fortawesome/fontawesome-free/scss/regular";
+@import "node_modules/@fortawesome/fontawesome-free/scss/brands";
+
+body {
+	background-color: $color-light;
+	color: $color-dark;
+}
