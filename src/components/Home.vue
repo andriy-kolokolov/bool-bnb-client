@@ -9,15 +9,15 @@ export default {
     };
   },
   methods: {
-    getApartments() {
+    getAppartments() {
       axios.get(this.store.baseUrlApi + "apartments/all").then((response) => {
         this.arrApartments = response.data;
       });
-      console.log(this.arrApartments);
+      console.log(this.arrAppartments);
     },
   },
   created() {
-    this.getApartments();
+    this.getAppartments();
   },
 };
 </script>
