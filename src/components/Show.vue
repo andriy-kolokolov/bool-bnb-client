@@ -13,6 +13,7 @@ export default {
 			isSponsored: false,
 			latitude: null,
 			longitude: null,
+			isOwner: false,
 		};
 	},
 
@@ -86,6 +87,10 @@ export default {
 		<p>{{ apartment.address[0].zip }} • {{ apartment.address[0].city }}</p>
 		<!-- TomTom map -->
 		<div id="map"></div>
+
+		<!-- Button for Send Email or Back if owner  -->
+		<router-link class="button-link" v-if="!isOwner">Send Email</router-link>
+		<router-link class="button-link" v-if="isOwner">Go Back</router-link>
 	</div>
 </template>
 
