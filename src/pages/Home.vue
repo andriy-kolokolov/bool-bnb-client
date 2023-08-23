@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import { store } from "../store/store.js";
+import { store } from "../store";
 export default {
   data() {
     return {
@@ -9,7 +9,7 @@ export default {
     };
   },
   methods: {
-    getApartments() {
+    getAppartments() {
       axios.get(this.store.baseUrlApi + "apartments/all").then((response) => {
         this.arrApartments = response.data;
       });
@@ -17,7 +17,7 @@ export default {
     },
   },
   created() {
-    this.getApartments();
+    this.getAppartments();
   },
 };
 </script>
