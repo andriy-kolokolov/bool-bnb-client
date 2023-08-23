@@ -116,6 +116,6 @@ img {
 	aspect-ratio: 3/2;
 	margin: 2rem auto;
 	box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
-	border: 1px solid $color-dark;
+	border: 2px solid $color-dark;
 }
 </style>
