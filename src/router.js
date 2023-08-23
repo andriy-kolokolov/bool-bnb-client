@@ -4,6 +4,7 @@ import About from "../src/pages/About.vue";
 import Show from "../src/pages/Show.vue";
 import SignIn from "@/pages/SignIn.vue";
 import Dashboard from "@/pages/Dashboard.vue";
+import Registration from "@/pages/Registration.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/signin',
       name: 'signin',
       component: SignIn
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Registration
     },
     {
       path: '/dashboard',
