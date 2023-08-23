@@ -34,6 +34,7 @@ export default {
 
 		loadApartment() {
 			const id = this.$route.params.id;
+
 			axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
 				this.apartment = response.data;
 				console.log(this.apartment);
