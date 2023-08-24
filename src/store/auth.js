@@ -43,6 +43,7 @@ export default {
         this.token = null;
         this.authenticated = false;
         localStorage.removeItem("token"); // Remove token from localStorage
+        localStorage.removeItem("user"); // Remove user from localStorage
         console.log("User logged out");
     }
 };
