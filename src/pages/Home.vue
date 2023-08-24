@@ -44,14 +44,7 @@ export default {
         SQAURE METERS: {{ apartment.square_meters }}
       </li>
       <li class="list-group-item">AVAILABLE: {{ apartment.is_available }}</li>
-      <li class="list-group-item">SPONSOR: {{ apartment.sponsor }}</li>
-      <li class="list-group-item">ZIP: {{ apartment.zip }}</li>
-      <li class="list-group-item">CITY: {{ apartment.city }}</li>
-      <li class="list-group-item">ADDRESS: {{ apartment.address }}</li>
     </ul>
-    <div class="card-body">
-      <a href="#" class="card-link">GPS: {{ apartment.gps_coordinates }}</a>
-    </div>
   </router-link>
 </template>
 
