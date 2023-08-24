@@ -51,29 +51,44 @@ export default {
 		},
 
 		initMap() {
-			console.log("Tentativo di inizializzazione della mappa...");
+			const address = "Piazza dei Re di Roma, 50, 00183 Roma";
 
-			if (this.latitude && this.longitude) {
-				const container = document.getElementById("map");
-				if (container) {
-					console.log("Contenitore trovato, inizializzazione della mappa...");
+			const initializeMap = (coordinates) => {
+				console.log("Tentativo di inizializzazione della mappa...");
+
+				const mapElement = document.getElementById("map");
+
+				if (mapElement && coordinates) {
+					console.log(
+						"Elemento 'map' trovato. Inizializzazione della mappa...",
+					);
 					tt.setProductInfo("<Your-Product-Name>", "<Your-Product-Version>");
 					this.map = tt.map({
 						key: "pIZDc5arEQSAalGkANUN2J8fiekVOefL",
 						container: "map",
-						center: [12.4924, 41.8902], // oppure [this.longitude, this.latitude]
+						center: [coordinates.lng, coordinates.lat],
 						zoom: 15,
 					});
-					console.log("Mappa inizializzata con successo.");
 				} else {
-					console.log("Contenitore non trovato, riprova tra 100ms...");
-					setTimeout(() => {
-						this.initMap();
-					}, 200);
+					console.log(
+						"Elemento 'map' non trovato. Riprovare tra 100 millisecondi...",
+					);
+					setTimeout(() => initializeMap(coordinates), 100);
 				}
-			} else {
-				console.log("Latitudine o longitudine non disponibili.");
-			}
+			};
+
+			tt.services
+				.geocode({
+					key: "pIZDc5arEQSAalGkANUN2J8fiekVOefL",
+					query: address,
+				})
+				.then((response) => {
+					const coordinates = response.results[0].position;
+					initializeMap(coordinates); // Chiama la funzione per iniziare il processo
+				})
+				.catch((error) => {
+					console.log("Errore durante la geocodifica:", error);
+				});
 		},
 	},
 
@@ -84,9 +99,6 @@ export default {
 
 	mounted() {
 		AOS.init();
-		this.$nextTick(() => {
-			this.initMap();
-		});
 	},
 };
 </script>
@@ -94,11 +106,39 @@ export default {
 <template>
 	<div v-if="apartment" class="container">
 		<h1>{{ apartment.name }}</h1>
-		<img :src="apartment.images[0].image_path" alt="{{apartment.name}}" />
-		<p class="apartment-data">
-			Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} • Bathrooms:
-			{{ apartment.bathrooms }} • Footage: {{ apartment.square_meters }} mq
-		</p>
+		<!-- <img
+			class="main-img"
+			:src="apartment.images[0].image_path"
+			alt="{{apartment.name}}" /> -->
+		<div class="row">
+			<div class="col-6 d-flex flex-column">
+				<img
+					class="main-img col-6"
+					src="https://picsum.photos/id/220/300/300"
+					alt="{{apartment.name}}" />
+			</div>
+			<img
+				class="middle-img col-3"
+				src="https://picsum.photos/id/230/300/300"
+				alt="{{apartment.name}}" />
+			<img
+				class="end-img col-3"
+				src="https://picsum.photos/id/125/300/300"
+				alt="{{apartment.name}}" />
+			<img
+				class="middle-img col-3"
+				src="https://picsum.photos/id/140/300/300"
+				alt="{{apartment.name}}" />
+			<img
+				class="end-img col-3"
+				src="https://picsum.photos/id/440/300/300"
+				alt="{{apartment.name}}" />
+			<p class="apartment-data">
+				Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} • Bathrooms:
+				{{ apartment.bathrooms }} • Footage: {{ apartment.square_meters }} mq
+			</p>
+		</div>
+
 		<!-- Accesso ai servizi utilizzando un loop -->
 		<ul>
 			<li v-for="service in apartment.services" :key="service.id">
@@ -131,10 +171,22 @@ h1 {
 	font-size: 1.2rem;
 }
 
-img {
-	border-radius: 20px;
+.row {
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.main-img {
+	border-radius: 20px 0 0 20px;
 	margin: 1rem 0;
 	box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+	grid-row: span 2;
+}
+
+.middle-img {
+	margin: 1rem 1rem;
+	box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+	grid-row: span 1;
 }
 
 #map {
