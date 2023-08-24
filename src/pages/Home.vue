@@ -26,7 +26,7 @@ export default {
   <router-link
     v-for="apartment in arrApartments"
     :key="apartment.id"
-    :to="`/show/${apartment.id}`"
+    :to="`/apartment/${apartment.id}`"
     class="card"
     style="width: 18rem"
   >
