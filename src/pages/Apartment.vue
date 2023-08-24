@@ -4,6 +4,7 @@ import {store} from "../store/store.js";
 import AOS from "aos";
 import * as tt from "@tomtom-international/web-sdk-maps";
 import "@tomtom-international/web-sdk-maps/dist/maps.css";
+import "@tomtom-international/web-sdk-services/dist/services-web.min.js";
 
 export default {
 	data() {
@@ -34,15 +35,13 @@ export default {
 
 		loadApartment() {
 			const id = this.$route.params.id;
-
+			console.log(`${this.store.baseUrlApi}apartments/${id}`);
 			axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
 				this.apartment = response.data;
 				console.log(this.apartment);
 
-				const gpsCoordinates =
-					this.apartment.address[0].gps_coordinates.split(",");
-				this.latitude = parseFloat(gpsCoordinates[0]);
-				this.longitude = parseFloat(gpsCoordinates[1]);
+				this.latitude = parseFloat(this.apartment.addresses[0].latitude);
+				this.longitude = parseFloat(this.apartment.addresses[0].longitude);
 
 				console.log(this.latitude, this.longitude); // Per confermare che le coordinate siano state ottenute
 
@@ -149,8 +148,8 @@ export default {
 		<p v-if="isSponsored">SPONSORED</p>
 		<!-- Address -->
 		<h3>Where you will be</h3>
-		<p>{{ apartment.address[0].address }}</p>
-		<p>{{ apartment.address[0].zip }} • {{ apartment.address[0].city }}</p>
+		<p>{{ apartment.addresses[0].street }}</p>
+		<p>{{ apartment.addresses[0].zip }} • {{ apartment.addresses[0].city }}</p>
 		<!-- TomTom map -->
 		<div id="map"></div>
 

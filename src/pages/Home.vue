@@ -10,7 +10,7 @@ export default {
 	},
 	methods: {
 		getApartments() {
-			axios.get(this.store.baseUrlApi + "apartments/all").then((response) => {
+			axios.get(this.store.baseUrlApi + "apartments").then((response) => {
 				this.arrApartments = response.data;
 			});
 			console.log(this.arrApartments);
