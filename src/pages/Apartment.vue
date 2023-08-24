@@ -34,60 +34,61 @@ export default {
 		// 	},
 
 		loadApartment() {
+			// Reset Coordinates
+			this.latitude = null;
+			this.longitude = null;
+
 			const id = this.$route.params.id;
 			console.log(`${this.store.baseUrlApi}apartments/${id}`);
 			axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
 				this.apartment = response.data;
 				console.log(this.apartment);
 
-				this.latitude = parseFloat(this.apartment.addresses[0].latitude);
-				this.longitude = parseFloat(this.apartment.addresses[0].longitude);
-
-				console.log(this.latitude, this.longitude); // Per confermare che le coordinate siano state ottenute
-
-				this.initMap(); // Ora chiami initMap dopo aver ottenuto le coordinate
+				this.getCoordinates(); // Get GPS coordinates from address
 			});
 		},
 
-		initMap() {
+		getCoordinates() {
 			const address = "Piazza dei Re di Roma, 50, 00183 Roma";
+			const apiKey = "pIZDc5arEQSAalGkANUN2J8fiekVOefL";
+			const url = `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(
+				address,
+			)}.json?key=${apiKey}`;
 
-			const initializeMap = (coordinates) => {
-				console.log("Tentativo di inizializzazione della mappa...");
+			console.log("Geocodifica dell'indirizzo...");
+			axios.get(url).then((response) => {
+				this.latitude = response.data.results[0].position.lat;
+				this.longitude = response.data.results[0].position.lon;
+				console.log("Coordinates OK: ", this.longitude, this.latitude);
 
-				const mapElement = document.getElementById("map");
+				// Richiama la funzione di inizializzazione della mappa
+				this.initializeMap();
+			});
+		},
 
-				if (mapElement && coordinates) {
-					console.log(
-						"Elemento 'map' trovato. Inizializzazione della mappa...",
-					);
-					tt.setProductInfo("<Your-Product-Name>", "<Your-Product-Version>");
-					this.map = tt.map({
-						key: "pIZDc5arEQSAalGkANUN2J8fiekVOefL",
-						container: "map",
-						center: [coordinates.lng, coordinates.lat],
-						zoom: 15,
-					});
-				} else {
-					console.log(
-						"Elemento 'map' non trovato. Riprovare tra 100 millisecondi...",
-					);
-					setTimeout(() => initializeMap(coordinates), 100);
-				}
-			};
+		initializeMap() {
+			const mapElement = document.getElementById("map");
 
-			tt.services
-				.geocode({
+			if (mapElement && this.latitude && this.longitude) {
+				console.log("Elemento 'map' trovato. Inizializzazione della mappa...");
+				tt.setProductInfo("<Your-Product-Name>", "<Your-Product-Version>");
+				const map = tt.map({
 					key: "pIZDc5arEQSAalGkANUN2J8fiekVOefL",
-					query: address,
-				})
-				.then((response) => {
-					const coordinates = response.results[0].position;
-					initializeMap(coordinates); // Chiama la funzione per iniziare il processo
-				})
-				.catch((error) => {
-					console.log("Errore durante la geocodifica:", error);
+					container: this.$refs.mapRef,
+					center: [this.longitude, this.latitude],
+					zoom: 17,
 				});
+
+				// Add a Pin to map
+				map.on("load", () => {
+					new tt.Marker().setLngLat([this.longitude, this.latitude]).addTo(map);
+				});
+			} else {
+				console.log(
+					"Elemento 'map' non trovato. Riprovare tra 100 millisecondi...",
+				);
+				setTimeout(() => this.initializeMap(), 1000);
+			}
 		},
 	},
 
@@ -151,7 +152,7 @@ export default {
 		<p>{{ apartment.addresses[0].street }}</p>
 		<p>{{ apartment.addresses[0].zip }} • {{ apartment.addresses[0].city }}</p>
 		<!-- TomTom map -->
-		<div id="map"></div>
+		<div id="map" ref="mapRef"></div>
 
 		<!-- Button for Send Email or Back if owner  -->
 		<!-- <router-link class="button-link" v-if="!isOwner">Send Email</router-link>
