@@ -9,11 +9,14 @@ export default {
 
     initialize() {
         const storedToken = localStorage.getItem("token");
-        const storedUser = JSON.parse(localStorage.getItem("user"));
+        const storedUserString = localStorage.getItem("user");
+        const storedUser = JSON.parse(storedUserString);
         if (storedToken && storedUser) {
             this.token = storedToken;
             this.user = storedUser;
             this.authenticated = true;
+        } else {
+            console.log("user is not authenticated");
         }
     },
 
@@ -33,17 +36,18 @@ export default {
             this.logInUser(response.data.token, response.data.user);
             await router.push('/dashboard');
         } catch (error) {
-            console.log(error.response.data);
+            console.error(error.response.data);
         }
     },
 
-    signOut() {
+    async signOut() {
         this.user = null;
         this.token = null;
         this.authenticated = false;
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         console.log("User logged out");
+        await router.push('/');
     },
 
     logInUser(token, user) {
@@ -51,5 +55,7 @@ export default {
         this.user = user;
         this.authenticated = true;
         localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(this.user));
+        console.log(user)
     }
 };
