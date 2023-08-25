@@ -119,19 +119,19 @@ export default {
 				alt="{{apartment.name}}" />
 
 			<img
-				class="middle-image"
+				class="middle-image-top"
 				src="https://picsum.photos/id/230/300/300"
 				alt="{{apartment.name}}" />
 			<img
-				class="middle-image"
+				class="middle-image-bottom"
 				src="https://picsum.photos/id/140/300/300"
 				alt="{{apartment.name}}" />
 			<img
-				class="end-image"
+				class="end-image-top"
 				src="https://picsum.photos/id/125/300/300"
 				alt="{{apartment.name}}" />
 			<img
-				class="end-image"
+				class="end-image-bottom"
 				src="https://picsum.photos/id/440/300/300"
 				alt="{{apartment.name}}" />
 		</div>
@@ -173,21 +173,41 @@ h1 {
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(2, 1fr);
 	gap: 10px; /* Spazio tra le celle */
+
+	img {
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+		object-position: center;
+		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+	}
 }
 
 .main-image {
 	grid-column: 1 / 3;
 	grid-row: 1 / 3;
+	border-radius: 20px 0 0 20px;
 }
 
-.middle-image {
-	grid-column: 3;
-	grid-row: auto;
+.middle-image-top {
+	grid-column: 3 /4;
+	grid-row: 1 / 2;
 }
 
-.end-image {
-	grid-column: 4;
-	grid-row: auto;
+.middle-image-bottom {
+	grid-column: 3 /4;
+	grid-row: 2 / 3;
+}
+.end-image-top {
+	grid-column: 4 / 5;
+	grid-row: 1 / 2;
+	border-radius: 0 20px 0 0;
+}
+
+.end-image-bottom {
+	grid-column: 4 / 5;
+	grid-row: 2 / 3;
+	border-radius: 0 0 20px 0;
 }
 
 .apartment-data {
