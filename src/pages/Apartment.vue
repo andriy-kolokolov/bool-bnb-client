@@ -135,15 +135,15 @@ export default {
 				alt="{{apartment.name}}" />
 		</div>
 
-		<!-- General information -->
-		<p class="apartment-data">
-			Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} • Bathrooms:
-			{{ apartment.bathrooms }} • Footage: {{ apartment.square_meters }} mq
-		</p>
-
 		<!-- Host name -->
 		<div class="details-section">
-			<h2>Host: {{ apartment.user.username }}</h2>
+			<h3>Host: {{ apartment.user.username }}</h3>
+
+			<!-- General information -->
+			<p class="apartment-data">
+				Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} • Bathrooms:
+				{{ apartment.bathrooms }} • Footage: {{ apartment.square_meters }} mq
+			</p>
 		</div>
 
 		<!-- List of Services -->
@@ -182,17 +182,20 @@ export default {
 
 h1 {
 	font-weight: 600;
+	margin: 2rem 0;
 }
 
 .grid-container {
+	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(2, 1fr);
-	gap: 10px; /* Spazio tra le celle */
+	gap: 1rem;
+	margin-bottom: 2rem;
 
 	img {
 		width: 100%;
-		aspect-ratio: 1 / 1;
+		aspect-ratio: 3 / 2.5;
 		object-fit: cover;
 		object-position: center;
 		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
@@ -226,11 +229,6 @@ h1 {
 	}
 }
 
-.apartment-data {
-	font-size: 1.2rem;
-	margin: 2rem 0;
-}
-
 .details-section {
 	max-width: 60%;
 	padding-bottom: 3rem;
@@ -239,7 +237,20 @@ h1 {
 
 	h3 {
 		margin-bottom: 1rem;
+		font-size: 1.6rem;
+		font-weight: 600;
 	}
+
+	.apartment-data {
+		font-size: 1.2rem;
+		margin: 1rem 0;
+	}
+}
+
+.details-section:last-child {
+	max-width: 100%;
+	padding-bottom: 3rem;
+	border: none;
 }
 
 ul {
@@ -254,12 +265,13 @@ ul {
 
 	.service {
 		font-style: italic;
+		line-height: 2.5rem;
 	}
 }
 
 #map {
 	width: 100%;
-	aspect-ratio: 3/2;
+	aspect-ratio: 2 / 1;
 	margin: 2rem 0;
 	box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
 	border: 1px solid $color-dark;
