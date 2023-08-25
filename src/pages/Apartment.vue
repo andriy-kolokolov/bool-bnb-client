@@ -171,6 +171,11 @@ export default {
 			<!-- TomTom map -->
 			<div id="map" ref="mapRef"></div>
 		</div>
+
+		<!-- Sticky modal on right side of page -->
+		<div class="sticky-modal">
+			<p>Prova</p>
+		</div>
 	</div>
 	<!-- Button for Send Email or Back if owner  -->
 	<!-- <router-link class="button-link" v-if="!isOwner">Send Email</router-link>
