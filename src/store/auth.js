@@ -8,7 +8,6 @@ export default {
     authenticated: false,
 
     initialize() {
-        // Check if there's a token in localStorage
         const storedToken = localStorage.getItem("token");
         const storedUser = JSON.parse(localStorage.getItem("user"));
         if (storedToken && storedUser) {
@@ -16,23 +15,23 @@ export default {
             this.user = storedUser;
             this.authenticated = true;
         }
+    },
 
-        // You can also load other user-related data from localStorage if needed.
+    async register(formData) {
+        try {
+            let response = await axios.post(store.baseUrlApi + 'auth/register', formData);
+            this.logInUser(response.data.token, response.data.user);
+            await router.push('/dashboard');
+        } catch (error) {
+            console.log(error.response.data);
+        }
     },
 
     async signIn(credentials) {
         try {
             let response = await axios.post(store.baseUrlApi + 'auth/login', credentials);
-            this.token = response.data.token;
-            this.user = response.data.user;
-            this.authenticated = true;
-
-            // Save the token to localStorage
-            localStorage.setItem("token", this.token);
-            localStorage.setItem("user", JSON.stringify(this.user));
-
-            // Redirect to the dashboard route
-            await router.push('/dashboard'); // Use this.$router to access the router instance
+            this.logInUser(response.data.token, response.data.user);
+            await router.push('/dashboard');
         } catch (error) {
             console.log(error.response.data);
         }
@@ -42,8 +41,15 @@ export default {
         this.user = null;
         this.token = null;
         this.authenticated = false;
-        localStorage.removeItem("token"); // Remove token from localStorage
-        localStorage.removeItem("user"); // Remove user from localStorage
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         console.log("User logged out");
+    },
+
+    logInUser(token, user) {
+        this.token = token;
+        this.user = user;
+        this.authenticated = true;
+        localStorage.setItem("token", token);
     }
 };
