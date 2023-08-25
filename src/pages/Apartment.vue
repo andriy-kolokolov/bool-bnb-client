@@ -219,7 +219,7 @@ h1 {
 		aspect-ratio: 3 / 2.5;
 		object-fit: cover;
 		object-position: center;
-		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
 	}
 
 	.main-image {
@@ -252,7 +252,7 @@ h1 {
 }
 
 .details {
-	flex-basis: 60%;
+	width: 65%;
 }
 
 .container-sticky {
@@ -260,9 +260,10 @@ h1 {
 	position: relative;
 	display: flex;
 	flex-direction: row-reverse;
+	justify-content: space-between;
 
 	.content {
-		width: 35%;
+		width: 25%;
 		position: relative;
 	}
 
@@ -273,12 +274,19 @@ h1 {
 		right: 0;
 		width: 100%;
 		height: 40vh;
-		background-color: grey;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: $color-light;
+		border: 1px solid $color-purple;
+		border-radius: 20px;
+		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
 	}
 }
 
 .details-section {
-	flex-basis: 60%;
+	width: 100%;
 	padding-bottom: 3rem;
 	border-bottom: 1px solid $color-purple;
 	margin-bottom: 3rem;
@@ -321,7 +329,7 @@ ul {
 	width: 100%;
 	aspect-ratio: 2 / 1;
 	margin: 2rem 0;
-	box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.3);
 	border: 1px solid $color-dark;
 }
 </style>
