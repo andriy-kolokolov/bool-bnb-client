@@ -117,7 +117,6 @@ export default {
 				class="main-image"
 				src="https://picsum.photos/id/220/300/300"
 				alt="{{apartment.name}}" />
-
 			<img
 				class="middle-image-top"
 				src="https://picsum.photos/id/230/300/300"
@@ -135,27 +134,44 @@ export default {
 				src="https://picsum.photos/id/440/300/300"
 				alt="{{apartment.name}}" />
 		</div>
+
+		<!-- General information -->
 		<p class="apartment-data">
 			Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} • Bathrooms:
 			{{ apartment.bathrooms }} • Footage: {{ apartment.square_meters }} mq
 		</p>
+
+		<!-- Host name -->
+		<div class="details-section">
+			<h2>Host: {{ apartment.user.username }}</h2>
+		</div>
+
+		<!-- List of Services -->
+		<div class="details-section">
+			<h3>What you will find</h3>
+			<ul>
+				<li v-for="service in apartment.services" :key="service.id">
+					<span class="icon">{{ service.icon }}</span>
+					<span class="service">{{ service.name }}</span>
+				</li>
+			</ul>
+		</div>
+
+		<!-- Utilizzo della variabile isSponsored -->
+		<p v-if="isSponsored">SPONSORED</p>
+
+		<!-- Address -->
+		<div class="details-section">
+			<h3>Where you will be</h3>
+			<p>{{ apartment.addresses[0].street }}</p>
+			<p>
+				{{ apartment.addresses[0].zip }} • {{ apartment.addresses[0].city }}
+			</p>
+
+			<!-- TomTom map -->
+			<div id="map" ref="mapRef"></div>
+		</div>
 	</div>
-
-	<!-- Accesso ai servizi utilizzando un loop -->
-	<ul>
-		<li v-for="service in apartment.services" :key="service.id">
-			{{ service.icon }} {{ service.name }}
-		</li>
-	</ul>
-	<!-- Utilizzo della variabile isSponsored -->
-	<p v-if="isSponsored">SPONSORED</p>
-	<!-- Address -->
-	<h3>Where you will be</h3>
-	<p>{{ apartment.addresses[0].street }}</p>
-	<p>{{ apartment.addresses[0].zip }} • {{ apartment.addresses[0].city }}</p>
-	<!-- TomTom map -->
-	<div id="map" ref="mapRef"></div>
-
 	<!-- Button for Send Email or Back if owner  -->
 	<!-- <router-link class="button-link" v-if="!isOwner">Send Email</router-link>
 		<router-link class="button-link" v-if="isOwner">Go Back</router-link> -->
@@ -181,56 +197,70 @@ h1 {
 		object-position: center;
 		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
 	}
-}
 
-.main-image {
-	grid-column: 1 / 3;
-	grid-row: 1 / 3;
-	border-radius: 20px 0 0 20px;
-}
+	.main-image {
+		grid-column: 1 / 3;
+		grid-row: 1 / 3;
+		border-radius: 20px 0 0 20px;
+	}
 
-.middle-image-top {
-	grid-column: 3 /4;
-	grid-row: 1 / 2;
-}
+	.middle-image-top {
+		grid-column: 3 /4;
+		grid-row: 1 / 2;
+	}
 
-.middle-image-bottom {
-	grid-column: 3 /4;
-	grid-row: 2 / 3;
-}
-.end-image-top {
-	grid-column: 4 / 5;
-	grid-row: 1 / 2;
-	border-radius: 0 20px 0 0;
-}
+	.middle-image-bottom {
+		grid-column: 3 /4;
+		grid-row: 2 / 3;
+	}
+	.end-image-top {
+		grid-column: 4 / 5;
+		grid-row: 1 / 2;
+		border-radius: 0 20px 0 0;
+	}
 
-.end-image-bottom {
-	grid-column: 4 / 5;
-	grid-row: 2 / 3;
-	border-radius: 0 0 20px 0;
+	.end-image-bottom {
+		grid-column: 4 / 5;
+		grid-row: 2 / 3;
+		border-radius: 0 0 20px 0;
+	}
 }
 
 .apartment-data {
 	font-size: 1.2rem;
+	margin: 2rem 0;
 }
 
-.main-img {
-	border-radius: 20px 0 0 20px;
-	margin: 1rem 0;
-	box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
-	grid-row: span 2;
+.details-section {
+	max-width: 60%;
+	padding-bottom: 3rem;
+	border-bottom: 1px solid $color-purple;
+	margin-bottom: 3rem;
+
+	h3 {
+		margin-bottom: 1rem;
+	}
 }
 
-.middle-img {
-	margin: 1rem 1rem;
-	box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
-	grid-row: span 1;
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	.icon {
+		color: $color-purple;
+		margin-right: 1rem;
+	}
+
+	.service {
+		font-style: italic;
+	}
 }
 
 #map {
-	width: 60%;
+	width: 100%;
 	aspect-ratio: 3/2;
-	margin: 2rem auto;
+	margin: 2rem 0;
 	box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
 	border: 1px solid $color-dark;
 }
