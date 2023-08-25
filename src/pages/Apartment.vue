@@ -80,6 +80,7 @@ export default {
 					zoom: 17,
 					style: ttstyle,
 				});
+				map.scrollZoom.disable();
 
 				// Add a Pin to map
 				map.on("load", () => {
@@ -135,47 +136,61 @@ export default {
 				alt="{{apartment.name}}" />
 		</div>
 
-		<!-- Host name -->
-		<div class="details-section">
-			<h3>Host: {{ apartment.user.username }}</h3>
+		<div class="container-sticky">
+			<div class="content">
+				<!-- Sticky modal on right side of page -->
+				<div class="sticky-modal">
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+				</div>
+			</div>
 
-			<!-- General information -->
-			<p class="apartment-data">
-				Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} • Bathrooms:
-				{{ apartment.bathrooms }} • Footage: {{ apartment.square_meters }} mq
-			</p>
+			<div class="details">
+				<!-- Host name -->
+				<div class="details-section">
+					<h3>Host: {{ apartment.user.username }}</h3>
+
+					<!-- General information -->
+					<p class="apartment-data">
+						Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} •
+						Bathrooms: {{ apartment.bathrooms }} • Footage:
+						{{ apartment.square_meters }} mq
+					</p>
+				</div>
+
+				<!-- List of Services -->
+				<div class="details-section">
+					<h3>What you will find</h3>
+					<ul>
+						<li v-for="service in apartment.services" :key="service.id">
+							<span class="icon">{{ service.icon }}</span>
+							<span class="service">{{ service.name }}</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Utilizzo della variabile isSponsored -->
+				<p v-if="isSponsored">SPONSORED</p>
+
+				<!-- Address -->
+				<div class="details-section">
+					<h3>Where you will be</h3>
+					<p>{{ apartment.addresses[0].street }}</p>
+					<p>
+						{{ apartment.addresses[0].zip }} • {{ apartment.addresses[0].city }}
+					</p>
+				</div>
+			</div>
 		</div>
-
-		<!-- List of Services -->
-		<div class="details-section">
-			<h3>What you will find</h3>
-			<ul>
-				<li v-for="service in apartment.services" :key="service.id">
-					<span class="icon">{{ service.icon }}</span>
-					<span class="service">{{ service.name }}</span>
-				</li>
-			</ul>
-		</div>
-
-		<!-- Utilizzo della variabile isSponsored -->
-		<p v-if="isSponsored">SPONSORED</p>
-
-		<!-- Address -->
-		<div class="details-section">
-			<h3>Where you will be</h3>
-			<p>{{ apartment.addresses[0].street }}</p>
-			<p>
-				{{ apartment.addresses[0].zip }} • {{ apartment.addresses[0].city }}
-			</p>
-
-			<!-- TomTom map -->
-			<div id="map" ref="mapRef"></div>
-		</div>
-
-		<!-- Sticky modal on right side of page -->
-		<div class="sticky-modal">
-			<p>Prova</p>
-		</div>
+		<!-- TomTom map -->
+		<div id="map" ref="mapRef"></div>
 	</div>
 	<!-- Button for Send Email or Back if owner  -->
 	<!-- <router-link class="button-link" v-if="!isOwner">Send Email</router-link>
@@ -197,6 +212,7 @@ h1 {
 	grid-template-rows: repeat(2, 1fr);
 	gap: 1rem;
 	margin-bottom: 2rem;
+	// position: relative;
 
 	img {
 		width: 100%;
@@ -221,6 +237,7 @@ h1 {
 		grid-column: 3 /4;
 		grid-row: 2 / 3;
 	}
+
 	.end-image-top {
 		grid-column: 4 / 5;
 		grid-row: 1 / 2;
@@ -234,8 +251,34 @@ h1 {
 	}
 }
 
+.details {
+	flex-basis: 60%;
+}
+
+.container-sticky {
+	width: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: row-reverse;
+
+	.content {
+		width: 35%;
+		position: relative;
+	}
+
+	.sticky-modal {
+		margin: auto 0 0 auto;
+		position: sticky;
+		top: 0;
+		right: 0;
+		width: 100%;
+		height: 40vh;
+		background-color: grey;
+	}
+}
+
 .details-section {
-	max-width: 60%;
+	flex-basis: 60%;
 	padding-bottom: 3rem;
 	border-bottom: 1px solid $color-purple;
 	margin-bottom: 3rem;
