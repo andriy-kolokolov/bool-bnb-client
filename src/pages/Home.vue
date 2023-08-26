@@ -99,6 +99,7 @@ export default {
   .routerstyle {
     text-decoration: none;
     width: calc((100% - 4em) / 5);
+    user-select: none;
     .apartment_cards {
       height: fit-content;
       display: flex;
