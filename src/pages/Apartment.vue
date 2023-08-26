@@ -17,6 +17,7 @@ export default {
 			longitude: null,
 			isOwner: false,
 			map: null,
+			isMobile: false,
 		};
 	},
 
@@ -117,7 +118,8 @@ export default {
 			<img
 				class="main-image"
 				src="https://picsum.photos/id/220/300/300"
-				alt="{{apartment.name}}" />
+				alt="{{apartment.name}}"
+				@click="isMobile ? showImages() : null" />
 			<img
 				class="middle-image-top"
 				src="https://picsum.photos/id/230/300/300"
@@ -137,21 +139,6 @@ export default {
 		</div>
 
 		<div class="container-sticky">
-			<div class="content">
-				<!-- Sticky modal on right side of page -->
-				<div class="sticky-modal">
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-				</div>
-			</div>
-
 			<div class="details">
 				<!-- Host name -->
 				<div class="details-section">
@@ -188,6 +175,20 @@ export default {
 					</p>
 				</div>
 			</div>
+			<!-- Sticky modal on right side of page -->
+			<div class="content">
+				<div class="sticky-modal">
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+					<p>Prova</p>
+				</div>
+			</div>
 		</div>
 		<!-- TomTom map -->
 		<div id="map" ref="mapRef"></div>
@@ -212,7 +213,6 @@ h1 {
 	grid-template-rows: repeat(2, 1fr);
 	gap: 1rem;
 	margin-bottom: 2rem;
-	// position: relative;
 
 	img {
 		width: 100%;
@@ -259,7 +259,7 @@ h1 {
 	width: 100%;
 	position: relative;
 	display: flex;
-	flex-direction: row-reverse;
+	flex-direction: row;
 	justify-content: space-between;
 
 	.content {
@@ -331,5 +331,79 @@ ul {
 	margin: 2rem 0;
 	box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.3);
 	border: 1px solid $color-dark;
+}
+
+@media only screen and (max-width: 743px) {
+	.grid-container {
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr;
+
+		.middle-image-top,
+		.middle-image-bottom,
+		.end-image-top,
+		.end-image-bottom {
+			display: none;
+		}
+		.main-image {
+			width: 100%;
+			grid-column: 1 / -1;
+			grid-row: 1 / -1;
+			border-radius: 20px;
+		}
+	}
+
+	#map {
+		width: 100%;
+		margin-bottom: 15vh;
+		aspect-ratio: 3 / 2;
+		border-radius: 20px;
+	}
+
+	.container-sticky {
+		width: 100%;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+
+		.content {
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			width: 100%;
+			z-index: 100;
+		}
+
+		.sticky-modal {
+			top: 0;
+			right: 0;
+			width: 100%;
+			height: 10vh;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			background-color: $color-light;
+			border-top: 1px solid $color-purple;
+			border-radius: 0;
+			box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	.details-section {
+		margin-bottom: 0.5rem;
+		padding: 1rem;
+
+		.apartment-data {
+			font-size: 1.2rem;
+			margin: 1rem 0;
+		}
+	}
+
+	.details-section:last-child {
+		max-width: 100%;
+		padding-bottom: 0;
+		border: none;
+	}
 }
 </style>
