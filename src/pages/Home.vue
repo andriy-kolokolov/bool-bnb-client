@@ -99,22 +99,20 @@ export default {
   .routerstyle {
     text-decoration: none;
     width: calc((100% - 4em) / 5);
-    margin-top: 3em;
     .apartment_cards {
-      height: 32vh;
+      height: fit-content;
       display: flex;
       align-content: center;
       justify-content: center;
       position: relative;
 
       &:hover img {
-        bottom: 40px;
-        aspect-ratio: 1 / 1.02;
+        transform: translateY(-20px);
         transition: 0.3s ease;
       }
 
       &:hover .info {
-        bottom: -25px;
+        bottom: -35px;
         height: 12vh;
         transition: 0.3s ease;
       }
@@ -130,7 +128,7 @@ export default {
       }
 
       &:hover .more_info {
-        bottom: 50px;
+        bottom: 40px;
         transition: 0.3s ease;
       }
 
@@ -139,9 +137,7 @@ export default {
         aspect-ratio: 1 / 1;
         border-radius: 20px;
         object-fit: cover;
-        position: absolute;
-        bottom: 20px;
-        left: 0;
+        transform: translateY(0px);
         z-index: -100;
         transition: 0.3s ease;
         box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.3),
@@ -150,7 +146,7 @@ export default {
 
       .info {
         position: absolute;
-        bottom: 0px;
+        bottom: -15px;
         transition: 0.3s ease;
         width: 65%;
         height: 17vh;
