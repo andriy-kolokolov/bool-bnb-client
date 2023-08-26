@@ -1,11 +1,13 @@
 <script>
 import axios from "axios";
 import { store } from "../store/store.js";
+import { ref } from "vue";
 export default {
   data() {
     return {
       store,
       arrApartments: [],
+      showImg: ref(-1),
     };
   },
   methods: {
@@ -23,31 +25,221 @@ export default {
 </script>
 
 <template>
-  <router-link
-    v-for="apartment in arrApartments"
-    :key="apartment.id"
-    :to="`/apartment/${apartment.id}`"
-    class="card"
-    style="width: 18rem"
-  >
-    <!-- <img
-  				class="main-image"
-  				src="https://picsum.photos/id/220/300/300"
-  				alt="{{apartment.name}}" /> -->
-
-    <div class="card-body">
-      <h5 class="card-title">NAME: {{ apartment.name }}</h5>
-      <p class="card-text">ROOMS: {{ apartment.rooms }}</p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">BEDS: {{ apartment.beds }}</li>
-      <li class="list-group-item">BATHROOMS: {{ apartment.bathrooms }}</li>
-      <li class="list-group-item">
-        SQAURE METERS: {{ apartment.square_meters }}
-      </li>
-      <li class="list-group-item">AVAILABLE: {{ apartment.is_available }}</li>
-    </ul>
-  </router-link>
+  <div class="style">
+    <router-link
+      :to="`/apartment/${apartment.id}`"
+      v-for="(apartment, index) in arrApartments"
+      :key="apartment.id"
+      class="routerstyle"
+      @mouseover="showImg = index"
+      @mouseout="showImg = ''"
+    >
+      <div class="apartment_cards">
+        <img
+          class="cover_img"
+          :src="apartment.images[0].image_path"
+          :alt="apartment.name"
+        />
+        <!-- SECONDA IMMAGINE
+          <img
+          v-if="index === showImg"
+          :src="apartment.images[1].image_path"
+          :alt="apartment.name"
+        /> -->
+        <div class="info">
+          <div class="info_container">
+            <h5>{{ apartment.name }}</h5>
+            <h6>
+              <i class="fa-solid fa-location-dot"></i>
+              {{ apartment.addresses[0].city }}
+            </h6>
+          </div>
+        </div>
+        <div class="more_info">
+          <!-- {{ apartment.is_available }} -->
+          <span
+            :class="{
+              available: apartment.is_available === 1,
+              none: apartment.is_available === 0,
+            }"
+            ><i class="fa-solid fa-calendar-check"></i> Available</span
+          >
+          <span
+            :class="{
+              not_available: apartment.is_available === 0,
+              none: apartment.is_available === 1,
+            }"
+            ><i class="fa-solid fa-calendar-xmark"></i> Not Available</span
+          >
+          <span
+            :class="{
+              sponsor: apartment.is_sponsored === 1,
+              none: apartment.is_sponsored === 0,
+            }"
+          >
+            <!-- {{ apartment.is_sponsored }} -->
+            <i class="fa-solid fa-medal"></i
+          ></span>
+        </div>
+      </div>
+    </router-link>
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.style {
+  width: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6em;
+  align-content: center;
+  justify-content: center;
+  margin-top: 6em;
+  margin-bottom: 3em;
+  .routerstyle {
+    text-decoration: none;
+    width: calc((100% - 4em) / 5);
+    margin-top: 3em;
+    .apartment_cards {
+      height: 32vh;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      position: relative;
+
+      &:hover img {
+        bottom: 40px;
+        aspect-ratio: 1 / 1.02;
+        transition: 0.3s ease;
+      }
+
+      &:hover .info {
+        bottom: -25px;
+        height: 12vh;
+        transition: 0.3s ease;
+      }
+
+      &:hover .info h6 {
+        opacity: 0;
+        transition: 0.2s ease;
+      }
+
+      &:hover .info h5 {
+        transform: translateY(1rem);
+        transition: 0.3s ease;
+      }
+
+      &:hover .more_info {
+        bottom: 50px;
+        transition: 0.3s ease;
+      }
+
+      img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 20px;
+        object-fit: cover;
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        z-index: -100;
+        transition: 0.3s ease;
+        box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.3),
+          -5px 5px 5px rgba(120, 120, 120, 0.3);
+      }
+
+      .info {
+        position: absolute;
+        bottom: 0px;
+        transition: 0.3s ease;
+        width: 65%;
+        height: 17vh;
+        align-self: end;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 0;
+        background-color: rgb(250, 250, 250);
+        border-radius: 20px;
+        // border-bottom-left-radius: 20px;
+        // border-bottom-right-radius: 20px;
+        box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+          -5px 5px 5px rgba(120, 120, 120, 0.4);
+
+        .info_container {
+          width: 90%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+
+          h6,
+          h5 {
+            margin: 0;
+            text-align: center;
+            color: rgb(0, 0, 0);
+          }
+
+          h5 {
+            transition: 0.3s ease;
+          }
+
+          h6 {
+            transition: 0.2s ease;
+          }
+        }
+      }
+
+      .more_info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 10vh;
+        align-self: end;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        gap: 1em;
+        z-index: -50;
+        transition: 0.3s ease;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+
+        span {
+          margin: 0;
+          text-align: center;
+          color: rgba(255, 255, 255);
+        }
+
+        .available {
+          background-color: rgb(1, 125, 1);
+          padding: 4px 10px 6px 10px;
+          border-radius: 10px;
+          display: inline-block;
+        }
+
+        .not_available {
+          background-color: rgb(145, 0, 0);
+          padding: 4px 10px 6px 10px;
+          border-radius: 10px;
+          display: inline-block;
+        }
+
+        .sponsor {
+          background-color: rgb(120, 0, 160);
+          padding: 5px 10px 5px 10px;
+          border-radius: 10px;
+          display: inline-block;
+        }
+
+        .none {
+          display: none;
+        }
+      }
+    }
+  }
+}
+</style>
