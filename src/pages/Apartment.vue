@@ -331,6 +331,7 @@ ul {
 	margin: 2rem 0;
 	box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.3);
 	border: 1px solid $color-dark;
+	border-radius: 20px;
 }
 
 @media only screen and (max-width: 743px) {
