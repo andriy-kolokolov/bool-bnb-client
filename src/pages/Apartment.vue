@@ -97,7 +97,6 @@ export default {
 	},
 
 	created() {
-		// Get coordinates for GPS map and distance
 		this.loadApartment();
 	},
 
@@ -119,7 +118,9 @@ export default {
 				class="main-image"
 				src="https://picsum.photos/id/220/300/300"
 				alt="{{apartment.name}}"
-				@click="isMobile ? showImages() : null" />
+				data-bs-toggle="offcanvas"
+				data-bs-target="#offcanvasBottom"
+				aria-controls="offcanvasBottom" />
 			<img
 				class="middle-image-top"
 				src="https://picsum.photos/id/230/300/300"
@@ -135,7 +136,7 @@ export default {
 			<img
 				class="end-image-bottom"
 				src="https://picsum.photos/id/440/300/300"
-				alt="{{apartment.name}}" />
+				alt="{{ apartment.name }}" />
 		</div>
 
 		<div class="container-sticky">
@@ -170,9 +171,7 @@ export default {
 				<div class="details-section">
 					<h3>Where you will be</h3>
 					<p>{{ apartment.address.street }}</p>
-					<p>
-						{{ apartment.address.zip }} • {{ apartment.address.city }}
-					</p>
+					<p>{{ apartment.address.zip }} • {{ apartment.address.city }}</p>
 				</div>
 			</div>
 			<!-- Sticky modal on right side of page -->
@@ -193,6 +192,50 @@ export default {
 		<!-- TomTom map -->
 		<div id="map" ref="mapRef"></div>
 	</div>
+
+	<!-- OFFCANVAS -->
+	<div
+		v-if="apartment"
+		class="offcanvas offcanvas-bottom w-100 h-100"
+		tabindex="-1"
+		id="offcanvasBottom"
+		aria-labelledby="offcanvasBottomLabel">
+		<div class="offcanvas-header">
+			<h5 class="offcanvas-title" id="offcanvasBottomLabel">
+				{{ apartment.name }}
+			</h5>
+			<button
+				type="button"
+				class="btn-close"
+				data-bs-dismiss="offcanvas"
+				aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+			<div class="offcanvas-images">
+				<img
+					class="main-image"
+					src="https://picsum.photos/id/220/300/300"
+					alt="{{apartment.name}}" />
+				<img
+					class="apartment-image"
+					src="https://picsum.photos/id/230/300/300"
+					alt="{{apartment.name}}" />
+				<img
+					class="apartment-image"
+					src="https://picsum.photos/id/140/300/300"
+					alt="{{apartment.name}}" />
+				<img
+					class="apartment-image"
+					src="https://picsum.photos/id/125/300/300"
+					alt="{{apartment.name}}" />
+				<img
+					class="apartment-image"
+					src="https://picsum.photos/id/440/300/300"
+					alt="{{apartment.name}}" />
+			</div>
+		</div>
+	</div>
+
 	<!-- Button for Send Email or Back if owner  -->
 	<!-- <router-link class="button-link" v-if="!isOwner">Send Email</router-link>
 		<router-link class="button-link" v-if="isOwner">Go Back</router-link> -->
@@ -219,7 +262,8 @@ h1 {
 		aspect-ratio: 3 / 2.5;
 		object-fit: cover;
 		object-position: center;
-		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
+		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+			-5px 5px 5px rgba(120, 120, 120, 0.4);
 	}
 
 	.main-image {
@@ -281,7 +325,8 @@ h1 {
 		background-color: $color-light;
 		border: 1px solid $color-purple;
 		border-radius: 20px;
-		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
+		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+			-5px 5px 5px rgba(120, 120, 120, 0.4);
 	}
 }
 
@@ -329,7 +374,8 @@ ul {
 	width: 100%;
 	aspect-ratio: 2 / 1;
 	margin: 2rem 0;
-	box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+		-5px 5px 5px rgba(120, 120, 120, 0.4);
 	border: 1px solid $color-dark;
 	border-radius: 20px;
 }
@@ -387,7 +433,8 @@ ul {
 			background-color: $color-light;
 			border-top: 1px solid $color-purple;
 			border-radius: 0;
-			box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
+			box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+				-5px 5px 5px rgba(120, 120, 120, 0.4);
 		}
 	}
 
@@ -405,6 +452,34 @@ ul {
 		max-width: 100%;
 		padding-bottom: 0;
 		border: none;
+	}
+}
+
+.offcanvas-title {
+	font-weight: bold;
+}
+.offcanvas-images {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-content: center;
+	justify-content: center;
+
+	.main-image {
+		width: 100%;
+		aspect-ratio: 2 / 1.5;
+	}
+	.apartment-image {
+		width: calc((100% - 1rem) / 2);
+	}
+
+	img {
+		aspect-ratio: 1 / 1;
+		border-radius: 20px;
+		object-fit: cover;
+		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.3),
+			-5px 5px 5px rgba(120, 120, 120, 0.3);
 	}
 }
 </style>
