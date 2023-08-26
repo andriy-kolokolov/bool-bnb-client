@@ -17,7 +17,6 @@ export default {
 			longitude: null,
 			isOwner: false,
 			map: null,
-			isMobile: false,
 		};
 	},
 
@@ -84,6 +83,9 @@ export default {
 				map.scrollZoom.disable();
 
 				// Add a Pin to map
+				const element = document.createElement("div");
+				element.id = "marker";
+
 				map.on("load", () => {
 					new tt.Marker().setLngLat([this.longitude, this.latitude]).addTo(map);
 				});
@@ -101,13 +103,13 @@ export default {
 	},
 
 	mounted() {
-		AOS.init();
+		AOS.init({duration: 800, delay: 300});
 	},
 };
 </script>
 
 <template>
-	<div v-if="apartment" class="container">
+	<div v-if="apartment" class="container-fluid">
 		<h1>{{ apartment.name }}</h1>
 		<!-- <img
 			class="main-img"
@@ -154,7 +156,7 @@ export default {
 				</div>
 
 				<!-- List of Services -->
-				<div class="details-section">
+				<div class="details-section" data-aos="fade-up-right">
 					<h3>What you will find</h3>
 					<ul>
 						<li v-for="service in apartment.services" :key="service.id">
@@ -168,7 +170,7 @@ export default {
 				<p v-if="isSponsored">SPONSORED</p>
 
 				<!-- Address -->
-				<div class="details-section">
+				<div class="details-section" data-aos="fade-up-right">
 					<h3>Where you will be</h3>
 					<p>{{ apartment.address.street }}</p>
 					<p>{{ apartment.address.zip }} • {{ apartment.address.city }}</p>
@@ -190,7 +192,8 @@ export default {
 			</div>
 		</div>
 		<!-- TomTom map -->
-		<div id="map" ref="mapRef"></div>
+		<div data-aos="fade-up-right" id="map" ref="mapRef"></div>
+		<div id="marker" ref="markerRef"></div>
 	</div>
 
 	<!-- OFFCANVAS -->
@@ -206,9 +209,11 @@ export default {
 			</h5>
 			<button
 				type="button"
-				class="btn-close"
+				class="close-btn"
 				data-bs-dismiss="offcanvas"
-				aria-label="Close"></button>
+				aria-label="Close">
+				<i class="fa-solid fa-chevron-left"></i>
+			</button>
 		</div>
 		<div class="offcanvas-body">
 			<div class="offcanvas-images">
@@ -243,6 +248,10 @@ export default {
 
 <style lang="scss" scoped>
 @use "../assets/partials/variables" as *;
+
+.container-fluid {
+	max-width: 80vw;
+}
 
 h1 {
 	font-weight: 600;
@@ -334,7 +343,7 @@ h1 {
 	width: 100%;
 	padding-bottom: 3rem;
 	border-bottom: 1px solid $color-purple;
-	margin-bottom: 3rem;
+	margin-bottom: 1rem;
 
 	h3 {
 		margin-bottom: 1rem;
@@ -350,7 +359,7 @@ h1 {
 
 .details-section:last-child {
 	max-width: 100%;
-	padding-bottom: 3rem;
+	padding-bottom: 1rem;
 	border: none;
 }
 
@@ -373,11 +382,74 @@ ul {
 #map {
 	width: 100%;
 	aspect-ratio: 2 / 1;
-	margin: 2rem 0;
+	margin-top: 1rem;
+	margin-bottom: 7rem;
 	box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
 		-5px 5px 5px rgba(120, 120, 120, 0.4);
 	border: 1px solid $color-dark;
 	border-radius: 20px;
+}
+
+#marker {
+	color: blue !important;
+}
+
+.offcanvas-header,
+.offcanvas-body {
+	margin: auto;
+	width: 743px;
+}
+
+.offcanvas-title {
+	font-weight: bold;
+}
+
+.close-btn {
+	width: 30px;
+	height: 30px;
+	border: none;
+	background-color: $color-light;
+	border-radius: 50%;
+	color: $color-dark;
+	transition: all 250ms;
+
+	&:hover {
+		background-color: $color-purple;
+		color: $color-light;
+	}
+}
+
+.offcanvas-images {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+	align-content: center;
+	justify-content: center;
+
+	.main-image {
+		width: 100%;
+		aspect-ratio: 2 / 1.5;
+	}
+	.apartment-image {
+		width: calc((100% - 1rem) / 2);
+	}
+
+	img {
+		aspect-ratio: 1 / 1;
+		border-radius: 20px;
+		object-fit: cover;
+		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.3),
+			-5px 5px 5px rgba(120, 120, 120, 0.3);
+		transform: scale(0.9);
+		filter: brightness(0.6);
+		transition: all 250ms ease-in-out;
+
+		&:hover {
+			transform: scale(1);
+			filter: brightness(1);
+		}
+	}
 }
 
 @media only screen and (max-width: 743px) {
@@ -397,6 +469,11 @@ ul {
 			grid-row: 1 / -1;
 			border-radius: 20px;
 		}
+	}
+
+	.offcanvas-header,
+	.offcanvas-body {
+		width: 100%;
 	}
 
 	#map {
@@ -439,8 +516,7 @@ ul {
 	}
 
 	.details-section {
-		margin-bottom: 0.5rem;
-		padding: 1rem;
+		padding: 0.5rem;
 
 		.apartment-data {
 			font-size: 1.2rem;
@@ -452,34 +528,6 @@ ul {
 		max-width: 100%;
 		padding-bottom: 0;
 		border: none;
-	}
-}
-
-.offcanvas-title {
-	font-weight: bold;
-}
-.offcanvas-images {
-	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 1rem;
-	align-content: center;
-	justify-content: center;
-
-	.main-image {
-		width: 100%;
-		aspect-ratio: 2 / 1.5;
-	}
-	.apartment-image {
-		width: calc((100% - 1rem) / 2);
-	}
-
-	img {
-		aspect-ratio: 1 / 1;
-		border-radius: 20px;
-		object-fit: cover;
-		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.3),
-			-5px 5px 5px rgba(120, 120, 120, 0.3);
 	}
 }
 </style>
