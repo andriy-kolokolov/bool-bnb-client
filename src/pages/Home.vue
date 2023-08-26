@@ -30,10 +30,10 @@ export default {
     class="card"
     style="width: 18rem"
   >
-    <img
+    <!-- <img
   				class="main-image"
   				src="https://picsum.photos/id/220/300/300"
-  				alt="{{apartment.name}}" />
+  				alt="{{apartment.name}}" /> -->
 
     <div class="card-body">
       <h5 class="card-title">NAME: {{ apartment.name }}</h5>
