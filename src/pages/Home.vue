@@ -51,7 +51,7 @@ export default {
             <h5>{{ apartment.name }}</h5>
             <h6>
               <i class="fa-solid fa-location-dot"></i>
-              {{ apartment.addresses[0].city }}
+              {{ apartment.address.city }}
             </h6>
           </div>
         </div>

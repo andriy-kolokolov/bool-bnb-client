@@ -169,9 +169,9 @@ export default {
 				<!-- Address -->
 				<div class="details-section">
 					<h3>Where you will be</h3>
-					<p>{{ apartment.addresses[0].street }}</p>
+					<p>{{ apartment.address.street }}</p>
 					<p>
-						{{ apartment.addresses[0].zip }} • {{ apartment.addresses[0].city }}
+						{{ apartment.address.zip }} • {{ apartment.address.city }}
 					</p>
 				</div>
 			</div>
