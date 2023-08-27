@@ -6,7 +6,7 @@ export default {};
   <footer>
     <div class="myContainer">
       <div class="img">
-        <img src="../assets/img/logo-orizzontale.png" alt="logo" />
+        <img src="../assets/img/logo-b.png" alt="logo" />
       </div>
 
       <div class="info">

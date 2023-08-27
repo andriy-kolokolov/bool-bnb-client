@@ -1,12 +1,14 @@
 <script>
 import { RouterLink, RouterView } from "vue-router";
 import { store } from "@/store/store.js";
+import AppHeader from "./components/AppHeader.vue";
 import AppFooter from "./components/AppFooter.vue";
 
 export default {
   components: {
     RouterLink,
     RouterView,
+    AppHeader,
     AppFooter,
   },
   data() {
@@ -20,12 +22,8 @@ export default {
 <template>
   <header>
     <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink v-if="store.auth.authenticated" to="/dashboard"
-          >Dashboard</RouterLink
-        >
+      <AppHeader />
+      <div>
         <RouterLink v-if="!store.auth.authenticated" to="/signin"
           >Sign In</RouterLink
         >
@@ -35,7 +33,7 @@ export default {
         <button v-if="store.auth.authenticated" @click="store.auth.signOut()">
           Sign Out
         </button>
-      </nav>
+      </div>
     </div>
   </header>
 
