@@ -87,7 +87,9 @@ export default {
 				element.id = "marker";
 
 				map.on("load", () => {
-					new tt.Marker().setLngLat([this.longitude, this.latitude]).addTo(map);
+					new tt.Marker({element: this.$refs.markerRef})
+						.setLngLat([this.longitude, this.latitude])
+						.addTo(map);
 				});
 			} else {
 				console.log(
@@ -279,6 +281,7 @@ h1 {
 		grid-column: 1 / 3;
 		grid-row: 1 / 3;
 		border-radius: 20px 0 0 20px;
+		cursor: pointer;
 	}
 
 	.middle-image-top {
@@ -391,6 +394,12 @@ ul {
 }
 
 #marker {
+	background-image: url("../assets/img/pin-48.png");
+	width: 45px;
+	height: 55px;
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
 	color: blue !important;
 }
 
