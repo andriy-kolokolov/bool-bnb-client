@@ -120,7 +120,7 @@ export default {
 		<div class="grid-container">
 			<img
 				class="main-image"
-				src="https://picsum.photos/id/220/300/300"
+				:src="apartment.images[0].image_path"
 				alt="{{apartment.name}}"
 				data-bs-toggle="offcanvas"
 				data-bs-target="#offcanvasBottom"
@@ -157,6 +157,34 @@ export default {
 					</p>
 				</div>
 
+				<!-- Additional Information -->
+				<div class="details-section more-info" data-aos="fade-up-right">
+					<h3>What you need to know</h3>
+					<!-- {{ apartment.is_available }} -->
+					<span
+						:class="{
+							available: apartment.is_available,
+							none: !apartment.is_available,
+						}"
+						><i class="fa-solid fa-calendar-check"></i> Available</span
+					>
+					<span
+						:class="{
+							not_available: !apartment.is_available,
+							none: apartment.is_available,
+						}"
+						><i class="fa-solid fa-calendar-xmark"></i> Not Available</span
+					>
+					<span
+						:class="{
+							sponsored: apartment.is_sponsored,
+							none: !apartment.is_sponsored,
+						}">
+						<!-- {{ apartment.is_sponsored }} -->
+						<i class="fa-solid fa-medal"></i> Sponsored</span
+					>
+				</div>
+
 				<!-- List of Services -->
 				<div class="details-section" data-aos="fade-up-right">
 					<h3>What you will find</h3>
@@ -168,9 +196,6 @@ export default {
 					</ul>
 				</div>
 
-				<!-- Utilizzo della variabile isSponsored -->
-				<p v-if="apartment.isSponsored">SPONSORED</p>
-
 				<!-- Address -->
 				<div class="details-section" data-aos="fade-up-right">
 					<h3>Where you will be</h3>
@@ -181,7 +206,7 @@ export default {
 
 			<!-- Sticky modal on right side of page -->
 			<div class="content">
-				<div class="sticky-modal">
+				<div class="sticky-element">
 					<h6 class="message">
 						If you need further information, please click on the button below to
 						send a message to the Host!
@@ -189,7 +214,7 @@ export default {
 					<button
 						data-bs-toggle="modal"
 						data-bs-target="#staticBackdrop"
-						class="message-button">
+						class="button-general message-button">
 						Send a Message
 					</button>
 				</div>
@@ -197,7 +222,7 @@ export default {
 		</div>
 
 		<!-- TomTom map -->
-		<div data-aos="fade-up-right" id="map" ref="mapRef"></div>
+		<div data-aos="fade-up-left" id="map" ref="mapRef"></div>
 		<div id="marker" ref="markerRef"></div>
 	</div>
 
@@ -212,11 +237,7 @@ export default {
 			<h5 class="offcanvas-title" id="offcanvasBottomLabel">
 				{{ apartment.name }}
 			</h5>
-			<button
-				type="button"
-				class="close-btn"
-				data-bs-dismiss="offcanvas"
-				aria-label="Close">
+			<button type="button" class="close-btn" data-bs-dismiss="offcanvas">
 				<i class="fa-solid fa-chevron-left"></i>
 			</button>
 		</div>
@@ -252,28 +273,42 @@ export default {
 		id="staticBackdrop"
 		data-bs-backdrop="static"
 		data-bs-keyboard="false"
-		tabindex="-1"
-		aria-labelledby="staticBackdropLabel"
-		aria-hidden="true">
+		tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-					<button
-						type="button"
-						class="btn-close"
-						data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<h2
+						v-if="apartment && apartment.user"
+						class="modal-title fs-5"
+						id="staticBackdropLabel">
+						Send a message to {{ apartment.user.username }}
+					</h2>
+					<button type="button" class="close-btn" data-bs-dismiss="modal">
+						<i class="fa-solid fa-chevron-left"></i>
+					</button>
 				</div>
-				<div class="modal-body">...</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="email" class="form-label">Email address</label>
+						<input
+							type="email"
+							class="form-control"
+							id="email"
+							placeholder="your email address" />
+					</div>
+					<div class="mb-3">
+						<label for="message" class="form-label">Your message here:</label>
+						<textarea class="form-control" id="message" rows="5"></textarea>
+					</div>
+				</div>
 				<div class="modal-footer">
 					<button
 						type="button"
-						class="btn btn-secondary"
+						class="button-general button-close"
 						data-bs-dismiss="modal">
-						Close
+						Cancel
 					</button>
-					<button type="button" class="btn btn-primary">Understood</button>
+					<button type="button" class="button-general button-send">Send</button>
 				</div>
 			</div>
 		</div>
@@ -290,6 +325,29 @@ export default {
 h1 {
 	font-weight: 600;
 	margin: 2rem 0;
+}
+
+.button-general {
+	border: none;
+	border-radius: 10px;
+	padding: 0.5rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.close-btn {
+	width: 30px;
+	height: 30px;
+	border: none;
+	background-color: $color-light;
+	border-radius: 50%;
+	color: $color-dark;
+	transition: all 250ms;
+
+	&:hover {
+		background-color: $color-purple;
+		color: $color-light;
+	}
 }
 
 .grid-container {
@@ -343,6 +401,42 @@ h1 {
 	width: 65%;
 }
 
+.more-info {
+	font-size: 1rem;
+	font-weight: 300;
+
+	span {
+		margin-right: 2rem;
+		text-align: center;
+		color: $color-light;
+	}
+
+	.available {
+		background-color: rgb(1, 125, 1);
+		padding: 4px 10px 6px 10px;
+		border-radius: 10px;
+		display: inline-block;
+	}
+
+	.not_available {
+		background-color: rgb(145, 0, 0);
+		padding: 4px 10px 6px 10px;
+		border-radius: 10px;
+		display: inline-block;
+	}
+
+	.sponsored {
+		background-color: $color-purple;
+		padding: 4px 10px 6px 10px;
+		border-radius: 10px;
+		display: inline-block;
+	}
+
+	.none {
+		display: none;
+	}
+}
+
 .container-sticky {
 	width: 100%;
 	position: relative;
@@ -355,7 +449,7 @@ h1 {
 		position: relative;
 	}
 
-	.sticky-modal {
+	.sticky-element {
 		margin: auto 0 0 auto;
 		position: sticky;
 		top: 0;
@@ -382,11 +476,6 @@ h1 {
 		}
 
 		.message-button {
-			border: none;
-			border-radius: 0.5rem;
-			padding: 0.7rem 1.5rem;
-			font-size: 1.1rem;
-			font-weight: 600;
 			background-color: $color-blue;
 			color: $color-light;
 		}
@@ -464,21 +553,6 @@ ul {
 	font-weight: bold;
 }
 
-.close-btn {
-	width: 30px;
-	height: 30px;
-	border: none;
-	background-color: $color-light;
-	border-radius: 50%;
-	color: $color-dark;
-	transition: all 250ms;
-
-	&:hover {
-		background-color: $color-purple;
-		color: $color-light;
-	}
-}
-
 .offcanvas-images {
 	width: 100%;
 	display: flex;
@@ -509,6 +583,27 @@ ul {
 			transform: scale(1);
 			filter: brightness(1);
 		}
+	}
+}
+
+.modal {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+	background-color: $color-light;
+	color: $color-dark;
+	border: 1px solid $color-purple;
+	border-radius: 20px;
+
+	.button-close {
+		background-color: $color-dark;
+		color: $color-light;
+	}
+
+	.button-send {
+		background-color: $color-blue;
+		color: $color-light;
 	}
 }
 
@@ -558,10 +653,11 @@ ul {
 			z-index: 100;
 		}
 
-		.sticky-modal {
+		.sticky-element {
 			top: 0;
 			right: 0;
 			width: 100%;
+			min-height: 0;
 			height: 10vh;
 			display: flex;
 			flex-direction: row;
