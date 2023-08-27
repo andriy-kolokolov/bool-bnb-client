@@ -169,7 +169,7 @@ export default {
 				</div>
 
 				<!-- Utilizzo della variabile isSponsored -->
-				<p v-if="isSponsored">SPONSORED</p>
+				<p v-if="apartment.isSponsored">SPONSORED</p>
 
 				<!-- Address -->
 				<div class="details-section" data-aos="fade-up-right">
@@ -178,21 +178,24 @@ export default {
 					<p>{{ apartment.address.zip }} • {{ apartment.address.city }}</p>
 				</div>
 			</div>
+
 			<!-- Sticky modal on right side of page -->
 			<div class="content">
 				<div class="sticky-modal">
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
+					<h6 class="message">
+						If you need further information, please click on the button below to
+						send a message to the Host!
+					</h6>
+					<button
+						data-bs-toggle="modal"
+						data-bs-target="#staticBackdrop"
+						class="message-button">
+						Send a Message
+					</button>
 				</div>
 			</div>
 		</div>
+
 		<!-- TomTom map -->
 		<div data-aos="fade-up-right" id="map" ref="mapRef"></div>
 		<div id="marker" ref="markerRef"></div>
@@ -243,9 +246,38 @@ export default {
 		</div>
 	</div>
 
-	<!-- Button for Send Email or Back if owner  -->
-	<!-- <router-link class="button-link" v-if="!isOwner">Send Email</router-link>
-		<router-link class="button-link" v-if="isOwner">Go Back</router-link> -->
+	<!-- MODAL -->
+	<div
+		class="modal fade"
+		id="staticBackdrop"
+		data-bs-backdrop="static"
+		data-bs-keyboard="false"
+		tabindex="-1"
+		aria-labelledby="staticBackdropLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+					<button
+						type="button"
+						class="btn-close"
+						data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">...</div>
+				<div class="modal-footer">
+					<button
+						type="button"
+						class="btn btn-secondary"
+						data-bs-dismiss="modal">
+						Close
+					</button>
+					<button type="button" class="btn btn-primary">Understood</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <style lang="scss" scoped>
@@ -329,16 +361,35 @@ h1 {
 		top: 0;
 		right: 0;
 		width: 100%;
-		height: 40vh;
+		min-height: 40vh;
+		height: fit-content;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: space-around;
 		align-items: center;
+		padding: 2rem 3rem;
+		text-align: center;
 		background-color: $color-light;
 		border: 1px solid $color-purple;
 		border-radius: 20px;
 		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
 			-5px 5px 5px rgba(120, 120, 120, 0.4);
+
+		.message {
+			display: block;
+			font-size: 1.2rem;
+			line-height: 2rem;
+		}
+
+		.message-button {
+			border: none;
+			border-radius: 0.5rem;
+			padding: 0.7rem 1.5rem;
+			font-size: 1.1rem;
+			font-weight: 600;
+			background-color: $color-blue;
+			color: $color-light;
+		}
 	}
 }
 
@@ -521,6 +572,10 @@ ul {
 			border-radius: 0;
 			box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
 				-5px 5px 5px rgba(120, 120, 120, 0.4);
+
+			.message {
+				display: none;
+			}
 		}
 	}
 
