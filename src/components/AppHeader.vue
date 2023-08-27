@@ -62,6 +62,33 @@ export default {
               >Dashboard</RouterLink
             >
           </li>
+          <li>
+            <RouterLink
+              v-if="!store.auth.authenticated"
+              to="/signin"
+              class="dropdown-item"
+              @click="btnMenu()"
+              >Sign In</RouterLink
+            >
+          </li>
+          <li>
+            <RouterLink
+              v-if="!store.auth.authenticated"
+              to="/register"
+              class="dropdown-item"
+              @click="btnMenu()"
+              >Register</RouterLink
+            >
+          </li>
+          <li @click="btnMenu()">
+            <button
+              v-if="store.auth.authenticated"
+              @click="store.auth.signOut()"
+              class="dropdown-item"
+            >
+              Sign Out
+            </button>
+          </li>
         </ul>
       </div>
     </div>
