@@ -1,10 +1,11 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import Home from "../src/pages/Home.vue";
 import About from "../src/pages/About.vue";
 import Apartment from "../src/pages/Apartment.vue";
 import SignIn from "@/pages/SignIn.vue";
 import Dashboard from "@/pages/Dashboard.vue";
 import Registration from "@/pages/Registration.vue";
+import Message from "@/pages/Message.vue";
 import auth from "@/store/auth.js";
 
 const router = createRouter({
@@ -26,6 +27,12 @@ const router = createRouter({
             component: Apartment,
         },
         {
+            path: '/apartment/:id/message',
+            name: 'message',
+            component: Message,
+            props: true,
+        },
+        {
             path: '/signin',
             name: 'signin',
             component: SignIn
@@ -39,21 +46,26 @@ const router = createRouter({
             path: '/dashboard',
             name: 'dashboard',
             component: Dashboard,
-            meta: {requiresAuth: true}
+            meta: { requiresAuth: true }
         }
     ],
 });
 
 // Secure route guard
-router.beforeEach(async (to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
+router.beforeEach(async (to, from, next) =>
+{
+    if (to.matched.some(record => record.meta.requiresAuth))
+    {
         // Route requires authentication
-        if (!auth.authenticated) {
+        if (!auth.authenticated)
+        {
             next('/signin'); // User is not authenticated, redirect to login
-        } else {
+        } else
+        {
             next(); // User is authenticated, proceed to the route
         }
-    } else {
+    } else
+    {
         next(); // Route does not require authentication, proceed
     }
 });

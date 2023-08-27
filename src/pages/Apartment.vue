@@ -40,13 +40,11 @@ export default {
 			this.longitude = null;
 
 			const id = this.$route.params.id;
-			console.log(`${this.store.baseUrlApi}apartments/${id}`);
+
 			axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
 				this.apartment = response.data;
-				console.log(this.apartment);
-
-				this.getCoordinates(); // Get GPS coordinates from address
 			});
+			this.getCoordinates(); // Get GPS coordinates from address
 		},
 
 		getCoordinates() {
@@ -56,11 +54,9 @@ export default {
 				address,
 			)}.json?key=${apiKey}`;
 
-			console.log("Geocodifica dell'indirizzo...");
 			axios.get(url).then((response) => {
 				this.latitude = response.data.results[0].position.lat;
 				this.longitude = response.data.results[0].position.lon;
-				console.log("Coordinates OK: ", this.longitude, this.latitude);
 
 				// Richiama la funzione di inizializzazione della mappa
 				this.initializeMap();
@@ -71,7 +67,6 @@ export default {
 			const mapElement = document.getElementById("map");
 
 			if (mapElement && this.latitude && this.longitude) {
-				console.log("Elemento 'map' trovato. Inizializzazione della mappa...");
 				tt.setProductInfo("<Your-Product-Name>", "<Your-Product-Version>");
 				const map = tt.map({
 					key: "pIZDc5arEQSAalGkANUN2J8fiekVOefL",
@@ -92,9 +87,6 @@ export default {
 						.addTo(map);
 				});
 			} else {
-				console.log(
-					"Elemento 'map' non trovato. Riprovare tra 100 millisecondi...",
-				);
 				setTimeout(() => this.initializeMap(), 1000);
 			}
 		},
@@ -204,19 +196,21 @@ export default {
 				</div>
 			</div>
 
-			<!-- Sticky modal on right side of page -->
+			<!-- Sticky element on right side of page -->
 			<div class="content">
 				<div class="sticky-element">
 					<h6 class="message">
 						If you need further information, please click on the button below to
 						send a message to the Host!
 					</h6>
-					<button
-						data-bs-toggle="modal"
-						data-bs-target="#staticBackdrop"
+					<router-link
+						:to="{
+							name: 'message',
+							params: {id: apartment.id},
+						}"
 						class="button-general message-button">
 						Send a Message
-					</button>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -263,53 +257,6 @@ export default {
 					class="apartment-image"
 					src="https://picsum.photos/id/440/300/300"
 					alt="{{apartment.name}}" />
-			</div>
-		</div>
-	</div>
-
-	<!-- MODAL -->
-	<div
-		class="modal fade"
-		id="staticBackdrop"
-		data-bs-backdrop="static"
-		data-bs-keyboard="false"
-		tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2
-						v-if="apartment && apartment.user"
-						class="modal-title fs-5"
-						id="staticBackdropLabel">
-						Send a message to {{ apartment.user.username }}
-					</h2>
-					<button type="button" class="close-btn" data-bs-dismiss="modal">
-						<i class="fa-solid fa-chevron-left"></i>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div class="mb-3">
-						<label for="email" class="form-label">Email address</label>
-						<input
-							type="email"
-							class="form-control"
-							id="email"
-							placeholder="your email address" />
-					</div>
-					<div class="mb-3">
-						<label for="message" class="form-label">Your message here:</label>
-						<textarea class="form-control" id="message" rows="5"></textarea>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button
-						type="button"
-						class="button-general button-close"
-						data-bs-dismiss="modal">
-						Cancel
-					</button>
-					<button type="button" class="button-general button-send">Send</button>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -478,6 +425,7 @@ h1 {
 		.message-button {
 			background-color: $color-blue;
 			color: $color-light;
+			text-decoration: none;
 		}
 	}
 }
@@ -583,27 +531,6 @@ ul {
 			transform: scale(1);
 			filter: brightness(1);
 		}
-	}
-}
-
-.modal {
-	background-color: rgba(0, 0, 0, 0.6);
-}
-
-.modal-content {
-	background-color: $color-light;
-	color: $color-dark;
-	border: 1px solid $color-purple;
-	border-radius: 20px;
-
-	.button-close {
-		background-color: $color-dark;
-		color: $color-light;
-	}
-
-	.button-send {
-		background-color: $color-blue;
-		color: $color-light;
 	}
 }
 
