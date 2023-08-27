@@ -21,20 +21,7 @@ export default {
 
 <template>
   <header>
-    <div class="wrapper">
-      <AppHeader />
-      <div>
-        <RouterLink v-if="!store.auth.authenticated" to="/signin"
-          >Sign In</RouterLink
-        >
-        <RouterLink v-if="!store.auth.authenticated" to="/register"
-          >Register</RouterLink
-        >
-        <button v-if="store.auth.authenticated" @click="store.auth.signOut()">
-          Sign Out
-        </button>
-      </div>
-    </div>
+    <AppHeader />
   </header>
 
   <h3 v-if="store.auth.authenticated">
