@@ -146,7 +146,7 @@ nav {
       border-top-left-radius: 100px;
       outline: none;
       height: 40px;
-      width: 130px;
+      width: 250px;
       padding-left: 20px;
     }
     .myBtn {
@@ -234,13 +234,22 @@ nav {
   }
 }
 
-@media only screen and (max-width: 1000px) {
-  .ms-total {
-    display: none;
-  }
+@media only screen and (max-width: 700px) {
+  .myContainer {
+    .image {
+      .ms-total {
+        display: none;
+      }
 
-  .ms-small {
-    display: inline-block;
+      .ms-small {
+        display: inline-block;
+      }
+    }
+    .search {
+      .myInput {
+        width: 150px;
+      }
+    }
   }
 }
 </style>
