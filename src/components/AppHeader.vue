@@ -20,7 +20,12 @@ export default {
     <div class="myContainer">
       <!-- logo -->
       <RouterLink to="/" class="image">
-        <img src="../assets/img/logo-orizzontale.png" alt="logo" />
+        <img
+          src="../assets/img/logo-orizzontale.png"
+          alt="logo"
+          class="ms-total"
+        />
+        <img src="../assets/img/logo-b.png" alt="logo-small" class="ms-small" />
       </RouterLink>
 
       <!-- search -->
@@ -117,6 +122,14 @@ nav {
     img {
       height: 100%;
     }
+
+    .ms-total {
+      display: inline-block;
+    }
+
+    .ms-small {
+      display: none;
+    }
   }
 
   .search {
@@ -133,6 +146,7 @@ nav {
       border-top-left-radius: 100px;
       outline: none;
       height: 40px;
+      width: 130px;
       padding-left: 20px;
     }
     .myBtn {
@@ -217,6 +231,16 @@ nav {
         }
       }
     }
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .ms-total {
+    display: none;
+  }
+
+  .ms-small {
+    display: inline-block;
   }
 }
 </style>

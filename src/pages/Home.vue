@@ -87,6 +87,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+@use "../assets/partials/variables" as *;
 .style {
   width: fit-content;
   display: flex;
@@ -98,7 +99,7 @@ export default {
   margin-bottom: 3em;
   .routerstyle {
     text-decoration: none;
-    width: calc((100% - 4em) / 5);
+    width: calc((100% - 6em) / 5);
     user-select: none;
     .apartment_cards {
       height: fit-content;
@@ -181,6 +182,7 @@ export default {
 
           h5 {
             transition: 0.3s ease;
+            font-size: clamp(0.1em, 1.2em, 3em);
           }
 
           h6 {
@@ -208,7 +210,7 @@ export default {
         span {
           margin: 0;
           text-align: center;
-          color: rgba(255, 255, 255);
+          color: rgb(255, 255, 255);
         }
 
         .available {
@@ -239,4 +241,13 @@ export default {
     }
   }
 }
+
+// @media only screen and (min-width: 800px) {
+//   .style {
+//     gap: 4em;
+//     .routerstyle {
+//       width: calc((100% - 4em) / 3);
+//     }
+//   }
+// }
 </style>
