@@ -418,7 +418,7 @@ h1 {
 
 		.message {
 			display: block;
-			font-size: 1.2rem;
+			font-size: clamp(1rem, 1.8vw, 1.3rem);
 			line-height: 2rem;
 		}
 

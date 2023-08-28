@@ -11,6 +11,28 @@ export default {
 		};
 	},
 
+	methods: {
+		sendMessage(e) {
+			e.preventDefault();
+
+			let currentObj = this;
+			console.log("EMAIL: ", this.email, " - MESSAGE: ", this.message);
+			axios
+				.post("http://localhost:8000/yourPostApi", {
+					email: this.email,
+					message: this.message,
+				})
+
+				.then(function (response) {
+					currentObj.output = response.data;
+				})
+
+				.catch(function (error) {
+					currentObj.output = error;
+				});
+		},
+	},
+
 	mounted() {
 		AOS.init({duration: 800, delay: 300});
 
@@ -57,25 +79,40 @@ export default {
 				</div>
 			</div>
 
-			<div class="form-body">
-				<div class="field mb-3">
-					<label for="email" class="form-label">Your email here:</label>
-					<input type="email" class="form-control" id="email" />
+			<form action="" @submit="sendMessage">
+				<div class="form-body">
+					<div class="field mb-3">
+						<label for="email" class="form-label">Your email here:</label>
+						<input
+							type="email"
+							class="form-control"
+							id="email"
+							v-model="email" />
+					</div>
+					<div class="field mb-3">
+						<label for="message" class="form-label">Your message here:</label>
+						<textarea
+							class="form-control"
+							id="message"
+							rows="5"
+							v-model="message"></textarea>
+					</div>
 				</div>
-				<div class="field mb-3">
-					<label for="message" class="form-label">Your message here:</label>
-					<textarea class="form-control" id="message" rows="5"></textarea>
-				</div>
-			</div>
-			<div class="form-buttons">
-				<router-link
-					:to="{name: 'apartment', params: {id: apartment.id}}"
-					class="button-general button-back">
-					Back
-				</router-link>
+				<div class="form-buttons">
+					<router-link
+						:to="{name: 'apartment', params: {id: apartment.id}}"
+						class="button-general button-back">
+						Back
+					</router-link>
 
-				<button type="button" class="button-general button-send">Send</button>
-			</div>
+					<button
+						@click="sendMessage"
+						type="submit"
+						class="button-general button-send">
+						Send
+					</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </template>
