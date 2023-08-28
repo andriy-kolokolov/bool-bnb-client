@@ -17,7 +17,6 @@ export default {
 			longitude: null,
 			isOwner: false,
 			map: null,
-			isMobile: false,
 		};
 	},
 
@@ -84,8 +83,13 @@ export default {
 				map.scrollZoom.disable();
 
 				// Add a Pin to map
+				const element = document.createElement("div");
+				element.id = "marker";
+
 				map.on("load", () => {
-					new tt.Marker().setLngLat([this.longitude, this.latitude]).addTo(map);
+					new tt.Marker({element: this.$refs.markerRef})
+						.setLngLat([this.longitude, this.latitude])
+						.addTo(map);
 				});
 			} else {
 				console.log(
@@ -97,18 +101,17 @@ export default {
 	},
 
 	created() {
-		// Get coordinates for GPS map and distance
 		this.loadApartment();
 	},
 
 	mounted() {
-		AOS.init();
+		AOS.init({duration: 800, delay: 300});
 	},
 };
 </script>
 
 <template>
-	<div v-if="apartment" class="container">
+	<div v-if="apartment" class="container-fluid">
 		<h1>{{ apartment.name }}</h1>
 		<!-- <img
 			class="main-img"
@@ -117,9 +120,11 @@ export default {
 		<div class="grid-container">
 			<img
 				class="main-image"
-				src="https://picsum.photos/id/220/300/300"
+				:src="apartment.images[0].image_path"
 				alt="{{apartment.name}}"
-				@click="isMobile ? showImages() : null" />
+				data-bs-toggle="offcanvas"
+				data-bs-target="#offcanvasBottom"
+				aria-controls="offcanvasBottom" />
 			<img
 				class="middle-image-top"
 				src="https://picsum.photos/id/230/300/300"
@@ -135,7 +140,7 @@ export default {
 			<img
 				class="end-image-bottom"
 				src="https://picsum.photos/id/440/300/300"
-				alt="{{apartment.name}}" />
+				alt="{{ apartment.name }}" />
 		</div>
 
 		<div class="container-sticky">
@@ -152,8 +157,36 @@ export default {
 					</p>
 				</div>
 
+				<!-- Additional Information -->
+				<div class="details-section more-info" data-aos="fade-up-right">
+					<h3>What you need to know</h3>
+					<!-- {{ apartment.is_available }} -->
+					<span
+						:class="{
+							available: apartment.is_available,
+							none: !apartment.is_available,
+						}"
+						><i class="fa-solid fa-calendar-check"></i> Available</span
+					>
+					<span
+						:class="{
+							not_available: !apartment.is_available,
+							none: apartment.is_available,
+						}"
+						><i class="fa-solid fa-calendar-xmark"></i> Not Available</span
+					>
+					<span
+						:class="{
+							sponsored: apartment.is_sponsored,
+							none: !apartment.is_sponsored,
+						}">
+						<!-- {{ apartment.is_sponsored }} -->
+						<i class="fa-solid fa-medal"></i> Sponsored</span
+					>
+				</div>
+
 				<!-- List of Services -->
-				<div class="details-section">
+				<div class="details-section" data-aos="fade-up-right">
 					<h3>What you will find</h3>
 					<ul>
 						<li v-for="service in apartment.services" :key="service.id">
@@ -163,47 +196,158 @@ export default {
 					</ul>
 				</div>
 
-				<!-- Utilizzo della variabile isSponsored -->
-				<p v-if="isSponsored">SPONSORED</p>
-
 				<!-- Address -->
-				<div class="details-section">
+				<div class="details-section" data-aos="fade-up-right">
 					<h3>Where you will be</h3>
 					<p>{{ apartment.address.street }}</p>
-					<p>
-						{{ apartment.address.zip }} • {{ apartment.address.city }}
-					</p>
+					<p>{{ apartment.address.zip }} • {{ apartment.address.city }}</p>
 				</div>
 			</div>
+
 			<!-- Sticky modal on right side of page -->
 			<div class="content">
-				<div class="sticky-modal">
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
-					<p>Prova</p>
+				<div class="sticky-element">
+					<h6 class="message">
+						If you need further information, please click on the button below to
+						send a message to the Host!
+					</h6>
+					<button
+						data-bs-toggle="modal"
+						data-bs-target="#staticBackdrop"
+						class="button-general message-button">
+						Send a Message
+					</button>
 				</div>
 			</div>
 		</div>
+
 		<!-- TomTom map -->
-		<div id="map" ref="mapRef"></div>
+		<div data-aos="fade-up-left" id="map" ref="mapRef"></div>
+		<div id="marker" ref="markerRef"></div>
 	</div>
-	<!-- Button for Send Email or Back if owner  -->
-	<!-- <router-link class="button-link" v-if="!isOwner">Send Email</router-link>
-		<router-link class="button-link" v-if="isOwner">Go Back</router-link> -->
+
+	<!-- OFFCANVAS -->
+	<div
+		v-if="apartment"
+		class="offcanvas offcanvas-bottom w-100 h-100"
+		tabindex="-1"
+		id="offcanvasBottom"
+		aria-labelledby="offcanvasBottomLabel">
+		<div class="offcanvas-header">
+			<h5 class="offcanvas-title" id="offcanvasBottomLabel">
+				{{ apartment.name }}
+			</h5>
+			<button type="button" class="close-btn" data-bs-dismiss="offcanvas">
+				<i class="fa-solid fa-chevron-left"></i>
+			</button>
+		</div>
+		<div class="offcanvas-body">
+			<div class="offcanvas-images">
+				<img
+					class="main-image"
+					src="https://picsum.photos/id/220/300/300"
+					alt="{{apartment.name}}" />
+				<img
+					class="apartment-image"
+					src="https://picsum.photos/id/230/300/300"
+					alt="{{apartment.name}}" />
+				<img
+					class="apartment-image"
+					src="https://picsum.photos/id/140/300/300"
+					alt="{{apartment.name}}" />
+				<img
+					class="apartment-image"
+					src="https://picsum.photos/id/125/300/300"
+					alt="{{apartment.name}}" />
+				<img
+					class="apartment-image"
+					src="https://picsum.photos/id/440/300/300"
+					alt="{{apartment.name}}" />
+			</div>
+		</div>
+	</div>
+
+	<!-- MODAL -->
+	<div
+		class="modal fade"
+		id="staticBackdrop"
+		data-bs-backdrop="static"
+		data-bs-keyboard="false"
+		tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2
+						v-if="apartment && apartment.user"
+						class="modal-title fs-5"
+						id="staticBackdropLabel">
+						Send a message to {{ apartment.user.username }}
+					</h2>
+					<button type="button" class="close-btn" data-bs-dismiss="modal">
+						<i class="fa-solid fa-chevron-left"></i>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="email" class="form-label">Email address</label>
+						<input
+							type="email"
+							class="form-control"
+							id="email"
+							placeholder="your email address" />
+					</div>
+					<div class="mb-3">
+						<label for="message" class="form-label">Your message here:</label>
+						<textarea class="form-control" id="message" rows="5"></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button
+						type="button"
+						class="button-general button-close"
+						data-bs-dismiss="modal">
+						Cancel
+					</button>
+					<button type="button" class="button-general button-send">Send</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <style lang="scss" scoped>
 @use "../assets/partials/variables" as *;
 
+.container-fluid {
+	max-width: 80vw;
+}
+
 h1 {
 	font-weight: 600;
 	margin: 2rem 0;
+}
+
+.button-general {
+	border: none;
+	border-radius: 10px;
+	padding: 0.5rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.close-btn {
+	width: 30px;
+	height: 30px;
+	border: none;
+	background-color: $color-light;
+	border-radius: 50%;
+	color: $color-dark;
+	transition: all 250ms;
+
+	&:hover {
+		background-color: $color-purple;
+		color: $color-light;
+	}
 }
 
 .grid-container {
@@ -219,13 +363,15 @@ h1 {
 		aspect-ratio: 3 / 2.5;
 		object-fit: cover;
 		object-position: center;
-		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
+		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+			-5px 5px 5px rgba(120, 120, 120, 0.4);
 	}
 
 	.main-image {
 		grid-column: 1 / 3;
 		grid-row: 1 / 3;
 		border-radius: 20px 0 0 20px;
+		cursor: pointer;
 	}
 
 	.middle-image-top {
@@ -255,6 +401,42 @@ h1 {
 	width: 65%;
 }
 
+.more-info {
+	font-size: 1rem;
+	font-weight: 300;
+
+	span {
+		margin-right: 2rem;
+		text-align: center;
+		color: $color-light;
+	}
+
+	.available {
+		background-color: rgb(1, 125, 1);
+		padding: 4px 10px 6px 10px;
+		border-radius: 10px;
+		display: inline-block;
+	}
+
+	.not_available {
+		background-color: rgb(145, 0, 0);
+		padding: 4px 10px 6px 10px;
+		border-radius: 10px;
+		display: inline-block;
+	}
+
+	.sponsored {
+		background-color: $color-purple;
+		padding: 4px 10px 6px 10px;
+		border-radius: 10px;
+		display: inline-block;
+	}
+
+	.none {
+		display: none;
+	}
+}
+
 .container-sticky {
 	width: 100%;
 	position: relative;
@@ -267,21 +449,36 @@ h1 {
 		position: relative;
 	}
 
-	.sticky-modal {
+	.sticky-element {
 		margin: auto 0 0 auto;
 		position: sticky;
 		top: 0;
 		right: 0;
 		width: 100%;
-		height: 40vh;
+		min-height: 40vh;
+		height: fit-content;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: space-around;
 		align-items: center;
+		padding: 2rem 3rem;
+		text-align: center;
 		background-color: $color-light;
 		border: 1px solid $color-purple;
 		border-radius: 20px;
-		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
+		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+			-5px 5px 5px rgba(120, 120, 120, 0.4);
+
+		.message {
+			display: block;
+			font-size: 1.2rem;
+			line-height: 2rem;
+		}
+
+		.message-button {
+			background-color: $color-blue;
+			color: $color-light;
+		}
 	}
 }
 
@@ -289,7 +486,7 @@ h1 {
 	width: 100%;
 	padding-bottom: 3rem;
 	border-bottom: 1px solid $color-purple;
-	margin-bottom: 3rem;
+	margin-bottom: 1rem;
 
 	h3 {
 		margin-bottom: 1rem;
@@ -305,7 +502,7 @@ h1 {
 
 .details-section:last-child {
 	max-width: 100%;
-	padding-bottom: 3rem;
+	padding-bottom: 1rem;
 	border: none;
 }
 
@@ -328,10 +525,86 @@ ul {
 #map {
 	width: 100%;
 	aspect-ratio: 2 / 1;
-	margin: 2rem 0;
-	box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.3);
+	margin-top: 1rem;
+	margin-bottom: 7rem;
+	box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+		-5px 5px 5px rgba(120, 120, 120, 0.4);
 	border: 1px solid $color-dark;
 	border-radius: 20px;
+}
+
+#marker {
+	background-image: url("../assets/img/pin-48.png");
+	width: 45px;
+	height: 55px;
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+	color: blue !important;
+}
+
+.offcanvas-header,
+.offcanvas-body {
+	margin: auto;
+	width: 743px;
+}
+
+.offcanvas-title {
+	font-weight: bold;
+}
+
+.offcanvas-images {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+	align-content: center;
+	justify-content: center;
+
+	.main-image {
+		width: 100%;
+		aspect-ratio: 2 / 1.5;
+	}
+	.apartment-image {
+		width: calc((100% - 1rem) / 2);
+	}
+
+	img {
+		aspect-ratio: 1 / 1;
+		border-radius: 20px;
+		object-fit: cover;
+		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.3),
+			-5px 5px 5px rgba(120, 120, 120, 0.3);
+		transform: scale(0.9);
+		filter: brightness(0.6);
+		transition: all 250ms ease-in-out;
+
+		&:hover {
+			transform: scale(1);
+			filter: brightness(1);
+		}
+	}
+}
+
+.modal {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+	background-color: $color-light;
+	color: $color-dark;
+	border: 1px solid $color-purple;
+	border-radius: 20px;
+
+	.button-close {
+		background-color: $color-dark;
+		color: $color-light;
+	}
+
+	.button-send {
+		background-color: $color-blue;
+		color: $color-light;
+	}
 }
 
 @media only screen and (max-width: 743px) {
@@ -351,6 +624,11 @@ ul {
 			grid-row: 1 / -1;
 			border-radius: 20px;
 		}
+	}
+
+	.offcanvas-header,
+	.offcanvas-body {
+		width: 100%;
 	}
 
 	#map {
@@ -375,10 +653,11 @@ ul {
 			z-index: 100;
 		}
 
-		.sticky-modal {
+		.sticky-element {
 			top: 0;
 			right: 0;
 			width: 100%;
+			min-height: 0;
 			height: 10vh;
 			display: flex;
 			flex-direction: row;
@@ -387,13 +666,17 @@ ul {
 			background-color: $color-light;
 			border-top: 1px solid $color-purple;
 			border-radius: 0;
-			box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
+			box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+				-5px 5px 5px rgba(120, 120, 120, 0.4);
+
+			.message {
+				display: none;
+			}
 		}
 	}
 
 	.details-section {
-		margin-bottom: 0.5rem;
-		padding: 1rem;
+		padding: 0.5rem;
 
 		.apartment-data {
 			font-size: 1.2rem;
