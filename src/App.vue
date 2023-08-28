@@ -23,18 +23,10 @@ export default {
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-        <RouterLink v-if="store.auth.authenticated" to="/dashboard"
-          >Dashboard</RouterLink
-        >
-        <RouterLink v-if="!store.auth.authenticated" to="/signin"
-          >Sign In</RouterLink
-        >
-        <RouterLink v-if="!store.auth.authenticated" to="/register"
-          >Register</RouterLink
-        >
-        <button v-if="store.auth.authenticated" @click="store.auth.signOut()">
-          Sign Out
-        </button>
+
+        <a href="http://127.0.0.1:8000/admin">Dashboard</a>
+        <a href="http://127.0.0.1:8000/login">Login</a>
+
       </nav>
     </div>
   </header>
