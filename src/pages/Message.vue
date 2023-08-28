@@ -34,8 +34,6 @@ export default {
 	},
 
 	mounted() {
-		AOS.init({duration: 800, delay: 300});
-
 		const id = this.$route.params.id;
 		axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
 			this.apartment = response.data;
@@ -108,7 +106,9 @@ export default {
 					<button
 						@click="sendMessage"
 						type="submit"
-						class="button-general button-send">
+						class="button-general button-send"
+						data-bs-toggle="modal"
+						data-bs-target="#successSend">
 						Send
 					</button>
 				</div>
@@ -116,25 +116,14 @@ export default {
 		</div>
 	</div>
 
-	<!-- Button trigger modal -->
-	<button
-		type="button"
-		class="btn btn-primary"
-		data-bs-toggle="modal"
-		data-bs-target="#staticBackdrop">
-		Launch static backdrop modal
-	</button>
-
 	<!-- Modal -->
 	<div
-		class="modal-dialog modal-dialog-centered"
-		id="staticBackdrop"
+		class="modal fade"
+		id="successSend"
 		data-bs-backdrop="static"
 		data-bs-keyboard="false"
-		tabindex="-1"
-		aria-labelledby="staticBackdropLabel"
-		aria-hidden="true">
-		<div class="modal-dialog">
+		tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
@@ -148,11 +137,10 @@ export default {
 				<div class="modal-footer">
 					<button
 						type="button"
-						class="btn btn-secondary"
+						class="button-general button-send"
 						data-bs-dismiss="modal">
 						Close
 					</button>
-					<button type="button" class="btn btn-primary">Understood</button>
 				</div>
 			</div>
 		</div>
@@ -174,7 +162,6 @@ export default {
 
 h1 {
 	font-weight: 600;
-	// margin-top: 2rem;
 }
 
 .summary {
