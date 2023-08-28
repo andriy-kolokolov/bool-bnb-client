@@ -25,54 +25,57 @@ export default {
 
 <template>
 	<div v-if="apartment" class="container-fluid">
-		<h1>Information request</h1>
-		<div class="summary">
-			<div class="img-container">
-				<img
-					class="main-image"
-					:src="apartment.images[0].image_path"
-					alt="{{apartment.name}}" />
-			</div>
-			<div class="info-container">
-				<h3>
-					Location: <span class="data">{{ apartment.name }}</span>
-				</h3>
-				<h3>
-					Host: <span class="data">{{ apartment.user.username }}</span>
-				</h3>
-				<h3>
-					Address:
-					<p class="data">{{ apartment.address.street }}</p>
-					<p class="data">
-						{{ apartment.address.zip }} • {{ apartment.address.city }}
+		<div class="ms-container">
+			<h1>Information request</h1>
+			<div class="summary">
+				<div class="img-container">
+					<img
+						class="main-image"
+						:src="apartment.images[0].image_path"
+						alt="{{apartment.name}}" />
+				</div>
+				<div class="info-container">
+					<h3>
+						Location: <span class="data">{{ apartment.name }}</span>
+					</h3>
+					<h3>
+						Host: <span class="data">{{ apartment.user.username }}</span>
+					</h3>
+					<h3>
+						Address:
+						<p class="data">{{ apartment.address.street }}</p>
+						<p class="data">
+							{{ apartment.address.zip }} • {{ apartment.address.city }}
+						</p>
+					</h3>
+
+					<p class="apartment-data">
+						Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} •
+						Bathrooms: {{ apartment.bathrooms }} • Footage:
+						{{ apartment.square_meters }} mq
 					</p>
-				</h3>
-
-				<p class="apartment-data">
-					Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} • Bathrooms:
-					{{ apartment.bathrooms }} • Footage: {{ apartment.square_meters }} mq
-				</p>
+				</div>
 			</div>
-		</div>
 
-		<div class="form-body">
-			<div class="field mb-3">
-				<label for="email" class="form-label">Your email here:</label>
-				<input type="email" class="form-control" id="email" />
+			<div class="form-body">
+				<div class="field mb-3">
+					<label for="email" class="form-label">Your email here:</label>
+					<input type="email" class="form-control" id="email" />
+				</div>
+				<div class="field mb-3">
+					<label for="message" class="form-label">Your message here:</label>
+					<textarea class="form-control" id="message" rows="5"></textarea>
+				</div>
 			</div>
-			<div class="field mb-3">
-				<label for="message" class="form-label">Your message here:</label>
-				<textarea class="form-control" id="message" rows="5"></textarea>
-			</div>
-		</div>
-		<div class="form-buttons">
-			<router-link
-				:to="{name: 'apartment', params: {id: apartment.id}}"
-				class="button-general button-back">
-				Back
-			</router-link>
+			<div class="form-buttons">
+				<router-link
+					:to="{name: 'apartment', params: {id: apartment.id}}"
+					class="button-general button-back">
+					Back
+				</router-link>
 
-			<button type="button" class="button-general button-send">Send</button>
+				<button type="button" class="button-general button-send">Send</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -80,14 +83,19 @@ export default {
 <style lang="scss" scoped>
 @use "../assets/partials/variables" as *;
 
-.container-fluid {
+.ms-container {
 	max-width: 80vw;
-	min-height: calc(100vh - 70px - 116px);
+	margin-inline: auto;
+	min-height: calc(100vh - 70px - 50px);
+	padding-top: 2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 h1 {
 	font-weight: 600;
-	margin-top: 2rem;
+	// margin-top: 2rem;
 }
 
 .summary {
