@@ -54,31 +54,19 @@ export default {
             </RouterLink>
           </li>
           <li>
-            <RouterLink
-              v-if="store.auth.authenticated"
-              to="/dashboard"
-              class="dropdown-item"
-              @click="btnMenu()"
-              >Dashboard</RouterLink
-            >
+            <div class="dropdown-item ms-menu-link">
+              <a href="http://127.0.0.1:8000/admin">Dashboard</a>
+            </div>
           </li>
           <li>
-            <RouterLink
-              v-if="!store.auth.authenticated"
-              to="/signin"
-              class="dropdown-item"
-              @click="btnMenu()"
-              >Sign In</RouterLink
-            >
+            <div class="dropdown-item ms-menu-link">
+              <a href="http://127.0.0.1:8000/login">Login</a>
+            </div>
           </li>
           <li>
-            <RouterLink
-              v-if="!store.auth.authenticated"
-              to="/register"
-              class="dropdown-item"
-              @click="btnMenu()"
-              >Register</RouterLink
-            >
+            <div class="dropdown-item ms-menu-link">
+              <a href="http://127.0.0.1:8000/register">Register</a>
+            </div>
           </li>
           <li @click="btnMenu()">
             <button
