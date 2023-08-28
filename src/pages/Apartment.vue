@@ -97,7 +97,7 @@ export default {
 	},
 
 	mounted() {
-		AOS.init({duration: 800, delay: 300});
+		AOS.init({duration: 800, delay: 100});
 	},
 };
 </script>

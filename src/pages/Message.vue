@@ -82,6 +82,7 @@ export default {
 
 .container-fluid {
 	max-width: 80vw;
+	min-height: calc(100vh - 70px - 116px);
 }
 
 h1 {
