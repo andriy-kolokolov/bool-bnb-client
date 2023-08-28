@@ -217,7 +217,7 @@ nav {
       border-top-left-radius: 100px;
       outline: none;
       height: 40px;
-      width: 250px;
+      width: 350px;
       padding-left: 20px;
     }
     .myBtn {
@@ -320,11 +320,6 @@ nav {
 
       .ms-small {
         display: inline-block;
-      }
-    }
-    .search {
-      .myInput {
-        width: 150px;
       }
     }
 
@@ -439,6 +434,36 @@ nav {
             }
           }
         }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .myContainer {
+    .search {
+      .myInput {
+        width: 300px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .myContainer {
+    .search {
+      .myInput {
+        width: 200px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .myContainer {
+    .search {
+      .myInput {
+        width: 150px;
       }
     }
   }
