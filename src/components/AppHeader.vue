@@ -20,7 +20,12 @@ export default {
     <div class="myContainer">
       <!-- logo -->
       <RouterLink to="/" class="image">
-        <img src="../assets/img/logo-orizzontale.png" alt="logo" />
+        <img
+          src="../assets/img/logo-orizzontale.png"
+          alt="logo"
+          class="ms-total"
+        />
+        <img src="../assets/img/logo-b.png" alt="logo-small" class="ms-small" />
       </RouterLink>
 
       <!-- search -->
@@ -33,6 +38,132 @@ export default {
 
       <!-- routes -->
       <div class="routes btn-group">
+        <div class="menu-dropdown">
+          <button
+            id="button"
+            @click="btnMenu()"
+            type="button"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="inside"
+          >
+            <div id="icon"></div>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <RouterLink to="/" class="dropdown-item" @click="btnMenu()">
+                Home
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/about" class="dropdown-item" @click="btnMenu()">
+                About
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink
+                v-if="store.auth.authenticated"
+                to="/dashboard"
+                class="dropdown-item"
+                @click="btnMenu()"
+                >Dashboard</RouterLink
+              >
+            </li>
+            <li>
+              <RouterLink
+                v-if="!store.auth.authenticated"
+                to="/signin"
+                class="dropdown-item"
+                @click="btnMenu()"
+                >Sign In</RouterLink
+              >
+            </li>
+            <li>
+              <RouterLink
+                v-if="!store.auth.authenticated"
+                to="/register"
+                class="dropdown-item"
+                @click="btnMenu()"
+                >Register</RouterLink
+              >
+            </li>
+            <li @click="btnMenu()">
+              <button
+                v-if="store.auth.authenticated"
+                @click="store.auth.signOut()"
+                class="dropdown-item"
+              >
+                Sign Out
+              </button>
+            </li>
+          </ul>
+        </div>
+        <!-- altra routes -->
+        <div class="menu-off">
+          <button
+            id="btn"
+            @click="btnMenu()"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#staticBackdrop"
+            aria-controls="offcanvasRight"
+          >
+            <div id="icn"></div>
+          </button>
+          <div
+            class="offcanvas offcanvas-end w-100"
+            data-bs-backdrop="static"
+            tabindex="-1"
+            id="staticBackdrop"
+            aria-labelledby="staticBackdropLabel"
+          >
+            <div class="offcanvas-header btn-position">
+              <button
+                type="button"
+                @click="btnMenu()"
+                class="btn"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <div class="offcanvas-body">
+              <div class="ms-routes">
+                <ul>
+                  <li>
+                    <button data-bs-dismiss="offcanvas" aria-label="Close">
+                      <RouterLink to="/" class="drop-item" @click="btnMenu()">
+                        Home
+                      </RouterLink>
+                    </button>
+                  </li>
+                  <li>
+                    <button data-bs-dismiss="offcanvas" aria-label="Close">
+                      <RouterLink
+                        to="/about"
+                        class="drop-item"
+                        @click="btnMenu()"
+                      >
+                        About
+                      </RouterLink>
+                    </button>
+                  </li>
+                  <li>
+                    <button data-bs-dismiss="offcanvas" aria-label="Close">
+                      <RouterLink
+                        to="/dashboard"
+                        class="drop-item"
+                        @click="btnMenu()"
+                      >
+                        Dashboard
+                      </RouterLink>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
         <button
           id="button"
           @click="btnMenu()"

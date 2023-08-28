@@ -58,20 +58,25 @@ export default {
         <div class="more_info">
           <!-- {{ apartment.is_available }} -->
           <span
+            class="ms-label"
             :class="{
               available: apartment.is_available === 1,
               none: apartment.is_available === 0,
             }"
-            ><i class="fa-solid fa-calendar-check"></i> Available</span
+            ><i class="fa-solid fa-calendar-check"></i>
+            <span class="ms-deep-label">Available</span></span
           >
           <span
+            class="ms-label"
             :class="{
               not_available: apartment.is_available === 0,
               none: apartment.is_available === 1,
             }"
-            ><i class="fa-solid fa-calendar-xmark"></i> Not Available</span
+            ><i class="fa-solid fa-calendar-xmark"></i>
+            <span class="ms-deep-label">Not Available</span></span
           >
           <span
+            class="ms-sponsor-label"
             :class="{
               sponsor: apartment.is_sponsored === 1,
               none: apartment.is_sponsored === 0,
@@ -87,6 +92,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+@use "../assets/partials/variables" as *;
 .style {
   width: fit-content;
   display: flex;
@@ -98,7 +104,7 @@ export default {
   margin-bottom: 3em;
   .routerstyle {
     text-decoration: none;
-    width: calc((100% - 4em) / 5);
+    width: calc((100% - 6em) / 5);
     user-select: none;
     .apartment_cards {
       height: fit-content;
@@ -150,7 +156,7 @@ export default {
         bottom: -15px;
         transition: 0.3s ease;
         width: 65%;
-        height: 17vh;
+        height: 14vh;
         align-self: end;
         display: flex;
         flex-direction: column;
@@ -159,8 +165,6 @@ export default {
         z-index: 0;
         background-color: rgb(250, 250, 250);
         border-radius: 20px;
-        // border-bottom-left-radius: 20px;
-        // border-bottom-right-radius: 20px;
         box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
           -5px 5px 5px rgba(120, 120, 120, 0.4);
 
@@ -181,6 +185,7 @@ export default {
 
           h5 {
             transition: 0.3s ease;
+            font-size: clamp(0.5em, 1.2em, 3em);
           }
 
           h6 {
@@ -205,10 +210,14 @@ export default {
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
 
-        span {
+        .ms-label {
           margin: 0;
           text-align: center;
-          color: rgba(255, 255, 255);
+          color: rgb(255, 255, 255);
+
+          i {
+            margin-right: 0.5em;
+          }
         }
 
         .available {
@@ -225,6 +234,11 @@ export default {
           display: inline-block;
         }
 
+        .ms-sponsor-label {
+          margin: 0;
+          text-align: center;
+          color: rgb(255, 255, 255);
+        }
         .sponsor {
           background-color: rgb(120, 0, 160);
           padding: 5px 10px 5px 10px;
@@ -238,5 +252,354 @@ export default {
       }
     }
   }
+}
+
+@media only screen and (max-width: 1750px) {
+  .style {
+    gap: 4em;
+    .routerstyle {
+      width: calc((100% - 4em) / 4);
+    }
+  }
+}
+
+@media only screen and (max-width: 1500px) {
+  .style {
+    .routerstyle {
+      .apartment_cards {
+        &:hover .info {
+          height: 9vh;
+        }
+
+        &:hover .more_info {
+          bottom: 25px;
+        }
+
+        .info {
+          height: 10vh;
+
+          .info_container {
+            h5 {
+              font-size: clamp(0.5em, 1.1em, 3em);
+            }
+
+            h6 {
+              font-size: clamp(0.5em, 0.9em, 3em);
+            }
+          }
+        }
+        // fine info
+        .more_info {
+          height: 8vh;
+        }
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
+}
+
+@media only screen and (max-width: 1300px) {
+  .style {
+    .routerstyle {
+      .apartment_cards {
+        &:hover .info {
+          height: 8vh;
+        }
+        .info {
+          height: 9.5vh;
+          .info_container {
+            h5 {
+              font-size: clamp(0.5em, 1em, 3em);
+            }
+
+            h6 {
+              font-size: clamp(0.5em, 0.85em, 3em);
+            }
+          }
+        }
+        // fine info
+        .more_info {
+          height: 7vh;
+        }
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
+}
+
+@media only screen and (max-width: 1250px) {
+  .style {
+    .routerstyle {
+      .apartment_cards {
+        .more_info {
+          gap: 0.5em;
+
+          .ms-label {
+            margin: 0;
+            text-align: center;
+            color: rgb(255, 255, 255);
+
+            i {
+              margin-right: 0em;
+            }
+
+            .ms-deep-label {
+              display: none;
+            }
+          }
+        }
+        // fine more info
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
+}
+
+@media only screen and (max-width: 1050px) {
+  .style {
+    width: 90%;
+    margin-inline: auto;
+    gap: 5em;
+    .routerstyle {
+      width: calc((100% - 5em) / 2);
+      .apartment_cards {
+        &:hover .info {
+          height: 115px;
+        }
+
+        &:hover .more_info {
+          bottom: 30px;
+        }
+
+        .info {
+          height: 150px;
+
+          .info_container {
+            h5 {
+              font-size: clamp(0.5em, 1.2em, 3em);
+            }
+
+            h6 {
+              font-size: clamp(0.5em, 1em, 3em);
+            }
+          }
+        }
+        // fine info
+        .more_info {
+          height: 95px;
+          gap: 1em;
+
+          .ms-label {
+            margin: 0;
+            text-align: center;
+            color: rgb(255, 255, 255);
+
+            i {
+              margin-right: 0.5em;
+            }
+
+            .ms-deep-label {
+              display: inline-block;
+            }
+          }
+        }
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
+}
+
+@media only screen and (max-width: 850px) {
+  .style {
+    .routerstyle {
+      .apartment_cards {
+        &:hover .info {
+          height: 100px;
+        }
+
+        &:hover .more_info {
+          bottom: 25px;
+        }
+
+        .info {
+          height: 130px;
+
+          .info_container {
+            h5 {
+              font-size: clamp(0.5em, 1.1em, 3em);
+            }
+
+            h6 {
+              font-size: clamp(0.5em, 0.9em, 3em);
+            }
+          }
+        }
+        // fine info
+        .more_info {
+          height: 85px;
+          gap: 1em;
+        }
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
+}
+
+@media only screen and (max-width: 730px) {
+  .style {
+    gap: 5em;
+    .routerstyle {
+      width: calc((100% - 5em) / 1);
+      .apartment_cards {
+        &:hover .info {
+          height: 110px;
+        }
+
+        &:hover .more_info {
+          bottom: 25px;
+        }
+
+        .info {
+          height: 130px;
+
+          .info_container {
+            h5 {
+              font-size: clamp(0.5em, 1.4em, 3em);
+            }
+
+            h6 {
+              font-size: clamp(0.5em, 1.1em, 3em);
+            }
+          }
+        }
+        // fine info
+        .more_info {
+          height: 100px;
+          gap: 1em;
+
+          .ms-label {
+            margin: 0;
+            text-align: center;
+            color: rgb(255, 255, 255);
+
+            i {
+              margin-right: 0.5em;
+            }
+
+            .ms-deep-label {
+              display: inline-block;
+            }
+          }
+        }
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
+}
+
+@media only screen and (max-width: 730px) {
+  .style {
+    .routerstyle {
+      .apartment_cards {
+        .info {
+          .info_container {
+            h5 {
+              font-size: clamp(0.5em, 1.2em, 3em);
+            }
+
+            h6 {
+              font-size: clamp(0.5em, 0.9em, 3em);
+            }
+          }
+        }
+        // fine info
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
+}
+
+@media only screen and (max-width: 450px) {
+  .style {
+    width: 97%;
+    margin-inline: auto;
+    .routerstyle {
+      .apartment_cards {
+        &:hover .info {
+          height: 100px;
+        }
+        .info {
+          height: 130px;
+          .info_container {
+            h5 {
+              font-size: clamp(0.5em, 1.1em, 3em);
+            }
+
+            h6 {
+              font-size: clamp(0.5em, 0.85em, 3em);
+            }
+          }
+        }
+        // fine info
+
+        .more_info {
+          height: 100px;
+        }
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
+}
+
+@media only screen and (max-width: 400px) {
+  .style {
+    .routerstyle {
+      .apartment_cards {
+        &:hover .info {
+          height: 85px;
+        }
+        &:hover .more_info {
+          bottom: 15px;
+          transition: 0.3s ease;
+        }
+        .info {
+          height: 110px;
+          .info_container {
+            h5 {
+              font-size: clamp(0.5em, 0.95em, 3em);
+            }
+
+            h6 {
+              font-size: clamp(0.5em, 0.8em, 3em);
+            }
+          }
+        }
+        // fine info
+
+        .more_info {
+          height: 80px;
+        }
+      }
+      // fine apartment cards
+    }
+    // fine routerstyle
+  }
+  // fine style
 }
 </style>
