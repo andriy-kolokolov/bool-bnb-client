@@ -62,19 +62,25 @@ export default {
               </RouterLink>
             </li>
             <li>
-              <div class="dropdown-item ms-menu-link">
-                <a href="http://127.0.0.1:8000/admin">Dashboard</a>
-              </div>
+              <a
+                href="http://127.0.0.1:8000/admin"
+                class="dropdown-item ms-menu-link"
+                >Dashboard</a
+              >
             </li>
             <li>
-              <div class="dropdown-item ms-menu-link">
-                <a href="http://127.0.0.1:8000/login">Login</a>
-              </div>
+              <a
+                href="http://127.0.0.1:8000/login"
+                class="dropdown-item ms-menu-link"
+                >Login</a
+              >
             </li>
             <li>
-              <div class="dropdown-item ms-menu-link">
-                <a href="http://127.0.0.1:8000/register">Register</a>
-              </div>
+              <a
+                href="http://127.0.0.1:8000/register"
+                class="dropdown-item ms-menu-link"
+                >Register</a
+              >
             </li>
             <li @click="btnMenu()">
               <button
