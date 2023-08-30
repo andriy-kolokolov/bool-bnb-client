@@ -43,12 +43,13 @@ export default {
 
 			axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
 				this.apartment = response.data;
+				this.getCoordinates(); // Get GPS coordinates from address
 			});
-			this.getCoordinates(); // Get GPS coordinates from address
 		},
 
 		getCoordinates() {
-			const address = "Piazza dei Re di Roma, 50, 00183 Roma";
+			const address = `${this.apartment.address.street}, ${this.apartment.address.zip} ${this.apartment.address.city}`;
+			console.log(address);
 			const apiKey = "pIZDc5arEQSAalGkANUN2J8fiekVOefL";
 			const url = `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(
 				address,
@@ -182,7 +183,7 @@ export default {
 					<h3>What you will find</h3>
 					<ul>
 						<li v-for="service in apartment.services" :key="service.id">
-							<span class="icon">{{ service.icon }}</span>
+							<span class="icon"><i :class="service.icon"></i></span>
 							<span class="service">{{ service.name }}</span>
 						</li>
 					</ul>
