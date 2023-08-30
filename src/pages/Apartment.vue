@@ -91,6 +91,12 @@ export default {
 				setTimeout(() => this.initializeMap(), 1000);
 			}
 		},
+    getApartmentCoverImage(apartment) {
+      return this.store.backEndStorageURL + apartment.images[0].image_path;
+    },
+    getApartmentImageById(id) {
+      return this.store.backEndStorageURL + this.apartment.images[id].image_path;
+    }
 	},
 
 	created() {
@@ -113,26 +119,26 @@ export default {
 		<div class="grid-container">
 			<img
 				class="main-image"
-				:src="apartment.images[0].image_path"
+				:src="getApartmentCoverImage(apartment)"
 				alt="{{apartment.name}}"
 				data-bs-toggle="offcanvas"
 				data-bs-target="#offcanvasBottom"
 				aria-controls="offcanvasBottom" />
 			<img
 				class="middle-image-top"
-				src="https://picsum.photos/id/230/300/300"
+				:src="getApartmentImageById(1)"
 				alt="{{apartment.name}}" />
 			<img
 				class="middle-image-bottom"
-				src="https://picsum.photos/id/140/300/300"
+				:src="getApartmentImageById(2)"
 				alt="{{apartment.name}}" />
 			<img
 				class="end-image-top"
-				src="https://picsum.photos/id/125/300/300"
+				:src="getApartmentImageById(3)"
 				alt="{{apartment.name}}" />
 			<img
 				class="end-image-bottom"
-				src="https://picsum.photos/id/440/300/300"
+				:src="getApartmentImageById(4)"
 				alt="{{ apartment.name }}" />
 		</div>
 

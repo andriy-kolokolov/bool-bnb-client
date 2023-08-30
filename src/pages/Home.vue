@@ -17,6 +17,9 @@ export default {
       });
       console.log(this.arrApartments);
     },
+    getApartmentCoverImage(apartment) {
+      return this.store.backEndStorageURL + apartment.images[0].image_path;
+    }
   },
   created() {
     this.getApartments();
@@ -37,7 +40,7 @@ export default {
       <div class="apartment_cards">
         <img
           class="cover_img"
-          :src="apartment.images[0].image_path"
+          :src="getApartmentCoverImage(apartment)"
           :alt="apartment.name"
         />
         <!-- SECONDA IMMAGINE
@@ -344,7 +347,7 @@ export default {
             color: rgb(255, 255, 255);
 
             i {
-              margin-right: 0em;
+              margin-right: 0;
             }
 
             .ms-deep-label {
