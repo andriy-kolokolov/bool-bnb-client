@@ -227,6 +227,7 @@ nav {
 
     .ms-total {
       display: inline-block;
+      width: 125px;
     }
 
     .ms-small {
@@ -274,9 +275,10 @@ nav {
 
   .routes {
     height: 100%;
+    width: 125px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
     $blue: rgb(71, 92, 163);
 
     .menu-dropdown {
@@ -366,6 +368,7 @@ nav {
     }
 
     .routes {
+      width: fit-content;
       $blue: rgb(71, 92, 163);
       .menu-dropdown {
         display: none;
