@@ -14,8 +14,8 @@ export default {
       button.classList.toggle("toggled");
       btn.classList.toggle("toggled");
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
@@ -168,10 +168,10 @@ export default {
               >
             </li>
             <li>
-                <RouterLink to="/about" class="dropdown-item" @click="btnMenu()">
-                  About
-                </RouterLink>
-              </li>
+              <RouterLink to="/about" class="dropdown-item" @click="btnMenu()">
+                About
+              </RouterLink>
+            </li>
             <li>
               <a
                 href="http://localhost:8000/login"
@@ -367,7 +367,6 @@ nav {
   }
 
   .slider {
-    -webkit-appearance: none;
     width: 100%;
     height: 10px;
     border-radius: 5px;
@@ -395,7 +394,7 @@ nav {
       width: 25px;
       height: 25px;
       border-radius: 50%;
-      background: #04aa6d;
+      background: rgb(71, 92, 163);
       cursor: pointer;
     }
   }
@@ -666,36 +665,6 @@ nav {
             }
           }
         }
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 650px) {
-  .myContainer {
-    .search {
-      .myInput {
-        width: 300px;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  .myContainer {
-    .search {
-      .myInput {
-        width: 200px;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 350px) {
-  .myContainer {
-    .search {
-      .myInput {
-        width: 150px;
       }
     }
   }
