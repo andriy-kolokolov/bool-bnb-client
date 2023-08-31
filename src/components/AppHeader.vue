@@ -4,6 +4,7 @@ export default {
   data() {
     return {
       store,
+      isLogged: false,
     };
   },
   methods: {
@@ -13,8 +14,8 @@ export default {
       button.classList.toggle("toggled");
       btn.classList.toggle("toggled");
     },
-  },
-};
+  }
+}
 </script>
 
 <template>
@@ -57,27 +58,27 @@ export default {
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/about" class="dropdown-item" @click="btnMenu()">
-                About
-              </RouterLink>
-            </li>
-            <li>
               <a
-                href="http://127.0.0.1:8000/admin"
+                href="http://localhost:8000/admin"
                 class="dropdown-item ms-menu-link"
                 >Dashboard</a
               >
             </li>
             <li>
+                <RouterLink to="/about" class="dropdown-item" @click="btnMenu()">
+                  About
+                </RouterLink>
+              </li>
+            <li>
               <a
-                href="http://127.0.0.1:8000/login"
+                href="http://localhost:8000/login"
                 class="dropdown-item ms-menu-link"
                 >Login</a
               >
             </li>
             <li>
               <a
-                href="http://127.0.0.1:8000/register"
+                href="http://localhost:8000/register"
                 class="dropdown-item ms-menu-link"
                 >Register</a
               >
@@ -135,6 +136,17 @@ export default {
                   </li>
                   <li>
                     <button data-bs-dismiss="offcanvas" aria-label="Close">
+                      <a
+                        href="http://localhost:8000/admin"
+                        class="drop-item"
+                        @click="btnMenu()"
+                      >
+                        Dashboard
+                      </a>
+                    </button>
+                  </li>
+                  <li>
+                    <button data-bs-dismiss="offcanvas" aria-label="Close">
                       <RouterLink
                         to="/about"
                         class="drop-item"
@@ -147,18 +159,8 @@ export default {
                   <li>
                     <button data-bs-dismiss="offcanvas" aria-label="Close">
                       <a
-                        href="http://127.0.0.1:8000/admin"
-                        class="drop-item"
-                        @click="btnMenu()"
-                      >
-                        Dashboard
-                      </a>
-                    </button>
-                  </li>
-                  <li>
-                    <button data-bs-dismiss="offcanvas" aria-label="Close">
-                      <a
-                        href="http://127.0.0.1:8000/login"
+                        v-if="!isLogged"
+                        href="http://localhost:8000/login"
                         class="drop-item"
                         @click="btnMenu()"
                       >
@@ -169,7 +171,8 @@ export default {
                   <li>
                     <button data-bs-dismiss="offcanvas" aria-label="Close">
                       <a
-                        href="http://127.0.0.1:8000/register"
+                        v-if="!isLogged"
+                        href="http://localhost:8000/register"
                         class="drop-item"
                         @click="btnMenu()"
                       >
