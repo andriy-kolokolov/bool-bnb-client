@@ -146,7 +146,7 @@ export default {
 			<div class="details">
 				<!-- Host name -->
 				<div class="details-section">
-					<h3>Host: {{ apartment.user.username }}</h3>
+					<h3>Host: {{ apartment.user.name + ' ' + apartment.user.last_name }}</h3>
 
 					<!-- General information -->
 					<p class="apartment-data">
