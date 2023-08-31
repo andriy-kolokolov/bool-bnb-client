@@ -4,6 +4,7 @@ export default {
   data() {
     return {
       store,
+      isLogged: false,
     };
   },
   methods: {
@@ -13,8 +14,8 @@ export default {
       button.classList.toggle("toggled");
       btn.classList.toggle("toggled");
     },
-  },
-};
+  }
+}
 </script>
 
 <template>
@@ -31,12 +32,115 @@ export default {
       </RouterLink>
 
       <!-- search -->
-      <form class="search">
-        <input class="myInput" type="text" />
-        <button class="myBtn">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-      </form>
+      <button
+        class="btn btn-primary mySearch"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasTop"
+        aria-controls="offcanvasTop"
+      >
+        Search <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+
+      <div
+        class="offcanvas offcanvas-top h-50"
+        tabindex="-1"
+        id="offcanvasTop"
+        aria-labelledby="offcanvasTopLabel"
+      >
+        <div
+          class="offcanvas-header d-flex gap-3 align-items-center justify-content-center"
+        >
+          <h5 class="offcanvas-title" id="offcanvasTopLabel">Search</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div
+          class="offcanvas-body d-flex align-items-center justify-content-center"
+        >
+          <form class="d-flex flex-column gap-5">
+            <!-- input -->
+            <div class="d-flex gap-2 align-items-center justify-content-center">
+              <label for="search">Search Address:</label>
+              <input type="text" name="search" />
+            </div>
+
+            <!-- selects -->
+            <div
+              class="d-flex flex-column gap-2 align-items-center justify-content-center"
+            >
+              <div class="mySelects">
+                <div
+                  class="d-flex flex-column align-items-center justify-content-center"
+                >
+                  <label for="rooms">N. Room</label>
+                  <select
+                    class="form-select form-select-sm ms-select"
+                    name="rooms"
+                  >
+                    <option selected></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+                <div
+                  class="d-flex flex-column align-items-center justify-content-center"
+                >
+                  <label for="beds">N. Bed</label>
+                  <select
+                    class="form-select form-select-sm ms-select"
+                    name="beds"
+                  >
+                    <option selected></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- slider -->
+              <div class="slidecontainer">
+                <label for="km">Kilometers</label>
+                <input
+                  type="range"
+                  name="km"
+                  min="1"
+                  max="100"
+                  value="50"
+                  class="slider"
+                  id="myRange"
+                />
+              </div>
+            </div>
+
+            <!-- checkbox -->
+            <div>
+              <label class="container"
+                >Seavices 1
+                <input type="checkbox" checked="checked" />
+                <span class="checkmark"></span>
+              </label>
+              <label class="container"
+                >Services 2
+                <input type="checkbox" />
+                <span class="checkmark"></span>
+              </label>
+            </div>
+
+            <div
+              class="d-flex flex-column align-items-center justify-content-center"
+            >
+              <button class="mySearch">Search</button>
+            </div>
+          </form>
+        </div>
+      </div>
 
       <!-- routes -->
       <div class="routes btn-group">
@@ -57,27 +161,27 @@ export default {
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/about" class="dropdown-item" @click="btnMenu()">
-                About
-              </RouterLink>
-            </li>
-            <li>
               <a
-                href="http://127.0.0.1:8000/admin"
+                href="http://localhost:8000/admin"
                 class="dropdown-item ms-menu-link"
                 >Dashboard</a
               >
             </li>
             <li>
+                <RouterLink to="/about" class="dropdown-item" @click="btnMenu()">
+                  About
+                </RouterLink>
+              </li>
+            <li>
               <a
-                href="http://127.0.0.1:8000/login"
+                href="http://localhost:8000/login"
                 class="dropdown-item ms-menu-link"
                 >Login</a
               >
             </li>
             <li>
               <a
-                href="http://127.0.0.1:8000/register"
+                href="http://localhost:8000/register"
                 class="dropdown-item ms-menu-link"
                 >Register</a
               >
@@ -135,6 +239,17 @@ export default {
                   </li>
                   <li>
                     <button data-bs-dismiss="offcanvas" aria-label="Close">
+                      <a
+                        href="http://localhost:8000/admin"
+                        class="drop-item"
+                        @click="btnMenu()"
+                      >
+                        Dashboard
+                      </a>
+                    </button>
+                  </li>
+                  <li>
+                    <button data-bs-dismiss="offcanvas" aria-label="Close">
                       <RouterLink
                         to="/about"
                         class="drop-item"
@@ -147,18 +262,8 @@ export default {
                   <li>
                     <button data-bs-dismiss="offcanvas" aria-label="Close">
                       <a
-                        href="http://127.0.0.1:8000/admin"
-                        class="drop-item"
-                        @click="btnMenu()"
-                      >
-                        Dashboard
-                      </a>
-                    </button>
-                  </li>
-                  <li>
-                    <button data-bs-dismiss="offcanvas" aria-label="Close">
-                      <a
-                        href="http://127.0.0.1:8000/login"
+                        v-if="!isLogged"
+                        href="http://localhost:8000/login"
                         class="drop-item"
                         @click="btnMenu()"
                       >
@@ -169,7 +274,8 @@ export default {
                   <li>
                     <button data-bs-dismiss="offcanvas" aria-label="Close">
                       <a
-                        href="http://127.0.0.1:8000/register"
+                        v-if="!isLogged"
+                        href="http://localhost:8000/register"
                         class="drop-item"
                         @click="btnMenu()"
                       >
@@ -235,41 +341,122 @@ nav {
     }
   }
 
-  .search {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    box-shadow: 0 5px 10px rgb(200, 200, 200);
-    border: 1px solid rgb(200, 200, 200);
-    border-radius: 100px;
-    padding-right: 10px;
-    .myInput {
-      border: 0;
-      border-bottom-left-radius: 100px;
-      border-top-left-radius: 100px;
-      outline: none;
-      height: 40px;
-      width: 350px;
-      padding-left: 20px;
-    }
-    .myBtn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 0;
-      border-radius: 20px;
-      color: white;
-      background-color: rgb(71, 92, 163);
-      font-size: 15px;
-      outline: none;
-      height: 30px;
-      width: 30px;
-      transition: 0.2s ease;
+  .mySearch {
+    width: 150px;
+    padding: 5px;
+    border: 0px;
+    border-radius: 20px;
+    background-color: rgb(71, 92, 163);
+    color: white;
+  }
 
-      &:hover {
-        background-color: rgb(58, 78, 143);
-        transition: 0.2s ease;
-      }
+  .mySelects {
+    width: 100%;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    .ms-select {
+      width: fit-content;
+      outline: none;
+    }
+  }
+
+  .slidecontainer {
+    width: 100%;
+  }
+
+  .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgb(71, 92, 163);
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #04aa6d;
+      cursor: pointer;
+    }
+  }
+
+  .container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 25px;
+      width: 25px;
+      background-color: #eee;
+    }
+
+    &:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+
+    & input:checked ~ .checkmark {
+      background-color: rgb(71, 92, 163);
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    input:checked ~ .checkmark:after {
+      display: block;
+    }
+
+    .checkmark:after {
+      left: 9px;
+      top: 5px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
     }
   }
 
