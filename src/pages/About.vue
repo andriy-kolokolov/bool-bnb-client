@@ -7,6 +7,11 @@ export default {
 			query: "",
 			apiKey: "pIZDc5arEQSAalGkANUN2J8fiekVOefL",
 			suggestions: [],
+			street: "",
+			zip: "",
+			city: "",
+			longitude: "",
+			latitude: "",
 		};
 	},
 
@@ -37,6 +42,7 @@ export default {
 			}
 			this.suggestions = [];
 			this.getCoordinates(this.query);
+			this.parseAddress(this.query);
 		},
 
 		getCoordinates(address) {
@@ -48,7 +54,28 @@ export default {
 			axios.get(url).then((response) => {
 				this.latitude = response.data.results[0].position.lat;
 				this.longitude = response.data.results[0].position.lon;
+				console.log(
+					"Longitude: ",
+					this.longitude,
+					" - Latitude: ",
+					this.latitude,
+				);
 			});
+		},
+
+		clearInput() {
+			this.query = "";
+		},
+
+		parseAddress(address) {
+			const parts = address.split(", ");
+			const [streetAndNumber, zipAndCity] = parts;
+			const [zip, city] = zipAndCity.split(" ");
+
+			this.street = streetAndNumber;
+			this.zip = zip;
+			this.city = city;
+			console.log(this.street, " - ", this.zip, " - ", this.city);
 		},
 	},
 };
@@ -60,7 +87,11 @@ export default {
 		<h2>Ricerca tramite indirizzo</h2>
 		<h2>e estrazione coordinate GPS</h2>
 		<div class="search-box">
-			<input type="text" v-model="query" @input="getSuggestions" />
+			<input
+				type="text"
+				v-model="query"
+				@input="getSuggestions"
+				@focus="clearInput" />
 			<select v-if="suggestions.length > 0" ref="selectBox" size="5">
 				<option
 					v-for="(suggestion, index) in suggestions"
@@ -72,6 +103,10 @@ export default {
 				</option>
 			</select>
 		</div>
+		<p>L'indirizzo inserito è: {{ street }}, {{ zip }} {{ city }}</p>
+		<p>
+			Le coordinate sono: Longitudine {{ longitude }}, Latitudine {{ latitude }}
+		</p>
 	</div>
 </template>
 
