@@ -35,7 +35,6 @@ export default {
 			} else if (suggestionOrEvent.target) {
 				this.query = suggestionOrEvent.target.value;
 			}
-			console.log(this.query);
 			this.suggestions = [];
 			this.getCoordinates(this.query);
 		},
@@ -49,7 +48,6 @@ export default {
 			axios.get(url).then((response) => {
 				this.latitude = response.data.results[0].position.lat;
 				this.longitude = response.data.results[0].position.lon;
-				console.log(this.longitude, this.latitude);
 			});
 		},
 	},
