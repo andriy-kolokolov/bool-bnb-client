@@ -49,7 +49,6 @@ export default {
 
 		getCoordinates() {
 			const address = `${this.apartment.address.street}, ${this.apartment.address.zip} ${this.apartment.address.city}`;
-			console.log(address);
 			const apiKey = "pIZDc5arEQSAalGkANUN2J8fiekVOefL";
 			const url = `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(
 				address,
@@ -114,10 +113,6 @@ export default {
 <template>
 	<div v-if="apartment" class="container-fluid">
 		<h1>{{ apartment.name }}</h1>
-		<!-- <img
-			class="main-img"
-			:src="apartment.images[0].image_path"
-			alt="{{apartment.name}}" /> -->
 		<div class="grid-container">
 			<img
 				class="main-image"
@@ -148,7 +143,9 @@ export default {
 			<div class="details">
 				<!-- Host name -->
 				<div class="details-section">
-					<h3>Host: {{ apartment.user.name + ' ' + apartment.user.last_name }}</h3>
+					<h3>
+						Host: {{ apartment.user.name + " " + apartment.user.last_name }}
+					</h3>
 
 					<!-- General information -->
 					<p class="apartment-data">
