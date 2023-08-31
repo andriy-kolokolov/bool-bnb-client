@@ -31,6 +31,9 @@ export default {
 					currentObj.output = error;
 				});
 		},
+		getApartmentCoverImage(apartment) {
+			return this.store.backEndStorageURL + apartment.images[0].image_path;
+		},
 	},
 
 	mounted() {
@@ -51,7 +54,7 @@ export default {
 				<div class="img-container">
 					<img
 						class="main-image"
-						:src="apartment.images[0].image_path"
+						:src="getApartmentCoverImage(apartment)"
 						alt="{{apartment.name}}" />
 				</div>
 				<div class="info-container">
