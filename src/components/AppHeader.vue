@@ -15,14 +15,6 @@ export default {
       store,
     };
   },
-  methods: {
-    btnMenu() {
-      const button = document.getElementById("button");
-      const btn = document.getElementById("btn");
-      button.classList.toggle("toggled");
-      btn.classList.toggle("toggled");
-    },
-  },
 };
 </script>
 
