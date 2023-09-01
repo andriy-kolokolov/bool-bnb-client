@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import {store} from "../store/store";
 
 export default {
 	props: ["radiusProp"],
@@ -15,6 +16,7 @@ export default {
 			longitude: "",
 			latitude: "",
 			radius: null,
+			store,
 		};
 	},
 
@@ -91,7 +93,7 @@ export default {
 				return;
 			}
 
-			const url = `http://tuoserver.com/api/ricerca_per_raggio`;
+			const url = `${this.store.baseUrlApi}apartments-in-radius`;
 			axios
 				.get(url, {
 					params: {
@@ -113,7 +115,6 @@ export default {
 	watch: {
 		radiusProp(newRadius) {
 			this.radius = newRadius;
-			console.log(this.radius);
 		},
 	},
 };
@@ -146,7 +147,7 @@ export default {
 			Le coordinate sono: Longitudine {{ longitude }}, Latitudine {{ latitude }}
 		</p>
 		<p>Il valore del raggio è: {{ radius }}</p>
-		<button @click="searchWithinRadius">Cerca nel raggio</button>
+		<button @click.prevent="searchWithinRadius">Cerca nel raggio</button>
 	</div>
 </template>
 

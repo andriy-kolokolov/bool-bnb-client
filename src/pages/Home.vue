@@ -2,20 +2,23 @@
 import axios from "axios";
 import { store } from "../store/store.js";
 import { ref } from "vue";
+import {TransitionGroup} from "vue";
+
 export default {
   data() {
     return {
       store,
       arrApartments: [],
       showImg: ref(-1),
+      gettingApartments: false
     };
   },
   methods: {
     getApartments() {
       axios.get(this.store.baseUrlApi + "apartments").then((response) => {
         this.arrApartments = response.data;
+        this.gettingApartments = true
       });
-      console.log(this.arrApartments);
     },
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
@@ -28,74 +31,93 @@ export default {
 </script>
 
 <template>
-  <div class="style">
-    <router-link
-      :to="`/apartment/${apartment.id}`"
-      v-for="(apartment, index) in arrApartments"
-      :key="apartment.id"
-      class="routerstyle"
-      @mouseover="showImg = index"
-      @mouseout="showImg = ''"
-    >
-      <div class="apartment_cards">
-        <img
-          class="cover_img"
-          :src="getApartmentCoverImage(apartment)"
-          :alt="apartment.name"
-        />
-        <!-- SECONDA IMMAGINE
+    <div class="style" >
+      <TransitionGroup name="fade" mode="out-in">
+      <router-link v-if="gettingApartments"
+        :to="`/apartment/${apartment.id}`"
+        v-for="(apartment, index) in arrApartments"
+        :key="apartment.id"
+        class="routerstyle"
+        @mouseover="showImg = index"
+        @mouseout="showImg = ''"
+      >
+        <div class="apartment_cards">
           <img
-          v-if="index === showImg"
-          :src="apartment.images[1].image_path"
-          :alt="apartment.name"
-        /> -->
-        <div class="info">
-          <div class="info_container">
-            <h5>{{ apartment.name }}</h5>
-            <h6>
-              <i class="fa-solid fa-location-dot"></i>
-              {{ apartment.address.city }}
-            </h6>
+            class="cover_img"
+            :src="getApartmentCoverImage(apartment)"
+            :alt="apartment.name"
+          />
+          <!-- SECONDA IMMAGINE
+            <img
+            v-if="index === showImg"
+            :src="apartment.images[1].image_path"
+            :alt="apartment.name"
+          /> -->
+          <div class="info">
+            <div class="info_container">
+              <h5>{{ apartment.name }}</h5>
+              <h6>
+                <i class="fa-solid fa-location-dot"></i>
+                {{ apartment.address.city }}
+              </h6>
+            </div>
+          </div>
+          <div class="more_info">
+            <!-- {{ apartment.is_available }} -->
+            <span
+              class="ms-label"
+              :class="{
+                available: apartment.is_available === 1,
+                none: apartment.is_available === 0,
+              }"
+              ><i class="fa-solid fa-calendar-check"></i>
+              <span class="ms-deep-label">Available</span></span
+            >
+            <span
+              class="ms-label"
+              :class="{
+                not_available: apartment.is_available === 0,
+                none: apartment.is_available === 1,
+              }"
+              ><i class="fa-solid fa-calendar-xmark"></i>
+              <span class="ms-deep-label">Not Available</span></span
+            >
+            <span
+              class="ms-sponsor-label"
+              :class="{
+                sponsor: apartment.is_sponsored === 1,
+                none: apartment.is_sponsored === 0,
+              }"
+            >
+              <!-- {{ apartment.is_sponsored }} -->
+              <i class="fa-solid fa-medal"></i
+            ></span>
           </div>
         </div>
-        <div class="more_info">
-          <!-- {{ apartment.is_available }} -->
-          <span
-            class="ms-label"
-            :class="{
-              available: apartment.is_available === 1,
-              none: apartment.is_available === 0,
-            }"
-            ><i class="fa-solid fa-calendar-check"></i>
-            <span class="ms-deep-label">Available</span></span
-          >
-          <span
-            class="ms-label"
-            :class="{
-              not_available: apartment.is_available === 0,
-              none: apartment.is_available === 1,
-            }"
-            ><i class="fa-solid fa-calendar-xmark"></i>
-            <span class="ms-deep-label">Not Available</span></span
-          >
-          <span
-            class="ms-sponsor-label"
-            :class="{
-              sponsor: apartment.is_sponsored === 1,
-              none: apartment.is_sponsored === 0,
-            }"
-          >
-            <!-- {{ apartment.is_sponsored }} -->
-            <i class="fa-solid fa-medal"></i
-          ></span>
-        </div>
+      </router-link>
+      <div v-else>
+        <p>Loading apartments...</p>
       </div>
-    </router-link>
-  </div>
+      </TransitionGroup>
+    </div>
+
+
 </template>
 
 <style lang="scss" scoped>
 @use "../assets/partials/variables" as *;
+
+// VUE TRANSITION
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 .style {
   width: fit-content;
   display: flex;
