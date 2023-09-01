@@ -2,13 +2,11 @@
 import { store } from "@/store/store.js";
 import AppMenu from "./AppMenu.vue";
 import AppSearch from "./AppSearch.vue";
-import About from "../pages/About.vue";
 
 export default {
   components: {
     AppMenu,
     AppSearch,
-    About,
   },
   data() {
     return {

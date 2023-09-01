@@ -5,11 +5,19 @@ export default {
   data() {
     return {
       store,
-      radius: 1,
       arrApartment: [],
       arrServices: [],
       maxBeds: 0,
       maxRooms: 0,
+      query: "",
+      apiKey: "pIZDc5arEQSAalGkANUN2J8fiekVOefL",
+      suggestions: [],
+      street: "",
+      zip: "",
+      city: "",
+      longitude: "",
+      latitude: "",
+      radius: 1,
     };
   },
   methods: {
@@ -23,7 +31,7 @@ export default {
           // Controllo l'appartamento con più stanze
           if (item.rooms) {
             if (item.rooms > this.maxRooms) {
-              this.maxRooms = item.rooms;
+              this.maxRooms = item.rooms + 1;
             }
           } else {
             console.log("no roomsss");
@@ -32,7 +40,7 @@ export default {
           // Controllo l'appartamento con più letti
           if (item.beds) {
             if (item.beds > this.maxBeds) {
-              this.maxBeds = item.beds;
+              this.maxBeds = item.beds + 1;
             }
           } else {
             console.log("no bedsss");
@@ -59,9 +67,99 @@ export default {
         console.log(this.arrServices);
       });
     },
+    getSuggestions() {
+      if (this.query.length >= 2) {
+        axios
+          .get(`https://api.tomtom.com/search/2/search/${this.query}.json`, {
+            params: {
+              key: this.apiKey,
+              countrySet: "IT",
+              language: "it-IT",
+            },
+          })
+          .then((response) => {
+            this.suggestions = response.data.results.map(
+              (result) => result.address.freeformAddress,
+            );
+          });
+      }
+    },
+
+    selectSuggestion(suggestionOrEvent) {
+      if (typeof suggestionOrEvent === "string") {
+        this.query = suggestionOrEvent;
+      } else if (suggestionOrEvent.target) {
+        this.query = suggestionOrEvent.target.value;
+      }
+      this.suggestions = [];
+      this.getCoordinates(this.query);
+      this.parseAddress(this.query);
+    },
+
+    getCoordinates(address) {
+      const apiKey = "pIZDc5arEQSAalGkANUN2J8fiekVOefL";
+      const url = `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(
+        address,
+      )}.json?key=${apiKey}`;
+
+      axios.get(url).then((response) => {
+        this.latitude = response.data.results[0].position.lat;
+        this.longitude = response.data.results[0].position.lon;
+        console.log(
+          "Longitude: ",
+          this.longitude,
+          " - Latitude: ",
+          this.latitude,
+        );
+
+        setTimeout(() => {
+          this.searchWithinRadius();
+        }, 1000);
+      });
+    },
+
+    clearInput() {
+      this.query = "";
+    },
+
+    parseAddress(address) {
+      const parts = address.split(", ");
+      const [streetAndNumber, zipAndCity] = parts;
+      const [zip, city] = zipAndCity.split(" ");
+
+      this.street = streetAndNumber;
+      this.zip = zip;
+      this.city = city;
+      console.log(this.street, " - ", this.zip, " - ", this.city);
+    },
+
+    searchWithinRadius() {
+      if (!this.latitude || !this.longitude || !this.radius) {
+        console.log("Dati mancanti. Impossibile effettuare la ricerca.");
+        return;
+      }
+
+      const url = `${this.store.baseUrlApi}apartments-in-radius`;
+      axios
+        .get(url, {
+          params: {
+            lat: this.latitude,
+            lon: this.longitude,
+            radius: parseInt(this.radius),
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+        });
+    },
   },
   created() {
     this.loadData();
+  },
+  watch: {
+    radius(newRadius) {
+      this.radius = newRadius;
+    },
   },
 };
 </script>
@@ -101,11 +199,32 @@ export default {
       <form class="w-100">
         <div class="d-flex align-items-center justify-content-around">
           <!-- input -->
-          <div
-            class="d-flex flex-column gap-2 align-items-center justify-content-center"
-          >
-            <label for="search">Search Address:</label>
-            <input type="text" name="search" />
+          <div class="input-container">
+            <div class="search-box">
+              <input
+                type="text"
+                v-model="query"
+                @input="getSuggestions"
+                @focus="clearInput"
+              />
+              <select v-if="suggestions.length > 0" ref="selectBox" size="5">
+                <option
+                  v-for="(suggestion, index) in suggestions"
+                  :key="index"
+                  :value="suggestion"
+                  :selected="index === highlighted"
+                  @click="selectSuggestion(suggestion)"
+                >
+                  {{ suggestion }}
+                </option>
+              </select>
+            </div>
+            <p>L'indirizzo inserito è: {{ street }}, {{ zip }} {{ city }}</p>
+            <p>
+              Le coordinate sono: Longitudine {{ longitude }}, Latitudine
+              {{ latitude }}
+            </p>
+            <p>Il valore del raggio è: {{ radius }}</p>
           </div>
 
           <!-- selects -->
@@ -166,7 +285,7 @@ export default {
               v-for="service in this.arrServices"
               class="container ms-check-label m-0 col-6"
               >{{ service.name }}
-              <input type="checkbox" checked="checked" />
+              <input type="checkbox" />
               <span class="checkmark"></span>
             </label>
           </div>
@@ -174,7 +293,9 @@ export default {
         <div
           class="d-flex flex-column align-items-center justify-content-center"
         >
-          <button class="mySearch">Search</button>
+          <button class="mySearch" @click.prevent="searchWithinRadius">
+            Search
+          </button>
         </div>
       </form>
     </div>
@@ -193,6 +314,19 @@ export default {
   color: white;
 }
 
+// input
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-box {
+  display: flex;
+  flex-direction: column;
+}
+
+// select
 .mySelects {
   width: 100%;
   display: flex;

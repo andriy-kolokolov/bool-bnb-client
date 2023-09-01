@@ -9,19 +9,19 @@ export default {
       store,
       arrApartments: [],
       showImg: ref(-1),
-      gettingApartments: false
+      gettingApartments: false,
     };
   },
   methods: {
     getApartments() {
       axios.get(this.store.baseUrlApi + "apartments").then((response) => {
         this.arrApartments = response.data;
-        this.gettingApartments = true
+        this.gettingApartments = true;
       });
     },
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
-    }
+    },
   },
   created() {
     this.getApartments();
@@ -30,72 +30,70 @@ export default {
 </script>
 
 <template>
-    <div class="style" >
-      <router-link v-if="gettingApartments"
-        :to="`/apartment/${apartment.id}`"
-        v-for="(apartment, index) in arrApartments"
-        :key="apartment.id"
-        class="routerstyle"
-        @mouseover="showImg = index"
-        @mouseout="showImg = ''"
-      >
-        <div class="apartment_cards">
-          <img
-            class="cover_img"
-            :src="getApartmentCoverImage(apartment)"
-            :alt="apartment.name"
-          />
-          <!-- SECONDA IMMAGINE
+  <div class="style" v-if="gettingApartments">
+    <router-link
+      :to="`/apartment/${apartment.id}`"
+      v-for="(apartment, index) in arrApartments"
+      :key="apartment.id"
+      class="routerstyle"
+      @mouseover="showImg = index"
+      @mouseout="showImg = ''"
+    >
+      <div class="apartment_cards">
+        <img
+          class="cover_img"
+          :src="getApartmentCoverImage(apartment)"
+          :alt="apartment.name"
+        />
+        <!-- SECONDA IMMAGINE
             <img
             v-if="index === showImg"
             :src="apartment.images[1].image_path"
             :alt="apartment.name"
           /> -->
-          <div class="info">
-            <div class="info_container">
-              <h5>{{ apartment.name }}</h5>
-              <h6>
-                <i class="fa-solid fa-location-dot"></i>
-                {{ apartment.address.city }}
-              </h6>
-            </div>
-          </div>
-          <div class="more_info">
-            <!-- {{ apartment.is_available }} -->
-            <span
-              class="ms-label"
-              :class="{
-                available: apartment.is_available === 1,
-                none: apartment.is_available === 0,
-              }"
-              ><i class="fa-solid fa-calendar-check"></i>
-              <span class="ms-deep-label">Available</span></span
-            >
-            <span
-              class="ms-label"
-              :class="{
-                not_available: apartment.is_available === 0,
-                none: apartment.is_available === 1,
-              }"
-              ><i class="fa-solid fa-calendar-xmark"></i>
-              <span class="ms-deep-label">Not Available</span></span
-            >
-            <span
-              class="ms-sponsor-label"
-              :class="{
-                sponsor: apartment.is_sponsored === 1,
-                none: apartment.is_sponsored === 0,
-              }"
-            >
-              <!-- {{ apartment.is_sponsored }} -->
-              <i class="fa-solid fa-medal"></i
-            ></span>
+        <div class="info">
+          <div class="info_container">
+            <h5>{{ apartment.name }}</h5>
+            <h6>
+              <i class="fa-solid fa-location-dot"></i>
+              {{ apartment.address.city }}
+            </h6>
           </div>
         </div>
-      </router-link>
-    </div>
-
-
+        <div class="more_info">
+          <!-- {{ apartment.is_available }} -->
+          <span
+            class="ms-label"
+            :class="{
+              available: apartment.is_available === 1,
+              none: apartment.is_available === 0,
+            }"
+            ><i class="fa-solid fa-calendar-check"></i>
+            <span class="ms-deep-label">Available</span></span
+          >
+          <span
+            class="ms-label"
+            :class="{
+              not_available: apartment.is_available === 0,
+              none: apartment.is_available === 1,
+            }"
+            ><i class="fa-solid fa-calendar-xmark"></i>
+            <span class="ms-deep-label">Not Available</span></span
+          >
+          <span
+            class="ms-sponsor-label"
+            :class="{
+              sponsor: apartment.is_sponsored === 1,
+              none: apartment.is_sponsored === 0,
+            }"
+          >
+            <!-- {{ apartment.is_sponsored }} -->
+            <i class="fa-solid fa-medal"></i
+          ></span>
+        </div>
+      </div>
+    </router-link>
+  </div>
 </template>
 
 <style lang="scss" scoped>
