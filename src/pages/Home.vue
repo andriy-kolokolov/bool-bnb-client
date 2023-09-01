@@ -2,7 +2,6 @@
 import axios from "axios";
 import { store } from "../store/store.js";
 import { ref } from "vue";
-import {TransitionGroup} from "vue";
 
 export default {
   data() {
@@ -32,7 +31,6 @@ export default {
 
 <template>
     <div class="style" >
-      <TransitionGroup name="fade" mode="out-in">
       <router-link v-if="gettingApartments"
         :to="`/apartment/${apartment.id}`"
         v-for="(apartment, index) in arrApartments"
@@ -95,10 +93,6 @@ export default {
           </div>
         </div>
       </router-link>
-      <div v-else>
-        <p>Loading apartments...</p>
-      </div>
-      </TransitionGroup>
     </div>
 
 

@@ -4,7 +4,6 @@ export default {
   data() {
     return {
       store,
-      isLogged: false,
     };
   },
   methods: {
@@ -62,15 +61,6 @@ export default {
             class="dropdown-item ms-menu-link"
             >Register</a
           >
-        </li>
-        <li @click="btnMenu()">
-          <button
-            v-if="store.auth.authenticated"
-            @click="store.auth.signOut()"
-            class="dropdown-item"
-          >
-            Sign Out
-          </button>
         </li>
       </ul>
     </div>
@@ -135,7 +125,6 @@ export default {
               <li>
                 <button data-bs-dismiss="offcanvas" aria-label="Close">
                   <a
-                    v-if="!isLogged"
                     href="http://localhost:8000/login"
                     class="drop-item"
                     @click="btnMenu()"
@@ -147,7 +136,6 @@ export default {
               <li>
                 <button data-bs-dismiss="offcanvas" aria-label="Close">
                   <a
-                    v-if="!isLogged"
                     href="http://localhost:8000/register"
                     class="drop-item"
                     @click="btnMenu()"
@@ -162,13 +150,6 @@ export default {
                   aria-label="Close"
                   @click="btnMenu()"
                 >
-                  <a
-                    v-if="store.auth.authenticated"
-                    @click="store.auth.signOut()"
-                    class="drop-item"
-                  >
-                    Logout
-                  </a>
                 </button>
               </li>
             </ul>
@@ -196,7 +177,7 @@ export default {
       cursor: pointer;
       height: 30px;
       outline: none;
-      padding: 0px;
+      padding: 0;
       width: 30px;
 
       &.toggled {
@@ -204,12 +185,12 @@ export default {
           background-color: transparent;
 
           &:before {
-            top: 0px;
+            top: 0;
             transform: rotate(-45deg);
           }
 
           &:after {
-            bottom: 0px;
+            bottom: 0;
             transform: rotate(45deg);
           }
         }
@@ -229,7 +210,7 @@ export default {
           border-radius: 100px;
           content: "";
           height: 3px;
-          left: 0px;
+          left: 0;
           position: absolute;
           transition: all 0.25s;
           width: 30px;
@@ -289,7 +270,7 @@ export default {
           cursor: pointer;
           height: 30px;
           outline: none;
-          padding: 0px;
+          padding: 0;
           width: 30px;
 
           &.toggled {
@@ -297,12 +278,12 @@ export default {
               background-color: transparent;
 
               &:before {
-                top: 0px;
+                top: 0;
                 transform: rotate(-45deg);
               }
 
               &:after {
-                bottom: 0px;
+                bottom: 0;
                 transform: rotate(45deg);
               }
             }
@@ -322,7 +303,7 @@ export default {
               border-radius: 100px;
               content: "";
               height: 3px;
-              left: 0px;
+              left: 0;
               position: absolute;
               transition: all 0.25s;
               width: 30px;
