@@ -1,8 +1,9 @@
 <script>
 import axios from "axios";
-import {mapState} from "vuex";
 
 export default {
+	props: ["radiusProp"],
+
 	data() {
 		return {
 			query: "",
@@ -13,6 +14,7 @@ export default {
 			city: "",
 			longitude: "",
 			latitude: "",
+			radius: null,
 		};
 	},
 
@@ -61,6 +63,10 @@ export default {
 					" - Latitude: ",
 					this.latitude,
 				);
+
+				setTimeout(() => {
+					this.searchWithinRadius();
+				}, 1000);
 			});
 		},
 
@@ -77,6 +83,37 @@ export default {
 			this.zip = zip;
 			this.city = city;
 			console.log(this.street, " - ", this.zip, " - ", this.city);
+		},
+
+		searchWithinRadius() {
+			if (!this.latitude || !this.longitude || !this.radius) {
+				console.log("Dati mancanti. Impossibile effettuare la ricerca.");
+				return;
+			}
+
+			const url = `http://tuoserver.com/api/ricerca_per_raggio`;
+			axios
+				.get(url, {
+					params: {
+						lat: this.latitude,
+						lon: this.longitude,
+						radius: this.radius,
+					},
+				})
+				.then((response) => {
+					console.log(response.data);
+				});
+		},
+	},
+
+	mounted() {
+		this.radius = this.radiusProp;
+	},
+
+	watch: {
+		radiusProp(newRadius) {
+			this.radius = newRadius;
+			console.log(this.radius);
 		},
 	},
 };
@@ -108,6 +145,8 @@ export default {
 		<p>
 			Le coordinate sono: Longitudine {{ longitude }}, Latitudine {{ latitude }}
 		</p>
+		<p>Il valore del raggio è: {{ radius }}</p>
+		<button @click="searchWithinRadius">Cerca nel raggio</button>
 	</div>
 </template>
 
@@ -121,5 +160,12 @@ export default {
 .search-box {
 	display: flex;
 	flex-direction: column;
+}
+
+.radius {
+	margin: 10rem 0;
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
 }
 </style>
