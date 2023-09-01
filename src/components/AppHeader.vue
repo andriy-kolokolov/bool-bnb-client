@@ -5,7 +5,7 @@ export default {
 		return {
 			store,
 			isLogged: false,
-			// radius: 1,
+			radius: 1,
 		};
 	},
 	methods: {
