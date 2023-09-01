@@ -5,7 +5,7 @@ export default {
 		return {
 			store,
 			isLogged: false,
-			radius: 1,
+			// radius: 1,
 		};
 	},
 	methods: {
@@ -105,8 +105,8 @@ export default {
 										max="100"
 										class="slider"
 										id="myRange"
-										v-model="radius" />
-									<div class="slider-value">{{ radius }} km</div>
+										v-model="store.radius" />
+									<div class="slider-value">{{ store.radius }} km</div>
 								</div>
 							</div>
 						</div>
