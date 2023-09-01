@@ -78,38 +78,7 @@ export default {
 			this.city = city;
 			console.log(this.street, " - ", this.zip, " - ", this.city);
 		},
-
-		// performSearch() {
-		// 	const url = `https://api.tomtom.com/search/2/nearbySearch/.json`;
-		// 	axios
-		// 		.get(url, {
-		// 			params: {
-		// 				key: this.apiKey,
-		// 				countrySet: "IT",
-		// 				language: "it-IT",
-		// 				lat: this.latitude,
-		// 				lon: this.longitude,
-		// 				radius: this.radius,
-		// 			},
-		// 		})
-		// 		.then((response) => {
-		// 			console.log(response.data);
-		// 		});
-		// },
 	},
-
-	// computed: {
-	// 	...mapState(["radius"]),
-	// },
-
-	// watch: {
-	// 	radius(newVal, oldVal) {
-	// 		console.log("Nuovo valore di radius:", newVal, "Vecchio valore:", oldVal);
-	// 		if (newVal !== oldVal) {
-	// 			this.performSearch();
-	// 		}
-	// 	},
-	// },
 };
 </script>
 
