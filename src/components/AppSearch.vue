@@ -98,70 +98,79 @@ export default {
     <div
       class="offcanvas-body d-flex align-items-center justify-content-center"
     >
-      <form class="d-flex gap-5">
-        <!-- input -->
-        <div class="d-flex gap-2 align-items-center justify-content-center">
-          <label for="search">Search Address:</label>
-          <input type="text" name="search" />
-        </div>
+      <form class="w-100">
+        <div class="d-flex align-items-center justify-content-around">
+          <!-- input -->
+          <div
+            class="d-flex flex-column gap-2 align-items-center justify-content-center"
+          >
+            <label for="search">Search Address:</label>
+            <input type="text" name="search" />
+          </div>
 
-        <!-- selects -->
-        <div
-          class="d-flex flex-column gap-2 align-items-center justify-content-center"
-        >
-          <div class="mySelects">
-            <div
-              class="d-flex flex-column align-items-center justify-content-center"
-            >
-              <label for="rooms">N. Room</label>
-              <select class="form-select form-select-sm ms-select" name="rooms">
-                <option v-for="(mr, i) in this.maxRooms" :value="i">
-                  {{ i }}
-                </option>
-              </select>
+          <!-- selects -->
+          <div
+            class="d-flex flex-column gap-2 align-items-center justify-content-center"
+          >
+            <div class="mySelects">
+              <div
+                class="d-flex flex-column align-items-center justify-content-center"
+              >
+                <label for="rooms">N. Room</label>
+                <select
+                  class="form-select form-select-sm ms-select"
+                  name="rooms"
+                >
+                  <option v-for="(mr, i) in this.maxRooms" :value="i">
+                    {{ i }}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="d-flex flex-column align-items-center justify-content-center"
+              >
+                <label for="beds">N. Bed</label>
+                <select
+                  class="form-select form-select-sm ms-select"
+                  name="beds"
+                >
+                  <option v-for="(mb, i) in this.maxBeds" :value="i">
+                    {{ i }}
+                  </option>
+                </select>
+              </div>
             </div>
-            <div
-              class="d-flex flex-column align-items-center justify-content-center"
-            >
-              <label for="beds">N. Bed</label>
-              <select class="form-select form-select-sm ms-select" name="beds">
-                <option v-for="(mb, i) in this.maxBeds" :value="i">
-                  {{ i }}
-                </option>
-              </select>
+
+            <!-- slider -->
+            <div class="slidecontainer">
+              <label for="myRange">Kilometers</label>
+              <div class="slider-container">
+                <input
+                  type="range"
+                  name="km"
+                  min="1"
+                  max="100"
+                  class="slider"
+                  id="myRange"
+                  v-model="radius"
+                />
+                <div class="slider-value">{{ radius }} km</div>
+              </div>
             </div>
           </div>
 
-          <!-- slider -->
-          <div class="slidecontainer">
-            <label for="myRange">Kilometers</label>
-            <div class="slider-container">
-              <input
-                type="range"
-                name="km"
-                min="1"
-                max="100"
-                class="slider"
-                id="myRange"
-                v-model="radius"
-              />
-              <div class="slider-value">{{ radius }} km</div>
-            </div>
-          </div>
-        </div>
+          <!-- checkbox -->
 
-        <!-- checkbox -->
-
-        <div class="checkbox-container">
-          <div v-for="service in this.arrServices">
-            <label class="container m-0"
+          <div class="check-container row">
+            <label
+              v-for="service in this.arrServices"
+              class="container ms-check-label m-0 col-6"
               >{{ service.name }}
               <input type="checkbox" checked="checked" />
               <span class="checkmark"></span>
             </label>
           </div>
         </div>
-
         <div
           class="d-flex flex-column align-items-center justify-content-center"
         >
@@ -238,8 +247,13 @@ export default {
   }
 }
 
-.checkbox-container {
-  overflow-y: scroll;
+.check-container {
+  flex-basis: 35%;
+
+  .ms-check-label {
+    font-size: 20px;
+    padding-right: 0px;
+  }
 }
 .container {
   display: block;
