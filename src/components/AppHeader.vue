@@ -1,6 +1,12 @@
 <script>
 import {store} from "@/store/store.js";
+import About from "../pages/About.vue";
+
 export default {
+	components: {
+		About,
+	},
+
 	data() {
 		return {
 			store,
@@ -42,7 +48,7 @@ export default {
 			</button>
 
 			<div
-				class="offcanvas offcanvas-top h-50"
+				class="offcanvas offcanvas-top h-100"
 				tabindex="-1"
 				id="offcanvasTop"
 				aria-labelledby="offcanvasTopLabel">
@@ -60,8 +66,7 @@ export default {
 					<form class="d-flex flex-column gap-5">
 						<!-- input -->
 						<div class="d-flex gap-2 align-items-center justify-content-center">
-							<label for="search">Search Address:</label>
-							<input type="text" name="search" />
+							<About :radiusProp="radius" />
 						</div>
 
 						<!-- selects -->
