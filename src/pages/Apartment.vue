@@ -21,19 +21,6 @@ export default {
 	},
 
 	methods: {
-		// 	calculateDistance(long1, lat1, long2, lat2) {
-		// 		tt.services
-		// 			.calculateRoute({
-		// 				key: "pIZDc5arEQSAalGkANUN2J8fiekVOefL",
-		// 				locations: [long1, lat1, long2, lat2],
-		// 			})
-		// 			.go()
-		// 			.then((response) => {
-		// 				const distance = response.routes[0].summary.lengthInMeters;
-		// 				console.log(`La distanza è ${distance / 1000} km`);
-		// 			});
-		// 	},
-
 		loadApartment() {
 			// Reset Coordinates
 			this.latitude = null;
@@ -76,6 +63,7 @@ export default {
 					style: ttstyle,
 				});
 				map.scrollZoom.disable();
+				map.addControl(new tt.NavigationControl());
 
 				// Add a Pin to map
 				const element = document.createElement("div");
