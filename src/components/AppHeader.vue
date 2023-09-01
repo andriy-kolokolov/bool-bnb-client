@@ -105,8 +105,8 @@ export default {
 										max="100"
 										class="slider"
 										id="myRange"
-										v-model="store.radius" />
-									<div class="slider-value">{{ store.radius }} km</div>
+										v-model="radius" />
+									<div class="slider-value">{{ radius }} km</div>
 								</div>
 							</div>
 						</div>
