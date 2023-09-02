@@ -62,7 +62,7 @@ export default {
 						Location: <span class="data">{{ apartment.name }}</span>
 					</h3>
 					<h3>
-						Host: <span class="data">{{ apartment.user.name }}</span>
+						Host: <span class="data">{{ apartment.user.name + " " + apartment.user.last_name }}</span>
 					</h3>
 					<h3>
 						Address:
