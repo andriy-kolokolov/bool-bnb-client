@@ -22,6 +22,10 @@ export default {
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
     },
+    updateApartments(newData) {
+      this.arrApartments = newData;
+      console.log(this.arrApartments);
+    },
   },
   created() {
     this.getApartments();
