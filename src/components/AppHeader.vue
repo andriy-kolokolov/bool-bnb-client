@@ -43,7 +43,7 @@ nav {
 
   .myContainer {
     height: 100%;
-    width: 90%;
+    width: 80%;
     margin-inline: auto;
     display: flex;
     align-items: center;

@@ -1,15 +1,18 @@
 <script>
 import axios from "axios";
 import { store } from "../store/store.js";
-import { ref } from "vue";
+import Loading from "../components/Loading.vue";
 
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
       store,
-      arrApartments: [],
       gettingApartments: false,
       isLoading: false,
+      arrApartments: [],
       arrServices: [],
       maxBeds: 0,
       maxRooms: 0,
@@ -19,6 +22,7 @@ export default {
       street: "",
       zip: "",
       city: "",
+      // dati per filtri
       longitude: "",
       latitude: "",
       radius: 1,
@@ -71,6 +75,7 @@ export default {
         console.log(this.arrServices);
       });
     },
+
     getSuggestions() {
       if (this.query.length >= 2) {
         axios
@@ -137,11 +142,39 @@ export default {
       console.log(this.street, " - ", this.zip, " - ", this.city);
     },
 
+    formatDistance(distance) {
+      return `Distance: ${distance.toFixed(1)} Km`;
+    },
+
     getApartments() {
+      this.isLoading = true;
       axios.get(this.store.baseUrlApi + "apartments").then((response) => {
         this.arrApartments = response.data;
         this.gettingApartments = true;
+        this.isLoading = false;
       });
+    },
+
+    getFilteredApartments(lat, lon, radius) {
+      this.gettingApartments = false;
+      this.isLoading = true;
+      this.arrApartments = [];
+      axios
+        .get(store.baseUrlApi + "search", {
+          params: {
+            lat: parseFloat(this.latitude),
+            lon: parseFloat(this.longitude),
+            radius: this.radius,
+            min_beds: 0,
+            min_rooms: 0,
+          },
+        })
+        .then((response) => {
+          this.arrApartments = response.data.apartments;
+          console.log(this.arrApartments);
+          this.gettingApartments = true;
+          this.isLoading = false;
+        });
     },
 
     getApartmentCoverImage(apartment) {
@@ -161,21 +194,21 @@ export default {
 </script>
 
 <template>
+  <Loading v-if="this.isLoading" />
+
   <!--*************************  SEARCH ************************* -->
-  <div class="searchDiv">
-    <button
-      class="btn mySearch"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasTop"
-      aria-controls="offcanvasTop"
-    >
-      Search <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
-  </div>
+  <button
+    class="mySearch"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasTop"
+    aria-controls="offcanvasTop"
+  >
+    Search <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
 
   <div
-    class="offcanvas offcanvas-top h-50"
+    class="offcanvas offcanvas-top ms-height"
     tabindex="-1"
     id="offcanvasTop"
     aria-labelledby="offcanvasTopLabel"
@@ -217,12 +250,6 @@ export default {
                 </option>
               </select>
             </div>
-            <p>L'indirizzo inserito è: {{ street }}, {{ zip }} {{ city }}</p>
-            <p>
-              Le coordinate sono: Longitudine {{ longitude }}, Latitudine
-              {{ latitude }}
-            </p>
-            <p>Il valore del raggio è: {{ radius }}</p>
           </div>
 
           <!-- selects -->
@@ -290,10 +317,21 @@ export default {
           </div>
         </div>
         <div
-          class="d-flex flex-column align-items-center justify-content-center"
+          class="mt-5 d-flex gap-3 align-items-center justify-content-center"
         >
-          <button class="mySearch" @click.prevent="searchWithinRadius">
-            Search
+          <button
+            class="back-btn"
+            data-bs-dismiss="offcanvas"
+            @click.prevent="getApartments"
+          >
+            Reset
+          </button>
+          <button
+            class="inputSearch"
+            data-bs-dismiss="offcanvas"
+            @click.prevent="getFilteredApartments"
+          >
+            Search <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
       </form>
@@ -321,6 +359,9 @@ export default {
               <i class="fa-solid fa-location-dot"></i>
               {{ apartment.address.city }}
             </h6>
+            <p v-if="apartment.distance">
+              {{ formatDistance(apartment.distance) }}
+            </p>
           </div>
         </div>
         <div class="more_info">
@@ -374,21 +415,39 @@ export default {
 }
 
 // ****************************** STYLE SEARCH ******************************
-.searchDiv {
-  width: 100%;
-  margin-top: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .mySearch {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 150px;
   padding: 5px;
   border: 0px;
   border-radius: 20px;
   background-color: rgb(71, 92, 163);
   color: white;
+}
+
+.inputSearch {
+  width: 150px;
+  padding: 5px;
+  border: 0px;
+  border-radius: 20px;
+  background-color: rgb(71, 92, 163);
+  color: white;
+}
+
+.back-btn {
+  width: 150px;
+  padding: 5px;
+  border: 0px;
+  border-radius: 20px;
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.ms-height {
+  min-height: 20vh;
 }
 
 // input
@@ -528,20 +587,23 @@ export default {
 
 // ************************* STYLE APARTMENTS CARDS *************************
 .style {
-  width: fit-content;
+  min-height: calc(100vh - 120px);
+  width: 90vw;
   display: flex;
   flex-wrap: wrap;
   gap: 6em;
   align-content: center;
   justify-content: center;
-  margin-top: 6em;
-  margin-bottom: 3em;
+  margin-inline: auto;
+  padding-top: 3em;
+  padding-bottom: 3em;
   .routerstyle {
     text-decoration: none;
     width: calc((100% - 6em) / 5);
     user-select: none;
     .apartment_cards {
-      height: fit-content;
+      max-height: 24rem;
+      max-width: 24rem;
       display: flex;
       align-content: center;
       justify-content: center;
@@ -568,6 +630,11 @@ export default {
         transition: 0.3s ease;
       }
 
+      &:hover .info p {
+        transform: translateY(-0.7rem);
+        transition: 0.3s ease;
+      }
+
       &:hover .more_info {
         bottom: 40px;
         transition: 0.3s ease;
@@ -590,7 +657,7 @@ export default {
         bottom: -15px;
         transition: 0.3s ease;
         width: 65%;
-        height: 14vh;
+        height: 12vh;
         align-self: end;
         display: flex;
         flex-direction: column;
@@ -624,6 +691,19 @@ export default {
 
           h6 {
             transition: 0.2s ease;
+          }
+
+          p {
+            color: #9153a9;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin: 0;
+            transition: 0.2s ease;
+
+            &:hover .ms-distance {
+              padding-bottom: 1rem;
+              font-size: 1.3rem;
+            }
           }
         }
       }

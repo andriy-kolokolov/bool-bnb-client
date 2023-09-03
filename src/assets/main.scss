@@ -1,6 +1,6 @@
 @use "components/header" as *;
 @use "components/footer" as *;
-@use 'partials/ms-variables' as *;
+@use "partials/ms-variables" as *;
 
 /*    BOOTSTRAP SCSS LIBRARY    */
 @import "bootstrap/scss/bootstrap";
@@ -8,11 +8,11 @@
 /*    BOOTSTRAP ICONS    */
 @import "/node_modules/bootstrap-icons/font/bootstrap-icons";
 @font-face {
-	font-family: "bootstrap-icons";
-	src: url("node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2")
-			format("woff2"),
-		url("node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff")
-			format("woff");
+  font-family: "bootstrap-icons";
+  src: url("node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2")
+      format("woff2"),
+    url("node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff")
+      format("woff");
 }
 
 /*    FONTAWESOME ICONS    */
@@ -22,7 +22,13 @@ $fa-font-path: "/node_modules/@fortawesome/fontawesome-free/webfonts";
 @import "/node_modules/@fortawesome/fontawesome-free/scss/regular";
 @import "node_modules/@fortawesome/fontawesome-free/scss/brands";
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-	background-color: $ms-color-light;
-	color: $ms-color-dark;
+  background-color: $ms-color-light;
+  color: $ms-color-dark;
 }
