@@ -1,13 +1,13 @@
 <script>
 import axios from "axios";
-import {store} from "../store/store.js";
-import {TransitionGroup} from "vue";
+import { store } from "../store/store.js";
+import { TransitionGroup } from "vue";
 
 export default {
   data() {
     return {
       store,
-      visitor: null,  // return is_authenticated_user ? user : null;
+      visitor: null, // return is_authenticated_user ? user : null;
       apartment: null,
       msg_sending: false,
       is_msg_send_successfully: false,
@@ -25,35 +25,34 @@ export default {
     },
     sendMessage() {
       this.msg_sending = true;
-      axios.post(store.baseUrlApi + "send-message", {
-        apartment_id: this.apartment.id,
-        guest_name: 'if authenticated username', // todo
-        guest_email: this.email,
-        message: this.message,
-      })
-          .then(response => {
-            if (response.data.status === true) {
-              this.is_msg_send_successfully = true;
-            } else {
-              this.is_msg_send_fail = true;
-            }
-            this.msg_sending = false;
-          })
-          .catch(error => {
-            console.log(error);
-          })
-          .finally(
-              this.refreshSendingStatus
-          );
+      axios
+        .post(store.baseUrlApi + "send-message", {
+          apartment_id: this.apartment.id,
+          guest_name: "if authenticated username", // todo
+          guest_email: this.email,
+          message: this.message,
+        })
+        .then((response) => {
+          if (response.data.status === true) {
+            this.is_msg_send_successfully = true;
+          } else {
+            this.is_msg_send_fail = true;
+          }
+          this.msg_sending = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(this.refreshSendingStatus);
     },
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
     },
     getApartmentAvailability() {
       return this.apartment.is_available
-          ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
-          : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
-    }
+        ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
+        : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
+    },
   },
 
   mounted() {
@@ -67,91 +66,137 @@ export default {
 </script>
 
 <template>
-  <div v-if="apartment" class="container">
-    <h2 class="text-center mt-3">Contact Apartment Owner</h2>
+  <div
+    v-if="apartment"
+    class="container ms-height d-flex flex-column align-items-center justify-content-center"
+  >
+    <h2 class="text-center">Contact Apartment Owner</h2>
     <div class="apartment-wrapper__data mt-4 row g-4 justify-content-between">
       <div class="col-md-5 d-flex align-items-center">
         <div class="data__img-wrapper">
           <img
-              class="img-wrapper__img"
-              :src="getApartmentCoverImage(apartment)"
-              alt="{{apartment.name}}"/>
+            class="img-wrapper__img"
+            :src="getApartmentCoverImage(apartment)"
+            alt="{{apartment.name}}"
+          />
         </div>
       </div>
-      <div class="col-md-6 d-flex align-items-center data__info-wrapper ">
-        <div class="info-wrapper__details-card row justify-content-center g-1 p-4">
-          <div class="col-12 details__name fs-4 fw-medium">{{ apartment.name }}</div>
+      <div class="col-md-6 d-flex align-items-center data__info-wrapper">
+        <div
+          class="info-wrapper__details-card row justify-content-center g-1 p-4"
+        >
+          <div class="col-12 details__name fs-4 fw-medium">
+            {{ apartment.name }}
+          </div>
           <div class="col-12 details__location--address">
             <i class="fa-solid fa-location-dot"></i>
-            {{ apartment.address.street + ', ' + apartment.address.city + ', ' + apartment.address.zip }}
+            {{
+              apartment.address.street +
+              ", " +
+              apartment.address.city +
+              ", " +
+              apartment.address.zip
+            }}
           </div>
-          <div class="col-12 details__owner"><strong> Owner:</strong>
-            {{ apartment.user.name + ' ' + apartment.user.last_name }}
+          <div class="col-12 details__owner">
+            <strong> Owner:</strong>
+            {{ apartment.user.name + " " + apartment.user.last_name }}
           </div>
           <div class="col-8 col-sm-12 details__other mt-4 p-3">
             <div class="other__card d-flex justify-content-center gap-1">
-              <div class="">Rooms: <strong>{{ apartment.rooms }}</strong></div>
-              <div class="">Bathrooms: <strong>{{ apartment.bathrooms }}</strong></div>
-              <div class="">Beds: <strong>{{ apartment.beds }}</strong></div>
-              <div class="">Square Meters: <strong>{{ apartment.square_meters }}</strong></div>
+              <div class="">
+                Rooms: <strong>{{ apartment.rooms }}</strong>
+              </div>
+              <div class="">
+                Bathrooms: <strong>{{ apartment.bathrooms }}</strong>
+              </div>
+              <div class="">
+                Beds: <strong>{{ apartment.beds }}</strong>
+              </div>
+              <div class="">
+                Square Meters: <strong>{{ apartment.square_meters }}</strong>
+              </div>
             </div>
             <div class="other__status mt-3 d-flex justify-content-center">
-              <div v-html="getApartmentAvailability()"
-                   class="status__element"
-                   :class="{ available: apartment.is_available === 1, not_available: apartment.is_available === 0}">
-              </div>
+              <div
+                v-html="getApartmentAvailability()"
+                class="status__element"
+                :class="{
+                  available: apartment.is_available === 1,
+                  not_available: apartment.is_available === 0,
+                }"
+              ></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="contact-wrapper mt-4 row g-4 justify-content-between">
+    <div class="contact-wrapper mt-4 row g-4 justify-content-between w-100">
       <form class="col-sm-12" @submit.prevent="sendMessage">
         <div class="form-body row">
           <div class="col-md-6 field">
             <label for="email" class="form-label">Your email here:</label>
             <input
-                type="email"
-                class="form-control"
-                id="email"
-                v-model="email"/>
+              type="email"
+              class="form-control"
+              id="email"
+              v-model="email"
+            />
           </div>
           <div class="col-md-6 field">
             <Transition-Group name="fade">
-              <div v-if="msg_sending" class="alert alert-primary" role="alert" key="msg_sending">
+              <div
+                v-if="msg_sending"
+                class="alert alert-primary"
+                role="alert"
+                key="msg_sending"
+              >
                 Sending message...
               </div>
-              <div v-if="is_msg_send_successfully" class="alert alert-success" role="alert" key="is_msg_send_successfully">
+              <div
+                v-if="is_msg_send_successfully"
+                class="alert alert-success"
+                role="alert"
+                key="is_msg_send_successfully"
+              >
                 Message Sent Successfully
               </div>
-              <div v-if="is_msg_send_fail" class="alert alert-danger" role="alert" key="is_msg_send_fail">
+              <div
+                v-if="is_msg_send_fail"
+                class="alert alert-danger"
+                role="alert"
+                key="is_msg_send_fail"
+              >
                 Message Sending Fail :(
               </div>
             </Transition-Group>
             <label for="message" class="form-label">Your message here:</label>
             <textarea
-                class="form-control"
-                id="message"
-                rows="5"
-                v-model="message"></textarea>
+              class="form-control"
+              id="message"
+              rows="5"
+              v-model="message"
+            ></textarea>
           </div>
         </div>
         <div class="form-buttons mt-4 row g-4 justify-content-between">
           <div class="col d-flex justify-content-center">
             <router-link
-                :to="{name: 'apartment', params: {id: apartment.id}}"
-                class="button-general button-back">
+              :to="{ name: 'apartment', params: { id: apartment.id } }"
+              class="button-general button-back"
+            >
               Back
             </router-link>
           </div>
 
           <div class="col d-flex justify-content-center">
             <button
-                @click="sendMessage"
-                type="submit"
-                class="button-general button-send"
-                data-bs-toggle="modal"
-                data-bs-target="#successSend">
+              @click="sendMessage"
+              type="submit"
+              class="button-general button-send"
+              data-bs-toggle="modal"
+              data-bs-target="#successSend"
+            >
               Send
             </button>
           </div>
@@ -159,7 +204,6 @@ export default {
       </form>
     </div>
   </div>
-
 </template>
 
 <style lang="scss" scoped>
@@ -176,15 +220,16 @@ export default {
   opacity: 0;
 }
 
+.ms-height {
+  min-height: calc(100vh - 120px);
+}
+
 h1 {
   font-weight: 600;
 }
 
 .apartment-wrapper__data {
-
   .data__img-wrapper {
-
-
     img {
       transition: $ms-link-transition-s;
       width: 100%;
@@ -201,8 +246,6 @@ h1 {
   }
 
   .data__info-wrapper {
-
-
     .info-wrapper__details-card {
       box-shadow: $ms-box-shadow-l;
       border-radius: $ms-border-radius-m;
@@ -235,8 +278,6 @@ h1 {
           justify-content: center !important;
           align-items: center !important;
           gap: 10px;
-
-
         }
 
         .available {
