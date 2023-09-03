@@ -97,7 +97,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@use "../assets/partials/variables" as *;
+@use "../assets/partials/ms-variables" as *;
 
 // VUE TRANSITION
 .v-enter-active,

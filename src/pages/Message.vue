@@ -1,269 +1,280 @@
 <script>
 import axios from "axios";
 import {store} from "../store/store.js";
-import AOS from "aos";
 
 export default {
-	data() {
-		return {
-			store,
-			apartment: null,
-		};
-	},
+  data() {
+    return {
+      store,
+      apartment: null,
+    };
+  },
 
-	methods: {
-		sendMessage(e) {
-			e.preventDefault();
+  methods: {
+    sendMessage() {
+      let currentObj = this;
+      console.log("EMAIL: ", this.email, " - MESSAGE: ", this.message);
+      axios
+          .post("http://localhost:8000/yourPostApi", {
+            email: this.email,
+            message: this.message,
+          })
 
-			let currentObj = this;
-			console.log("EMAIL: ", this.email, " - MESSAGE: ", this.message);
-			axios
-				.post("http://localhost:8000/yourPostApi", {
-					email: this.email,
-					message: this.message,
-				})
+          .then(function (response) {
+            currentObj.output = response.data;
+          })
 
-				.then(function (response) {
-					currentObj.output = response.data;
-				})
+          .catch(function (error) {
+            currentObj.output = error;
+          });
+    },
+    getApartmentCoverImage(apartment) {
+      return this.store.backEndStorageURL + apartment.images[0].image_path;
+    },
+    getApartmentAvailability() {
+      return this.apartment.is_available
+          ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
+          : 'Not Available';
+    }
+  },
 
-				.catch(function (error) {
-					currentObj.output = error;
-				});
-		},
-		getApartmentCoverImage(apartment) {
-			return this.store.backEndStorageURL + apartment.images[0].image_path;
-		},
-	},
-
-	mounted() {
-		const id = this.$route.params.id;
-		axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
-			this.apartment = response.data;
-			console.log(this.apartment);
-		});
-	},
+  mounted() {
+    const id = this.$route.params.id;
+    axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
+      this.apartment = response.data;
+      console.log(this.apartment);
+    });
+  },
 };
 </script>
 
 <template>
-	<div v-if="apartment" class="container-fluid">
-		<div class="ms-container">
-			<h1>Information request</h1>
-			<div class="summary">
-				<div class="img-container">
-					<img
-						class="main-image"
-						:src="getApartmentCoverImage(apartment)"
-						alt="{{apartment.name}}" />
-				</div>
-				<div class="info-container">
-					<h3>
-						Location: <span class="data">{{ apartment.name }}</span>
-					</h3>
-					<h3>
-						Host: <span class="data">{{ apartment.user.username }}</span>
-					</h3>
-					<h3>
-						Address:
-						<p class="data">{{ apartment.address.street }}</p>
-						<p class="data">
-							{{ apartment.address.zip }} • {{ apartment.address.city }}
-						</p>
-					</h3>
+  <div v-if="apartment" class="container">
+    <h2 class="text-center mt-3">Contact Apartment Owner</h2>
+    <div class="apartment-wrapper__data mt-4 row g-4 justify-content-between">
+      <div class="col-md-5 d-flex align-items-center">
+        <div class="data__img-wrapper">
+          <img
+              class="img-wrapper__img"
+              :src="getApartmentCoverImage(apartment)"
+              alt="{{apartment.name}}"/>
+        </div>
+      </div>
+      <div class="col-md-6 d-flex align-items-center data__info-wrapper ">
+        <div class="info-wrapper__details-card row justify-content-center g-1 p-4">
+          <div class="col-12 details__name fs-4 fw-medium">{{ apartment.name }}</div>
+          <div class="col-12 details__location--address">
+            <i class="fa-solid fa-location-dot"></i>
+            {{ apartment.address.street + ', ' + apartment.address.city + ', ' + apartment.address.zip }}
+          </div>
+          <div class="col-12 details__owner"><strong> Owner:</strong>
+            {{ apartment.user.name + ' ' + apartment.user.last_name }}
+          </div>
+          <div class="col-8 col-sm-12 details__other mt-4 p-3">
+            <div class="other__card d-flex justify-content-center gap-1">
+              <div class="">Rooms: <strong>{{ apartment.rooms }}</strong></div>
+              <div class="">Bathrooms: <strong>{{ apartment.bathrooms }}</strong></div>
+              <div class="">Beds: <strong>{{ apartment.beds }}</strong></div>
+              <div class="">Square Meters: <strong>{{ apartment.square_meters }}</strong></div>
+            </div>
+            <div class="other__status mt-3 d-flex justify-content-center">
+              <div v-html="getApartmentAvailability()"
+                   class="status__element"
+                   :class="{ available: apartment.is_available === 1, not_available: apartment.is_available === 0}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-wrapper mt-4 row g-4 justify-content-between">
+      <form class="col-sm-12" @submit.prevent="sendMessage">
+        <div class="form-body row">
+          <div class="col-md-6 field">
+            <label for="email" class="form-label">Your email here:</label>
+            <input
+                type="email"
+                class="form-control"
+                id="email"
+                v-model="email"/>
+          </div>
+          <div class="col-md-6 field">
+            <label for="message" class="form-label">Your message here:</label>
+            <textarea
+                class="form-control"
+                id="message"
+                rows="5"
+                v-model="message"></textarea>
+          </div>
+        </div>
+        <div class="form-buttons">
+          <router-link
+              :to="{name: 'apartment', params: {id: apartment.id}}"
+              class="button-general button-back">
+            Back
+          </router-link>
 
-					<p class="apartment-data">
-						Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} •
-						Bathrooms: {{ apartment.bathrooms }} • Footage:
-						{{ apartment.square_meters }} mq
-					</p>
-				</div>
-			</div>
+          <button
+              @click="sendMessage"
+              type="submit"
+              class="button-general button-send"
+              data-bs-toggle="modal"
+              data-bs-target="#successSend">
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-			<form action="" @submit="sendMessage">
-				<div class="form-body">
-					<div class="field mb-3">
-						<label for="email" class="form-label">Your email here:</label>
-						<input
-							type="email"
-							class="form-control"
-							id="email"
-							v-model="email" />
-					</div>
-					<div class="field mb-3">
-						<label for="message" class="form-label">Your message here:</label>
-						<textarea
-							class="form-control"
-							id="message"
-							rows="5"
-							v-model="message"></textarea>
-					</div>
-				</div>
-				<div class="form-buttons">
-					<router-link
-						:to="{name: 'apartment', params: {id: apartment.id}}"
-						class="button-general button-back">
-						Back
-					</router-link>
-
-					<button
-						@click="sendMessage"
-						type="submit"
-						class="button-general button-send"
-						data-bs-toggle="modal"
-						data-bs-target="#successSend">
-						Send
-					</button>
-				</div>
-			</form>
-		</div>
-	</div>
-
-	<!-- Modal -->
-	<div
-		class="modal fade"
-		id="successSend"
-		data-bs-backdrop="static"
-		data-bs-keyboard="false"
-		tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-					<button
-						type="button"
-						class="btn-close"
-						data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">...</div>
-				<div class="modal-footer">
-					<button
-						type="button"
-						class="button-general button-send"
-						data-bs-dismiss="modal">
-						Close
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+  <!-- Modal -->
+  <div
+      class="modal fade"
+      id="successSend"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"></button>
+        </div>
+        <div class="modal-body">...</div>
+        <div class="modal-footer">
+          <button
+              type="button"
+              class="button-general button-send"
+              data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-@use "../assets/partials/variables" as *;
-
-.ms-container {
-	max-width: 80vw;
-	margin-inline: auto;
-	min-height: calc(100vh - 70px - 50px);
-	padding-top: 2rem;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
+@use "../assets/partials/ms-variables" as *;
 
 h1 {
-	font-weight: 600;
+  font-weight: 600;
 }
 
-.summary {
-	padding: 2rem 0;
-	display: flex;
-	justify-content: space-between;
+.apartment-wrapper__data {
 
-	.img-container {
-		width: 25%;
+  .data__img-wrapper {
 
-		img {
-			width: 100%;
-			aspect-ratio: 3 / 2.5;
-			object-fit: cover;
-			object-position: center;
-			border-radius: 20px;
-			box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
-				-5px 5px 5px rgba(120, 120, 120, 0.4);
-		}
-	}
+    img {
+      width: 100%;
+      aspect-ratio: 3 / 2.5;
+      object-fit: cover;
+      object-position: center;
+      border-radius: $ms-border-radius-m;
+      box-shadow: $ms-box-shadow-l;
+    }
+  }
 
-	.info-container {
-		width: 60%;
-		font-weight: 300;
-		color: $color-purple;
+  .data__info-wrapper {
 
-		h3,
-		.data {
-			margin-bottom: 1rem;
-			line-height: 2.3rem;
-			font-size: 1.3rem;
-		}
-		.data {
-			font-weight: 600;
-			color: $color-dark;
-		}
+    .info-wrapper__details-card {
+      box-shadow: $ms-box-shadow-l;
+      border-radius: $ms-border-radius-m;
 
-		.apartment-data {
-			font-size: 1.2rem;
-			margin: 3rem 0 1rem 0;
-			color: $color-dark;
-		}
-	}
-}
+      .details__location--address {
+        transition: $ms-link-transition-s;
+        cursor: default;
 
-.form-body {
-	display: flex;
-	width: 100%;
-	margin-inline: auto;
-	justify-content: space-between;
+        &:hover {
+          color: $ms-color-purple;
+        }
+      }
 
-	.field {
-		width: 45%;
-	}
+      .details__other {
+        color: $ms-color-dark;
+        box-shadow: $ms-box-shadow-l;
+        border-radius: $ms-border-radius-m;
+
+        .other__card {
+          font-size: 13px;
+        }
+
+        .status__element {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          gap: 10px;
+
+
+        }
+
+        .available {
+          color: $ms-color-light;
+          background-color: rgb(1, 125, 1);
+          padding: 4px 10px 6px 10px;
+          border-radius: 10px;
+          display: inline-block;
+        }
+
+        .not_available {
+          color: $ms-color-light;
+          background-color: rgb(145, 0, 0);
+          padding: 4px 10px 6px 10px;
+          border-radius: 10px;
+          display: inline-block;
+        }
+      }
+    }
+  }
 }
 
 .form-buttons {
-	display: flex;
-	justify-content: space-evenly;
-	margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 2rem;
 }
 
 .button-general {
-	border: none;
-	border-radius: 10px;
-	padding: 0.5rem 1.5rem;
-	font-size: 1rem;
-	font-weight: 600;
-	text-decoration: none;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .button-back {
-	background-color: $color-dark;
-	color: $color-light;
+  background-color: $ms-color-dark;
+  color: $ms-color-light;
 }
 
 .button-send {
-	background-color: $color-blue;
-	color: $color-light;
+  background-color: $ms-color-blue;
+  color: $ms-color-light;
 }
 
 .modal {
-	background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .modal-content {
-	background-color: $color-light;
-	color: $color-dark;
-	border: 1px solid $color-purple;
-	border-radius: 20px;
+  background-color: $ms-color-light;
+  color: $ms-color-dark;
+  border: 1px solid $ms-color-purple;
+  border-radius: 20px;
 
-	.button-close {
-		background-color: $color-dark;
-		color: $color-light;
-	}
+  .button-close {
+    background-color: $ms-color-dark;
+    color: $ms-color-light;
+  }
 
-	.button-send {
-		background-color: $color-blue;
-		color: $color-light;
-	}
+  .button-send {
+    background-color: $ms-color-blue;
+    color: $ms-color-light;
+  }
 }
 </style>

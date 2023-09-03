@@ -103,7 +103,7 @@ export default {
 		<h1>{{ apartment.name }}</h1>
 		<div class="grid-container">
 			<img
-				class="main-image"
+				class="img-wrapper__img"
 				:src="getApartmentCoverImage(apartment)"
 				alt="{{apartment.name}}"
 				data-bs-toggle="offcanvas"
@@ -136,7 +136,7 @@ export default {
 					</h3>
 
 					<!-- General information -->
-					<p class="apartment-data">
+					<p class="info-wrapper__details-card">
 						Rooms: {{ apartment.rooms }} • Beds: {{ apartment.beds }} •
 						Bathrooms: {{ apartment.bathrooms }} • Footage:
 						{{ apartment.square_meters }} mq
@@ -232,7 +232,7 @@ export default {
 		<div class="offcanvas-body">
 			<div class="offcanvas-images">
 				<img
-					class="main-image"
+					class="img-wrapper__img"
 					:src="getApartmentCoverImage(apartment)"
 					alt="{{apartment.name}}" />
 				<img
@@ -257,7 +257,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@use "../assets/partials/variables" as *;
+@use "../assets/partials/ms-variables" as *;
 
 .container-fluid {
 	max-width: 80vw;
@@ -280,14 +280,14 @@ h1 {
 	width: 30px;
 	height: 30px;
 	border: none;
-	background-color: $color-light;
+	background-color: $ms-color-light;
 	border-radius: 50%;
-	color: $color-dark;
+	color: $ms-color-dark;
 	transition: all 250ms;
 
 	&:hover {
-		background-color: $color-purple;
-		color: $color-light;
+		background-color: $ms-color-purple;
+		color: $ms-color-light;
 	}
 }
 
@@ -308,7 +308,7 @@ h1 {
 			-5px 5px 5px rgba(120, 120, 120, 0.4);
 	}
 
-	.main-image {
+	.img-wrapper__img {
 		grid-column: 1 / 3;
 		grid-row: 1 / 3;
 		border-radius: 20px 0 0 20px;
@@ -349,7 +349,7 @@ h1 {
 	span {
 		margin-right: 2rem;
 		text-align: center;
-		color: $color-light;
+		color: $ms-color-light;
 	}
 
 	.available {
@@ -367,7 +367,7 @@ h1 {
 	}
 
 	.sponsored {
-		background-color: $color-purple;
+		background-color: $ms-color-purple;
 		padding: 4px 10px 6px 10px;
 		border-radius: 10px;
 		display: inline-block;
@@ -404,8 +404,8 @@ h1 {
 		align-items: center;
 		padding: 2rem 3rem;
 		text-align: center;
-		background-color: $color-light;
-		border: 1px solid $color-purple;
+		background-color: $ms-color-light;
+		border: 1px solid $ms-color-purple;
 		border-radius: 20px;
 		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
 			-5px 5px 5px rgba(120, 120, 120, 0.4);
@@ -417,8 +417,8 @@ h1 {
 		}
 
 		.message-button {
-			background-color: $color-blue;
-			color: $color-light;
+			background-color: $ms-color-blue;
+			color: $ms-color-light;
 			text-decoration: none;
 		}
 	}
@@ -427,7 +427,7 @@ h1 {
 .details-section {
 	width: 100%;
 	padding-bottom: 3rem;
-	border-bottom: 1px solid $color-purple;
+	border-bottom: 1px solid $ms-color-purple;
 	margin-bottom: 1rem;
 
 	h3 {
@@ -436,7 +436,7 @@ h1 {
 		font-weight: 600;
 	}
 
-	.apartment-data {
+	.info-wrapper__details-card {
 		font-size: 1.2rem;
 		margin: 1rem 0;
 	}
@@ -454,7 +454,7 @@ ul {
 	padding: 0;
 
 	.icon {
-		color: $color-purple;
+		color: $ms-color-purple;
 		margin-right: 1rem;
 	}
 
@@ -471,7 +471,7 @@ ul {
 	margin-bottom: 7rem;
 	box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
 		-5px 5px 5px rgba(120, 120, 120, 0.4);
-	border: 1px solid $color-dark;
+	border: 1px solid $ms-color-dark;
 	border-radius: 20px;
 }
 
@@ -503,7 +503,7 @@ ul {
 	align-content: center;
 	justify-content: center;
 
-	.main-image {
+	.img-wrapper__img {
 		width: 100%;
 		aspect-ratio: 2 / 1.5;
 	}
@@ -539,7 +539,7 @@ ul {
 		.end-image-bottom {
 			display: none;
 		}
-		.main-image {
+		.img-wrapper__img {
 			width: 100%;
 			grid-column: 1 / -1;
 			grid-row: 1 / -1;
@@ -584,8 +584,8 @@ ul {
 			flex-direction: row;
 			justify-content: center;
 			align-items: center;
-			background-color: $color-light;
-			border-top: 1px solid $color-purple;
+			background-color: $ms-color-light;
+			border-top: 1px solid $ms-color-purple;
 			border-radius: 0;
 			box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
 				-5px 5px 5px rgba(120, 120, 120, 0.4);
@@ -599,7 +599,7 @@ ul {
 	.details-section {
 		padding: 0.5rem;
 
-		.apartment-data {
+		.info-wrapper__details-card {
 			font-size: 1.2rem;
 			margin: 1rem 0;
 		}
