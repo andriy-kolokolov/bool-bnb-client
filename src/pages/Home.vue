@@ -6,6 +6,7 @@ import { ref } from "vue";
 export default {
   data() {
     return {
+      isLoading: false,
       store,
       arrApartments: [],
       showImg: ref(-1),
@@ -13,10 +14,32 @@ export default {
     };
   },
   methods: {
+    // getFilteredApartments() {
+    //   this.isLoading = true;
+    //   this.gettingApartments = false;
+    //   this.arrApartments = [];
+    //   axios
+    //     .get(store.baseUrlApi + "search", {
+    //       params: {
+    //         lat: 14.2488,
+    //         lon: 40.8359,
+    //         radius: 100,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       this.arrApartments = response.data.apartments;
+    //       console.log(response.data);
+    //       console.log(this.arrApartments);
+    //       this.gettingApartments = true;
+    //       this.isLoading = false;
+    //     });
+    // },
     getApartments() {
+      this.isLoading = true;
       axios.get(this.store.baseUrlApi + "apartments").then((response) => {
         this.arrApartments = response.data;
         this.gettingApartments = true;
+        this.isLoading = false;
       });
     },
     getApartmentCoverImage(apartment) {
@@ -30,69 +53,75 @@ export default {
 </script>
 
 <template>
-  <div class="style" v-if="gettingApartments">
-    <router-link
-      :to="`/apartment/${apartment.id}`"
-      v-for="(apartment, index) in arrApartments"
-      :key="apartment.id"
-      class="routerstyle"
-      @mouseover="showImg = index"
-      @mouseout="showImg = ''"
-    >
-      <div class="apartment_cards">
-        <img
-          class="cover_img"
-          :src="getApartmentCoverImage(apartment)"
-          :alt="apartment.name"
-        />
-        <!-- SECONDA IMMAGINE
+  <div class="main-body">
+    <span class="loader" v-if="isLoading"></span>
+    <!-- <button @click="getFilteredApartments">
+      search
+    </button> -->
+    <div class="style" v-if="gettingApartments">
+      <router-link
+        :to="`/apartment/${apartment.id}`"
+        v-for="(apartment, index) in arrApartments"
+        :key="apartment.id"
+        class="routerstyle"
+        @mouseover="showImg = index"
+        @mouseout="showImg = ''"
+      >
+        <div class="apartment_cards">
+          <img
+            class="cover_img"
+            :src="getApartmentCoverImage(apartment)"
+            :alt="apartment.name"
+          />
+          <!-- SECONDA IMMAGINE
             <img
             v-if="index === showImg"
             :src="apartment.images[1].image_path"
             :alt="apartment.name"
           /> -->
-        <div class="info">
-          <div class="info_container">
-            <h5>{{ apartment.name }}</h5>
-            <h6>
-              <i class="fa-solid fa-location-dot"></i>
-              {{ apartment.address.city }}
-            </h6>
+          <div class="info">
+            <div class="info_container">
+              <h5>{{ apartment.name }}</h5>
+              <h6>
+                <i class="fa-solid fa-location-dot"></i>
+                {{ apartment.address.city }}
+              </h6>
+            </div>
+          </div>
+          <div class="more_info">
+            <!-- {{ apartment.is_available }} -->
+            <span
+              class="ms-label"
+              :class="{
+                available: apartment.is_available === 1,
+                none: apartment.is_available === 0,
+              }"
+              ><i class="fa-solid fa-calendar-check"></i>
+              <span class="ms-deep-label">Available</span></span
+            >
+            <span
+              class="ms-label"
+              :class="{
+                not_available: apartment.is_available === 0,
+                none: apartment.is_available === 1,
+              }"
+              ><i class="fa-solid fa-calendar-xmark"></i>
+              <span class="ms-deep-label">Not Available</span></span
+            >
+            <span
+              class="ms-sponsor-label"
+              :class="{
+                sponsor: apartment.is_sponsored === 1,
+                none: apartment.is_sponsored === 0,
+              }"
+            >
+              <!-- {{ apartment.is_sponsored }} -->
+              <i class="fa-solid fa-medal"></i
+            ></span>
           </div>
         </div>
-        <div class="more_info">
-          <!-- {{ apartment.is_available }} -->
-          <span
-            class="ms-label"
-            :class="{
-              available: apartment.is_available === 1,
-              none: apartment.is_available === 0,
-            }"
-            ><i class="fa-solid fa-calendar-check"></i>
-            <span class="ms-deep-label">Available</span></span
-          >
-          <span
-            class="ms-label"
-            :class="{
-              not_available: apartment.is_available === 0,
-              none: apartment.is_available === 1,
-            }"
-            ><i class="fa-solid fa-calendar-xmark"></i>
-            <span class="ms-deep-label">Not Available</span></span
-          >
-          <span
-            class="ms-sponsor-label"
-            :class="{
-              sponsor: apartment.is_sponsored === 1,
-              none: apartment.is_sponsored === 0,
-            }"
-          >
-            <!-- {{ apartment.is_sponsored }} -->
-            <i class="fa-solid fa-medal"></i
-          ></span>
-        </div>
-      </div>
-    </router-link>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -110,6 +139,77 @@ export default {
   opacity: 0;
 }
 
+// template
+template {
+  position: relative;
+}
+
+// body
+.main-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+}
+
+// loader
+$loader-size: 150px;
+.loader {
+  width: $loader-size;
+  height: $loader-size;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: #485ba1 #485ba1 transparent #485ba1;
+  box-sizing: border-box;
+  animation: rotation 1.5s linear infinite;
+}
+.loader::after,
+.loader::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 3px solid;
+  border-color: transparent transparent #9153a9 #9153a9;
+  width: calc($loader-size - 30px);
+  height: calc($loader-size - 30px);
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotationBack 0.6s linear infinite;
+  transform-origin: center center;
+}
+.loader::before {
+  width: calc($loader-size - 60px);
+  height: calc($loader-size - 60px);
+  border-color: #1e1e1e #1e1e1e transparent transparent;
+  animation: rotation 1.5s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+// inizio content home
 .style {
   width: fit-content;
   display: flex;

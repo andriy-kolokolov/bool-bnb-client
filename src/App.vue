@@ -1,6 +1,6 @@
 <script>
-import { RouterLink, RouterView } from "vue-router";
 import { store } from "@/store/store.js";
+import { RouterLink, RouterView } from "vue-router";
 import AppHeader from "./components/AppHeader.vue";
 import AppFooter from "./components/AppFooter.vue";
 
