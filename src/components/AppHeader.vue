@@ -1,12 +1,10 @@
 <script>
 import { store } from "@/store/store.js";
 import AppMenu from "./AppMenu.vue";
-import AppSearch from "./AppSearch.vue";
 
 export default {
   components: {
     AppMenu,
-    AppSearch,
   },
   data() {
     return {
@@ -28,9 +26,6 @@ export default {
         />
         <img src="../assets/img/logo-b.png" alt="logo-small" class="ms-small" />
       </RouterLink>
-
-      <!-- Search -->
-      <AppSearch />
 
       <!-- Menu -->
       <AppMenu />
@@ -69,6 +64,19 @@ nav {
 
     .ms-small {
       display: none;
+    }
+  }
+}
+@media only screen and (max-width: 700px) {
+  .myContainer {
+    .image {
+      .ms-total {
+        display: none;
+      }
+
+      .ms-small {
+        display: inline-block;
+      }
     }
   }
 }

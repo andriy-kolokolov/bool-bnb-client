@@ -232,16 +232,6 @@ export default {
 
 @media only screen and (max-width: 700px) {
   .myContainer {
-    .image {
-      .ms-total {
-        display: none;
-      }
-
-      .ms-small {
-        display: inline-block;
-      }
-    }
-
     .routes {
       width: fit-content;
       $blue: rgb(71, 92, 163);
