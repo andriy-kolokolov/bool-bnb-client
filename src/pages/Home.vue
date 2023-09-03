@@ -533,8 +533,8 @@ export default {
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     background: rgb(71, 92, 163);
     cursor: pointer;
@@ -689,7 +689,7 @@ export default {
         bottom: -15px;
         transition: 0.3s ease;
         width: 65%;
-        height: 12vh;
+        height: 14vh;
         align-self: end;
         display: flex;
         flex-direction: column;
