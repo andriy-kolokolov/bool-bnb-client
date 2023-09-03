@@ -1,32 +1,50 @@
 <script>
 import axios from "axios";
 import {store} from "../store/store.js";
+import {TransitionGroup} from "vue";
 
 export default {
   data() {
     return {
       store,
+      visitor: null,  // return is_authenticated_user ? user : null;
       apartment: null,
+      msg_sending: false,
+      is_msg_send_successfully: false,
+      is_msg_send_fail: false,
     };
   },
 
   methods: {
+    refreshSendingStatus() {
+      setTimeout(() => {
+        this.msg_sending = false;
+        this.is_msg_send_successfully = false;
+        this.is_msg_send_fail = false;
+      }, 2000);
+    },
     sendMessage() {
-      let currentObj = this;
-      console.log("EMAIL: ", this.email, " - MESSAGE: ", this.message);
-      axios
-          .post("http://localhost:8000/yourPostApi", {
-            email: this.email,
-            message: this.message,
+      this.msg_sending = true;
+      axios.post(store.baseUrlApi + "send-message", {
+        apartment_id: this.apartment.id,
+        guest_name: 'if authenticated username', // todo
+        guest_email: this.email,
+        message: this.message,
+      })
+          .then(response => {
+            if (response.data.status === true) {
+              this.is_msg_send_successfully = true;
+            } else {
+              this.is_msg_send_fail = true;
+            }
+            this.msg_sending = false;
           })
-
-          .then(function (response) {
-            currentObj.output = response.data;
+          .catch(error => {
+            console.log(error);
           })
-
-          .catch(function (error) {
-            currentObj.output = error;
-          });
+          .finally(
+              this.refreshSendingStatus
+          );
     },
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
@@ -34,7 +52,7 @@ export default {
     getApartmentAvailability() {
       return this.apartment.is_available
           ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
-          : 'Not Available';
+          : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
     }
   },
 
@@ -99,6 +117,17 @@ export default {
                 v-model="email"/>
           </div>
           <div class="col-md-6 field">
+            <Transition-Group name="fade">
+              <div v-if="msg_sending" class="alert alert-primary" role="alert" key="msg_sending">
+                Sending message...
+              </div>
+              <div v-if="is_msg_send_successfully" class="alert alert-success" role="alert" key="is_msg_send_successfully">
+                Message Sent Successfully
+              </div>
+              <div v-if="is_msg_send_fail" class="alert alert-danger" role="alert" key="is_msg_send_fail">
+                Message Sending Fail :(
+              </div>
+            </Transition-Group>
             <label for="message" class="form-label">Your message here:</label>
             <textarea
                 class="form-control"
@@ -107,59 +136,45 @@ export default {
                 v-model="message"></textarea>
           </div>
         </div>
-        <div class="form-buttons">
-          <router-link
-              :to="{name: 'apartment', params: {id: apartment.id}}"
-              class="button-general button-back">
-            Back
-          </router-link>
+        <div class="form-buttons mt-4 row g-4 justify-content-between">
+          <div class="col d-flex justify-content-center">
+            <router-link
+                :to="{name: 'apartment', params: {id: apartment.id}}"
+                class="button-general button-back">
+              Back
+            </router-link>
+          </div>
 
-          <button
-              @click="sendMessage"
-              type="submit"
-              class="button-general button-send"
-              data-bs-toggle="modal"
-              data-bs-target="#successSend">
-            Send
-          </button>
+          <div class="col d-flex justify-content-center">
+            <button
+                @click="sendMessage"
+                type="submit"
+                class="button-general button-send"
+                data-bs-toggle="modal"
+                data-bs-target="#successSend">
+              Send
+            </button>
+          </div>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal -->
-  <div
-      class="modal fade"
-      id="successSend"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-          <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"></button>
-        </div>
-        <div class="modal-body">...</div>
-        <div class="modal-footer">
-          <button
-              type="button"
-              class="button-general button-send"
-              data-bs-dismiss="modal">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <style lang="scss" scoped>
 @use "../assets/partials/ms-variables" as *;
+
+// VUE TRANSITION
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 
 h1 {
   font-weight: 600;
@@ -169,21 +184,33 @@ h1 {
 
   .data__img-wrapper {
 
+
     img {
+      transition: $ms-link-transition-s;
       width: 100%;
       aspect-ratio: 3 / 2.5;
       object-fit: cover;
       object-position: center;
       border-radius: $ms-border-radius-m;
       box-shadow: $ms-box-shadow-l;
+
+      &:hover {
+        scale: 1.02;
+      }
     }
   }
 
   .data__info-wrapper {
 
+
     .info-wrapper__details-card {
       box-shadow: $ms-box-shadow-l;
       border-radius: $ms-border-radius-m;
+      transition: $ms-link-transition-s;
+
+      &:hover {
+        scale: 1.02;
+      }
 
       .details__location--address {
         transition: $ms-link-transition-s;
