@@ -198,7 +198,6 @@ export default {
 
           <div class="col d-flex justify-content-center">
             <button
-              @click="sendMessage"
               type="submit"
               class="button-general button-send"
               data-bs-toggle="modal"

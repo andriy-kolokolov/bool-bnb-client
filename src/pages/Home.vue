@@ -34,7 +34,7 @@ export default {
   methods: {
     loadData() {
       axios.get(`${this.store.baseUrlApi}apartments/`).then((response) => {
-        this.arrApartment = response.data;
+        this.arrApartments = response.data;
         console.log("Search");
         // console.log(this.arrApartment);
 
