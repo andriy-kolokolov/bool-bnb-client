@@ -116,10 +116,6 @@ export default {
 					" - Latitude: ",
 					store.latitude,
 				);
-
-				// 	setTimeout(() => {
-				// 		this.getFilteredApartments();
-				// 	}, 1000);
 			});
 		},
 
