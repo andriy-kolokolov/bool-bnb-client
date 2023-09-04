@@ -503,7 +503,7 @@ export default {
     outline: none;
     width: 300px;
     border: 2px solid rgb(71, 92, 163);
-    // border-radius: 20px;
+    border-radius: 5px;
     padding: 5px 15px 5px 15px;
     font-size: 1.3em;
   }
@@ -512,15 +512,14 @@ export default {
     width: 300px;
     border: 2px solid rgb(71, 92, 163);
     border-top: none;
-    border-radius: 0px;
+    border-radius: 5px;
     padding: 5px 15px 5px 15px;
     font-size: 1.15em;
-    overflow-y: scroll;
+    scrollbar-color: transparent transparent;
     scrollbar-width: none;
     -ms-overflow-style: none;
 
-    ::-webkit-scrollbar {
-      width: 0;
+    &::-webkit-scrollbar {
       display: none;
     }
   }
