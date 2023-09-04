@@ -12,7 +12,7 @@ export default {};
 
 <style scoped>
 .body {
-  background-color: #f7f7f7;
+  background-color: #fafafa;
   display: flex;
   justify-content: center;
   align-items: center;

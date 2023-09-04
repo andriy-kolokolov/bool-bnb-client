@@ -10,7 +10,7 @@ export default {
   data() {
     return {
       store,
-      gettingApartments: false,
+      gettingApartments: true,
       isLoading: true,
       arrApartments: [],
       arrServices: [],
@@ -80,8 +80,15 @@ export default {
         store.selectedServices = [];
         this.clearInput();
 
-        this.gettingApartments = true;
-        this.isLoading = false;
+        setTimeout(() => {
+          this.gettingApartments = true;
+          document.body.style.overflow = "hidden";
+
+          setTimeout(() => {
+            this.isLoading = false;
+            document.body.style.overflow = "auto";
+          }, 200);
+        }, 0);
       });
     },
 
@@ -667,7 +674,7 @@ export default {
   align-content: center;
   justify-content: center;
   margin-inline: auto;
-  padding-top: 3em;
+  padding-top: 3.3em;
   padding-bottom: 3em;
   .routerstyle {
     text-decoration: none;
