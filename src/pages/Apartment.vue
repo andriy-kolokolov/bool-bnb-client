@@ -419,7 +419,7 @@ h1 {
   .sticky-element {
     margin: auto 0 0 auto;
     position: sticky;
-    top: 0;
+    top: 1rem;
     right: 0;
     width: 100%;
     min-height: 40vh;

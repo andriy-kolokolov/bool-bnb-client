@@ -452,7 +452,7 @@ export default {
   top: 18px;
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;
+  width: 130px;
   padding: 5px;
   border: 0px;
   border-radius: 20px;
@@ -461,7 +461,7 @@ export default {
 }
 
 .inputSearch {
-  width: 150px;
+  width: 130px;
   padding: 5px;
   border: 0px;
   border-radius: 20px;
@@ -633,6 +633,9 @@ export default {
     text-decoration: none;
     width: calc((100% - 6em) / 5);
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .apartment_cards {
       max-height: 24rem;
       max-width: 24rem;

@@ -2,11 +2,16 @@
 import axios from "axios";
 import { store } from "../store/store.js";
 import { TransitionGroup } from "vue";
+import Loading from "../components/Loading.vue";
 
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
       store,
+      isLoading: true,
       visitor: null, // return is_authenticated_user ? user : null;
       apartment: null,
       msg_sending: false,
@@ -60,12 +65,14 @@ export default {
     axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
       this.apartment = response.data;
       console.log(this.apartment);
+      this.isLoading = false;
     });
   },
 };
 </script>
 
 <template>
+  <Loading v-if="this.isLoading" />
   <div
     v-if="apartment"
     class="container ms-height d-flex flex-column align-items-center justify-content-center"
@@ -134,7 +141,7 @@ export default {
     <div class="contact-wrapper mt-4 row g-4 justify-content-between w-100">
       <form class="col-sm-12" @submit.prevent="sendMessage">
         <div class="form-body row">
-          <div class="col-md-6 field">
+          <div class="col-md-12 field w-75 mx-auto">
             <label for="email" class="form-label">Your email here:</label>
             <input
               type="email"
@@ -143,7 +150,7 @@ export default {
               v-model="email"
             />
           </div>
-          <div class="col-md-6 field">
+          <div class="col-md-12 field w-75 mx-auto mt-3">
             <Transition-Group name="fade">
               <div
                 v-if="msg_sending"
