@@ -87,7 +87,7 @@ export default {
           setTimeout(() => {
             this.isLoading = false;
             document.body.style.overflow = "auto";
-          }, 200);
+          }, 220);
         }, 0);
       });
     },
@@ -200,8 +200,16 @@ export default {
         .then((response) => {
           this.arrApartments = response.data.apartments;
           console.log(this.arrApartments);
-          this.gettingApartments = true;
-          this.isLoading = false;
+
+          setTimeout(() => {
+            this.gettingApartments = true;
+            document.body.style.overflow = "hidden";
+
+            setTimeout(() => {
+              this.isLoading = false;
+              document.body.style.overflow = "auto";
+            }, 220);
+          }, 0);
         });
     },
   },
