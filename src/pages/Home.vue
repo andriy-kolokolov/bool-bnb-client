@@ -260,6 +260,7 @@ export default {
             <input
               name="searchBar"
               type="text"
+              autocomplete="off"
               class="ms-input"
               v-model="query"
               @input="getSuggestions"
