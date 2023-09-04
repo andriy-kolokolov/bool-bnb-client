@@ -246,17 +246,23 @@ export default {
       class="offcanvas-body d-flex align-items-center justify-content-center"
     >
       <form class="w-100">
-        <div class="d-flex align-items-center justify-content-around">
+        <div class="d-flex align-items-center justify-content-evenly">
           <!-- input -->
           <div class="input-container">
             <div class="search-box">
               <input
                 type="text"
+                class="ms-input"
                 v-model="query"
                 @input="getSuggestions"
                 @focus="clearInput"
               />
-              <select v-if="suggestions.length > 0" ref="selectBox" size="5">
+              <select
+                v-if="suggestions.length > 0"
+                ref="selectBox"
+                size="5"
+                class="ms-select-address"
+              >
                 <option
                   v-for="(suggestion, index) in suggestions"
                   :key="index"
@@ -492,6 +498,32 @@ export default {
 .search-box {
   display: flex;
   flex-direction: column;
+
+  .ms-input {
+    outline: none;
+    width: 300px;
+    border: 2px solid rgb(71, 92, 163);
+    // border-radius: 20px;
+    padding: 5px 15px 5px 15px;
+    font-size: 1.3em;
+  }
+
+  .ms-select-address {
+    width: 300px;
+    border: 2px solid rgb(71, 92, 163);
+    border-top: none;
+    border-radius: 0px;
+    padding: 5px 15px 5px 15px;
+    font-size: 1.15em;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    ::-webkit-scrollbar {
+      width: 0;
+      display: none;
+    }
+  }
 }
 
 // select
@@ -501,7 +533,9 @@ export default {
   gap: 2rem;
   align-items: center;
   justify-content: center;
+  font-size: 1.15em;
   .ms-select {
+    margin-top: 0.3rem;
     width: fit-content;
     outline: none;
   }
@@ -509,11 +543,14 @@ export default {
 
 .slidecontainer {
   width: 100%;
+  margin-top: 1rem;
+  font-size: 1.15em;
 }
 .slider-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 0.3rem;
 }
 .slider {
   width: 100%;
@@ -550,7 +587,7 @@ export default {
 }
 
 .check-container {
-  flex-basis: 35%;
+  width: 25%;
 
   .ms-check-label {
     font-size: 20px;
