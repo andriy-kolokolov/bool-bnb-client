@@ -219,22 +219,22 @@ export default {
     class="mySearch"
     type="button"
     data-bs-toggle="offcanvas"
-    data-bs-target="#offcanvasTop"
-    aria-controls="offcanvasTop"
+    data-bs-target="#offcanvas"
+    aria-controls="offcanvas"
   >
     Search <i class="fa-solid fa-magnifying-glass"></i>
   </button>
 
   <div
-    class="offcanvas offcanvas-top ms-height"
+    class="offcanvas offcanvas-start ms-width"
     tabindex="-1"
-    id="offcanvasTop"
+    id="offcanvas"
     aria-labelledby="offcanvasTopLabel"
   >
     <div
       class="offcanvas-header d-flex gap-3 align-items-center justify-content-center"
     >
-      <h5 class="offcanvas-title" id="offcanvasTopLabel">Search</h5>
+      <h5 class="offcanvas-title" id="offcanvasTopLabel">Search Section</h5>
       <button
         type="button"
         class="btn-close"
@@ -243,116 +243,115 @@ export default {
       ></button>
     </div>
     <div
-      class="offcanvas-body d-flex align-items-center justify-content-center"
+      class="offcanvas-body h-100 d-flex align-items-center justify-content-center"
     >
-      <form class="w-100">
-        <div class="d-flex align-items-center justify-content-evenly">
-          <!-- input -->
-          <div class="input-container">
-            <div class="search-box">
+      <form class="h-100 d-flex flex-column align-items-center">
+        <!-- input -->
+        <div class="input-container mt-5">
+          <div class="search-box">
+            <label for="SearchBar" class="mx-auto"
+              >Search for City or Address</label
+            >
+            <input
+              name="searchBar"
+              type="text"
+              class="ms-input"
+              v-model="query"
+              @input="getSuggestions"
+              @focus="clearInput"
+            />
+            <select
+              v-if="suggestions.length > 0"
+              ref="selectBox"
+              size="5"
+              class="ms-select-address"
+            >
+              <option
+                v-for="(suggestion, index) in suggestions"
+                :key="index"
+                :value="suggestion"
+                :selected="index === highlighted"
+                @click="selectSuggestion(suggestion)"
+              >
+                {{ suggestion }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- selects -->
+        <div
+          class="d-flex flex-column gap-2 align-items-center justify-content-center mt-5"
+        >
+          <!-- slider -->
+          <div class="slidecontainer mt-5">
+            <div class="slider-container">
               <input
-                type="text"
-                class="ms-input"
-                v-model="query"
-                @input="getSuggestions"
-                @focus="clearInput"
+                type="range"
+                name="km"
+                min="20"
+                max="500"
+                class="slider"
+                id="myRange"
+                v-model="radius"
               />
+              <div class="slider-value">{{ radius }} km</div>
+            </div>
+          </div>
+
+          <div class="mySelects mt-5">
+            <div
+              class="d-flex flex-column align-items-center justify-content-center"
+            >
+              <label for="rooms">Rooms</label>
               <select
-                v-if="suggestions.length > 0"
-                ref="selectBox"
-                size="5"
-                class="ms-select-address"
+                class="form-select form-select-sm ms-select"
+                name="rooms"
+                v-model="selectedRooms"
               >
                 <option
-                  v-for="(suggestion, index) in suggestions"
-                  :key="index"
-                  :value="suggestion"
-                  :selected="index === highlighted"
-                  @click="selectSuggestion(suggestion)"
+                  v-for="(mr, i) in this.maxRooms"
+                  :key="i"
+                  :value="i + 1"
                 >
-                  {{ suggestion }}
+                  {{ i + 1 }}
+                </option>
+              </select>
+            </div>
+            <div
+              class="d-flex flex-column align-items-center justify-content-center"
+            >
+              <label for="beds">Beds</label>
+              <select
+                class="form-select form-select-sm ms-select"
+                name="beds"
+                v-model="selectedBeds"
+              >
+                <option v-for="(mb, i) in this.maxBeds" :key="i" :value="i + 1">
+                  {{ i + 1 }}
                 </option>
               </select>
             </div>
           </div>
+        </div>
 
-          <!-- selects -->
-          <div
-            class="d-flex flex-column gap-2 align-items-center justify-content-center"
-          >
-            <div class="mySelects">
-              <div
-                class="d-flex flex-column align-items-center justify-content-center"
-              >
-                <label for="rooms">N. Room</label>
-                <select
-                  class="form-select form-select-sm ms-select"
-                  name="rooms"
-                  v-model="selectedRooms"
-                >
-                  <option
-                    v-for="(mr, i) in this.maxRooms"
-                    :key="i"
-                    :value="i + 1"
-                  >
-                    {{ i + 1 }}
-                  </option>
-                </select>
-              </div>
-              <div
-                class="d-flex flex-column align-items-center justify-content-center"
-              >
-                <label for="beds">N. Bed</label>
-                <select
-                  class="form-select form-select-sm ms-select"
-                  name="beds"
-                  v-model="selectedBeds"
-                >
-                  <option
-                    v-for="(mb, i) in this.maxBeds"
-                    :key="i"
-                    :value="i + 1"
-                  >
-                    {{ i + 1 }}
-                  </option>
-                </select>
-              </div>
-            </div>
+        <!-- checkbox -->
 
-            <!-- slider -->
-            <div class="slidecontainer">
-              <label for="myRange">Kilometers</label>
-              <div class="slider-container">
-                <input
-                  type="range"
-                  name="km"
-                  min="20"
-                  max="500"
-                  class="slider"
-                  id="myRange"
-                  v-model="radius"
-                />
-                <div class="slider-value">{{ radius }} km</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- checkbox -->
-
-          <div class="check-container row">
-            <label
-              v-for="(service, index) in this.arrServices"
-              :key="index"
-              class="container ms-check-label m-0 col-6"
-              >{{ service.name }}
-              <input
-                type="checkbox"
-                v-model="selectedServices"
-                :value="service.id"
-              />
-              <span class="checkmark"></span>
-            </label>
-          </div>
+        <div
+          class="check-container d-flex gap-1 flex-column align-items-center row mt-5"
+        >
+          <label
+            v-for="(service, index) in this.arrServices"
+            :key="index"
+            class="container ms-check-label m-0 col-12"
+            >{{ service.name }}
+            <input
+              type="checkbox"
+              v-model="selectedServices"
+              :value="service.id"
+            />
+            <span class="checkmark"></span>
+          </label>
         </div>
         <div
           class="mt-5 d-flex gap-3 align-items-center justify-content-center"
@@ -484,8 +483,8 @@ export default {
   color: white;
 }
 
-.ms-height {
-  height: 380px;
+.ms-width {
+  width: 500px;
 }
 
 // input
@@ -586,7 +585,7 @@ export default {
 }
 
 .check-container {
-  width: 25%;
+  width: fit-content;
 
   .ms-check-label {
     font-size: 20px;
