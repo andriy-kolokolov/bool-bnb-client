@@ -112,7 +112,10 @@ export default {
 	<Loading v-if="this.isLoading" />
 	<div v-if="this.isLoad">
 		<div v-if="apartment" class="container-fluid">
-			<h1>{{ apartment.name }}</h1>
+			<h1>
+				{{ apartment.name }}
+				<span class="badge"> <i class="fa-solid fa-medal"></i></span>
+			</h1>
 			<div class="grid-container">
 				<img
 					class="img-wrapper__img"
@@ -149,40 +152,24 @@ export default {
 
 						<!-- General information -->
 						<p class="info-wrapper__details-card">
-							Rooms: <strong>{{ apartment.rooms }}</strong> • Beds:
-							<strong>{{ apartment.beds }}</strong> • Bathrooms:
-							<strong>{{ apartment.bathrooms }}</strong> • Footage:
+							• Rooms: <strong>{{ apartment.rooms }}</strong>
+						</p>
+						<p class="info-wrapper__details-card">
+							• Beds:
+							<strong>{{ apartment.beds }}</strong>
+						</p>
+						<p class="info-wrapper__details-card">
+							• Bathrooms:
+							<strong>{{ apartment.bathrooms }}</strong>
+						</p>
+						<p class="info-wrapper__details-card">
+							• Footage:
 							<strong>{{ apartment.square_meters }} mq</strong>
 						</p>
 					</div>
 
 					<!-- Additional Information -->
-					<div class="details-section more-info" data-aos="fade-up-right">
-						<h3>What you need to know</h3>
-						<!-- {{ apartment.is_available }} -->
-						<span
-							:class="{
-								available: apartment.is_available,
-								none: !apartment.is_available,
-							}"
-							><i class="fa-solid fa-calendar-check"></i> Available</span
-						>
-						<span
-							:class="{
-								not_available: !apartment.is_available,
-								none: apartment.is_available,
-							}"
-							><i class="fa-solid fa-calendar-xmark"></i> Not Available</span
-						>
-						<span
-							:class="{
-								sponsored: apartment.is_sponsored,
-								none: !apartment.is_sponsored,
-							}">
-							<!-- {{ apartment.is_sponsored }} -->
-							<i class="fa-solid fa-medal"></i> Sponsored</span
-						>
-					</div>
+					<!-- <div class="details-section more-info" data-aos="fade-up-right"> -->
 
 					<!-- List of Services -->
 					<div class="details-section" data-aos="fade-up-right">
@@ -497,6 +484,11 @@ ul {
 	background-position: center center;
 	background-repeat: no-repeat;
 	color: blue !important;
+}
+
+.badge {
+	color: #9153a9;
+	font-size: 1.5rem;
 }
 
 .offcanvas-header,
