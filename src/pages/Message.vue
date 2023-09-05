@@ -378,7 +378,7 @@ export default {
 }
 
 .button-send {
-  background-color: $ms-color-purple;
+  background-color: $ms-color-blue;
   color: $ms-color-light;
 }
 
