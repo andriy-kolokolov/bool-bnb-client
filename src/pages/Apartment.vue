@@ -151,21 +151,35 @@ export default {
 						</h3>
 
 						<!-- General information -->
-						<p class="info-wrapper__details-card">
-							• Rooms: <strong>{{ apartment.rooms }}</strong>
-						</p>
-						<p class="info-wrapper__details-card">
-							• Beds:
-							<strong>{{ apartment.beds }}</strong>
-						</p>
-						<p class="info-wrapper__details-card">
-							• Bathrooms:
-							<strong>{{ apartment.bathrooms }}</strong>
-						</p>
-						<p class="info-wrapper__details-card">
-							• Footage:
-							<strong>{{ apartment.square_meters }} mq</strong>
-						</p>
+						<div class="general">
+							<p class="info-wrapper__details-card">
+								<span class="apartment-icon">
+									<i class="fa-solid fa-door-open"></i>
+								</span>
+								Rooms: <strong>{{ apartment.rooms }}</strong>
+							</p>
+							<p class="info-wrapper__details-card">
+								<span class="apartment-icon">
+									<i class="fa-solid fa-bed"></i>
+								</span>
+								Beds:
+								<strong>{{ apartment.beds }}</strong>
+							</p>
+							<p class="info-wrapper__details-card">
+								<span class="apartment-icon">
+									<i class="fa-solid fa-bath"></i>
+								</span>
+								Bathrooms:
+								<strong>{{ apartment.bathrooms }}</strong>
+							</p>
+							<p class="info-wrapper__details-card">
+								<span class="apartment-icon">
+									<i class="fa-solid fa-person-shelter"></i>
+								</span>
+								Footage:
+								<strong>{{ apartment.square_meters }} mq</strong>
+							</p>
+						</div>
 					</div>
 
 					<!-- Additional Information -->
@@ -185,8 +199,11 @@ export default {
 					<!-- Address -->
 					<div class="details-section" data-aos="fade-up-right">
 						<h3>Where you will be</h3>
-						<p>{{ apartment.address.street }}</p>
-						<p>{{ apartment.address.zip }} • {{ apartment.address.city }}</p>
+						<p class="address">
+							<i class="fa-solid fa-location-dot"></i>
+							{{ apartment.address.street }} • {{ apartment.address.zip }}
+							{{ apartment.address.city }}
+						</p>
 					</div>
 				</div>
 
@@ -343,42 +360,34 @@ h1 {
 	width: 65%;
 }
 
+.general {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+
+	i {
+		color: $ms-color-blue;
+		width: 2rem;
+		align-self: center;
+	}
+}
 .more-info {
 	font-size: 1rem;
 	font-weight: 300;
-
-	span {
-		margin-right: 2rem;
-		text-align: center;
-		color: $ms-color-light;
-	}
-
-	.available {
-		background-color: rgb(1, 125, 1);
-		padding: 4px 10px 6px 10px;
-		border-radius: 10px;
-		display: inline-block;
-	}
-
-	.not_available {
-		background-color: rgb(145, 0, 0);
-		padding: 4px 10px 6px 10px;
-		border-radius: 10px;
-		display: inline-block;
-	}
-
-	.sponsored {
-		background-color: $ms-color-purple;
-		padding: 4px 10px 6px 10px;
-		border-radius: 10px;
-		display: inline-block;
-	}
 
 	.none {
 		display: none;
 	}
 }
 
+.address {
+	font-size: 1.3rem;
+
+	i {
+		color: $ms-color-blue;
+		margin-right: 0.75rem;
+	}
+}
 .container-sticky {
 	width: 100%;
 	position: relative;
