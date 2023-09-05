@@ -483,11 +483,11 @@ ul {
 	background-size: contain;
 	background-position: center center;
 	background-repeat: no-repeat;
-	color: blue !important;
+	color: $ms-color-blue !important;
 }
 
 .badge {
-	color: #9153a9;
+	color: $ms-color-purple;
 	font-size: 1.5rem;
 }
 
