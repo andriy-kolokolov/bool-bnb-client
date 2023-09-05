@@ -72,11 +72,14 @@ export default {
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
     },
-    getApartmentAvailability() {
+    getApartmentAvailabilityElement() {
       return this.apartment.is_available
           ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
           : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
     },
+    getApartmentAddressElement() {
+      return '<div></div>'
+    }
   },
   created() {
     this.getVisitor();
@@ -95,14 +98,14 @@ export default {
 <template>
   <Loading v-if="isLoading"/>
   <h2 class="text-center mt-4">Contact Apartment Owner</h2>
-  <div class="container mt-5 mb-5 d-flex justify-content-center">
+  <div class="container mt-sm-5 mb-5 d-flex justify-content-center">
     <div
         v-if="apartment"
-        class="row  justify-content-around align-items-center"
+        class="row g-2 align-items-center"
     >
       <div class="col-12 col-lg-5 align-items-center data__info-wrapper">
         <div class="p-4 info-wrapper__details-card row justify-content-center">
-          <div class="ms-img-wrapper">
+          <div class="px-0 ms-img-wrapper">
             <img
                 class="ms-apartment-img"
                 :src="store.backEndStorageURL + apartment.images[0].image_path"
@@ -133,15 +136,22 @@ export default {
                   <strong>{{ apartment.beds }}</strong></div>
               </div>
             </div>
-            <div class="other__status mt-3 d-flex justify-content-center">
+            <div class="other__status mt-3 row justify-content-around">
               <div
-                  v-html="getApartmentAvailability()"
-                  class="status__element"
+                  v-html="getApartmentAvailabilityElement()"
+                  class="col-3 status__element"
                   :class="{
                 available: apartment.is_available === 1,
                 not_available: apartment.is_available === 0,
               }"
               ></div>
+              <div
+                  v-if="apartment.is_available"
+                  class="col-6 gap-1 status__address d-flex justify-content-center align-items-center"
+              >
+                <i class="fa-solid fa-map-location-dot"></i>
+                <div>{{ apartment.address.street + ', ' + apartment.address.city + ', ' + apartment.address.zip }}</div>
+              </div>
             </div>
           </div>
 
@@ -153,7 +163,7 @@ export default {
             class="contact-wrapper row g-4 justify-content-between"
         >
           <div class="form-body col-12 justify-content-center">
-            <div class="row mt-5 g-1 justify-content-center">
+            <div class="row g-1 justify-content-center">
               <!--    ALERTS START    -->
               <div
                   class="col-lg-10 alert-container"
@@ -175,7 +185,7 @@ export default {
                       class="alert alert-success alert-slide"
                       role="alert"
                   >
-                    Message Sent Successfully
+                    Message Sent Successfully!
                   </div>
                 </transition>
                 <transition appear name="slide-fade" mode="out-in">
@@ -306,75 +316,88 @@ export default {
     border-radius: $ms-border-radius-m;
     transition: $ms-link-transition-s;
 
+    @media only screen and (max-width: 576px) {
+      box-shadow: none;
+      border-radius: 0;
+    }
+
     &:hover {
       scale: 1.02;
     }
+  }
 
-    .ms-img-wrapper {
-      .ms-apartment-img {
-        max-width: 100%;
-        aspect-ratio: 3 / 2;
-        object-fit: cover;
-        border-radius: $ms-border-radius-m;
-        box-shadow: $ms-box-shadow-l;
-      }
-    }
-
-    .details__location--address {
-      transition: $ms-link-transition-s;
-      cursor: default;
-
-      &:hover {
-        color: $ms-color-purple;
-      }
-    }
-
-    .details__other {
-      color: $ms-color-dark;
-      box-shadow: $ms-box-shadow-l;
+  .ms-img-wrapper {
+    .ms-apartment-img {
+      max-width: 100%;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
       border-radius: $ms-border-radius-m;
+      box-shadow: $ms-box-shadow-l;
+    }
+  }
 
-      .other__card {
-        font-size: 13px;
+  .details__other {
+    color: $ms-color-dark;
+    box-shadow: $ms-box-shadow-l;
+    border-radius: $ms-border-radius-m;
 
-        & > div {
-          cursor: default;
-          transition: $ms-link-transition-m;
+    @media only screen and (max-width: 576px) {
+      box-shadow: none;
+      border-radius: 0;
+    }
 
-          & > .ms-badge {
-            color: white;
-            background-color: $ms-color-purple;
-            padding: 2px 5px;
-            border-radius: 5px;
-          }
+    .other__card {
+      font-size: 13px;
+
+      & > div {
+        cursor: default;
+        transition: $ms-link-transition-m;
+
+        & > .ms-badge {
+          color: white;
+          background-color: $ms-color-purple;
+          padding: 2px 5px;
+          border-radius: 5px;
         }
       }
+    }
 
-      .status__element {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 10px;
-      }
-
-      .available {
+    .other__status {
+      .status__address {
+        font-size: 13px;
         color: $ms-color-light;
+        box-shadow: $ms-box-shadow-l;
         background-color: rgb(1, 125, 1);
         padding: 4px 10px 6px 10px;
         border-radius: 10px;
         display: inline-block;
       }
+    }
 
-      .not_available {
-        color: $ms-color-light;
-        background-color: rgb(145, 0, 0);
-        padding: 4px 10px 6px 10px;
-        border-radius: 10px;
-        display: inline-block;
-      }
+    .status__element {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 10px;
+    }
+
+    .available {
+      color: $ms-color-light;
+      background-color: rgb(1, 125, 1);
+      padding: 4px 10px 6px 10px;
+      border-radius: 10px;
+    }
+
+    .not_available {
+      color: $ms-color-light;
+      background-color: rgb(145, 0, 0);
+      padding: 4px 10px 6px 10px;
+      border-radius: 10px;
+      display: inline-block;
     }
   }
 }
+
 
 .form-buttons {
   display: flex;
