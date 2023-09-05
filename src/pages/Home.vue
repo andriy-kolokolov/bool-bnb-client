@@ -422,25 +422,18 @@ export default {
           </div>
         </div>
         <div class="more_info">
-          <!-- {{ apartment.is_available }} -->
-          <span
-            class="ms-label"
-            :class="{
-              available: apartment.is_available === 1,
-              none: apartment.is_available === 0,
-            }"
-            ><i class="fa-solid fa-calendar-check"></i>
-            <span class="ms-deep-label">Available</span></span
+          <!-- stanze -->
+          <span class="ms-label"
+            ><i class="fa-solid fa-door-open"></i>
+            <span class="ms-deep-label">{{ apartment.rooms }}</span></span
           >
-          <span
-            class="ms-label"
-            :class="{
-              not_available: apartment.is_available === 0,
-              none: apartment.is_available === 1,
-            }"
-            ><i class="fa-solid fa-calendar-xmark"></i>
-            <span class="ms-deep-label">Not Available</span></span
+
+          <!-- letti -->
+          <span class="ms-label"
+            ><i class="fa-solid fa-bed"></i>
+            <span class="ms-deep-label">{{ apartment.beds }}</span></span
           >
+          <!-- isSponsor -->
           <span
             class="ms-sponsor-label"
             :class="{
@@ -804,12 +797,12 @@ export default {
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 10vh;
+        height: 9vh;
         align-self: end;
         display: flex;
         align-items: start;
         justify-content: center;
-        gap: 1em;
+        gap: 0.3em;
         z-index: -50;
         transition: 0.3s ease;
         border-bottom-left-radius: 20px;
@@ -819,24 +812,16 @@ export default {
           margin: 0;
           text-align: center;
           color: rgb(255, 255, 255);
+          background-color: #485ba1;
+          padding: 4px 10px 6px 10px;
+          border-radius: 10px;
+          display: inline-block;
+          padding: 4px 10px 6px 10px;
+          border-radius: 10px;
 
           i {
             margin-right: 0.5em;
           }
-        }
-
-        .available {
-          background-color: rgb(1, 125, 1);
-          padding: 4px 10px 6px 10px;
-          border-radius: 10px;
-          display: inline-block;
-        }
-
-        .not_available {
-          background-color: rgb(145, 0, 0);
-          padding: 4px 10px 6px 10px;
-          border-radius: 10px;
-          display: inline-block;
         }
 
         .ms-sponsor-label {
