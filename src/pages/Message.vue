@@ -93,10 +93,10 @@ export default {
   <Loading v-if="isLoading" />
   <div
     v-if="apartment"
-    class="container ms-height d-flex flex-column align-items-center justify-content-center"
+    class="container ms-height d-flex align-items-center justify-content-center"
   >
-    <h2 class="text-center pb-3">Contact Apartment Owner</h2>
-    <div class="col-md-6 d-flex align-items-center data__info-wrapper">
+    <div class="w-50 align-items-center data__info-wrapper">
+      <h2 class="text-center pb-5">Contact Apartment Owner</h2>
       <div
         class="info-wrapper__details-card row justify-content-center g-1 p-4"
       >
@@ -425,6 +425,9 @@ export default {
 }
 
 @media only screen and (max-width: 991px) {
+  .ms-height {
+    flex-direction: column;
+  }
   .data__info-wrapper {
     .info-wrapper__details-card {
       .ms-img {
