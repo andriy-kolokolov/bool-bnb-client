@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import {store} from "../store/store.js";
+import { store } from "../store/store.js";
 import Loading from "../components/Loading.vue";
 import auth from "@/store/auth.js";
 
@@ -11,9 +11,9 @@ export default {
   data() {
     return {
       store,
-      guest_name: '',
-      guest_email: '',
-      guest_message: '',
+      guest_name: "",
+      guest_email: "",
+      guest_message: "",
       isLoading: true,
       visitor: this.getVisitor,
       apartment: null,
@@ -26,10 +26,10 @@ export default {
   methods: {
     getVisitor() {
       if (auth.user === null) {
-        this.visitor = 'guest';
+        this.visitor = "guest";
       } else {
         this.visitor = auth.user;
-        this.guest_name = auth.user.name + ' ' + auth.user.last_name;
+        this.guest_name = auth.user.name + " " + auth.user.last_name;
         this.guest_email = auth.user.email;
       }
     },
@@ -43,36 +43,36 @@ export default {
     sendMessage() {
       this.msg_sending = true;
       axios
-          .post(store.baseUrlApi + "send-message", {
-            apartment_id: this.apartment.id,
-            guest_name: this.guest_name,
-            guest_email: this.guest_email,
-            message: this.guest_message,
-          })
-          .then((response) => {
+        .post(store.baseUrlApi + "send-message", {
+          apartment_id: this.apartment.id,
+          guest_name: this.guest_name,
+          guest_email: this.guest_email,
+          message: this.guest_message,
+        })
+        .then((response) => {
+          setTimeout(() => {
+            this.msg_sending = false;
+          }, 500);
+          if (response.data.status === true) {
             setTimeout(() => {
-              this.msg_sending = false;
-            }, 500);
-            if (response.data.status === true) {
-              setTimeout(() => {
-                this.is_msg_send_successfully = true;
-              }, 1200);
-            } else {
-              this.is_msg_send_fail = true;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-          .finally(this.refreshSendingStatus);
+              this.is_msg_send_successfully = true;
+            }, 1200);
+          } else {
+            this.is_msg_send_fail = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(this.refreshSendingStatus);
     },
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
     },
     getApartmentAvailability() {
       return this.apartment.is_available
-          ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
-          : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
+        ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
+        : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
     },
   },
   created() {
@@ -90,87 +90,101 @@ export default {
 </script>
 
 <template>
-  <Loading v-if="isLoading"/>
+  <Loading v-if="isLoading" />
   <div
-      v-if="apartment"
-      class="container mt-4 d-flex flex-column align-items-center justify-content-center"
+    v-if="apartment"
+    class="container ms-height d-flex flex-column align-items-center justify-content-center"
   >
-    <h2 class="text-center">Contact Apartment Owner</h2>
-    <div class="apartment-wrapper__data mt-4 row g-4 justify-content-between">
-      <div class="col-md-5 d-flex align-items-center">
-        <div class="data__img-wrapper">
-          <img
-              class="img-wrapper__img"
-              :src="getApartmentCoverImage(apartment)"
-              alt="{{apartment.name}}"
-          />
+    <h2 class="text-center pb-5">Contact Apartment Owner</h2>
+    <div class="col-md-6 d-flex align-items-center data__info-wrapper">
+      <div
+        class="info-wrapper__details-card row justify-content-center g-1 p-4"
+      >
+        <img
+          class="ms-img"
+          :src="store.backEndStorageURL + apartment.images[0].image_path"
+          :alt="apartment.name"
+        />
+        <div class="col-12 details__name fs-4 fw-medium">
+          {{ apartment.name }}
         </div>
-      </div>
-      <div class="col-md-6 d-flex align-items-center data__info-wrapper">
-        <div
-            class="info-wrapper__details-card row justify-content-center g-1 p-4"
-        >
-          <div class="col-12 details__name fs-4 fw-medium">
-            {{ apartment.name }}
-          </div>
-          <div class="col-12 details__location--address">
-            <i class="fa-solid fa-location-dot"></i>
-            {{
-              apartment.address.street +
-              ", " +
-              apartment.address.city +
-              ", " +
-              apartment.address.zip
-            }}
-          </div>
-          <div class="col-12 details__owner">
-            <strong> Owner:</strong>
-            {{ apartment.user.name + " " + apartment.user.last_name }}
-          </div>
-          <div class="col-8 col-sm-12 details__other mt-4 p-3">
-            <div class="other__card d-flex justify-content-center gap-1">
-              <div class="">
-                Rooms: <strong>{{ apartment.rooms }}</strong>
-              </div>
-              <div class="">
-                Bathrooms: <strong>{{ apartment.bathrooms }}</strong>
-              </div>
-              <div class="">
-                Beds: <strong>{{ apartment.beds }}</strong>
-              </div>
-              <div class="">
-                Square Meters: <strong>{{ apartment.square_meters }}</strong>
-              </div>
+        <div class="col-12 details__location--address">
+          <i class="fa-solid fa-location-dot"></i>
+          {{
+            apartment.address.street +
+            ", " +
+            apartment.address.city +
+            ", " +
+            apartment.address.zip
+          }}
+        </div>
+        <div class="col-12 details__owner">
+          <strong> Owner:</strong>
+          {{ apartment.user.name + " " + apartment.user.last_name }}
+        </div>
+        <div class="col-8 col-sm-12 details__other mt-4 p-3">
+          <div class="other__card d-flex justify-content-center gap-1">
+            <div class="">
+              Rooms: <strong>{{ apartment.rooms }}</strong>
             </div>
-            <div class="other__status mt-3 d-flex justify-content-center">
-              <div
-                  v-html="getApartmentAvailability()"
-                  class="status__element"
-                  :class="{
-                  available: apartment.is_available === 1,
-                  not_available: apartment.is_available === 0,
-                }"
-              ></div>
+            <div class="">
+              Bathrooms: <strong>{{ apartment.bathrooms }}</strong>
             </div>
+            <div class="">
+              Beds: <strong>{{ apartment.beds }}</strong>
+            </div>
+            <div class="">
+              Square Meters: <strong>{{ apartment.square_meters }}</strong>
+            </div>
+          </div>
+          <div class="other__status mt-3 d-flex justify-content-center">
+            <div
+              v-html="getApartmentAvailability()"
+              class="status__element"
+              :class="{
+                available: apartment.is_available === 1,
+                not_available: apartment.is_available === 0,
+              }"
+            ></div>
           </div>
         </div>
       </div>
     </div>
-    <form @submit.prevent="sendMessage" class="contact-wrapper mt-5 row g-4 justify-content-between w-100">
+    <form
+      @submit.prevent="sendMessage"
+      class="contact-wrapper mt-5 row g-4 justify-content-between w-100"
+    >
       <div class="form-body row justify-content-center">
-        <div class="col-md-8 alert-container" :class="{ active: msg_sending || is_msg_send_successfully || is_msg_send_fail  }">
+        <div
+          class="col-md-8 alert-container"
+          :class="{
+            active: msg_sending || is_msg_send_successfully || is_msg_send_fail,
+          }"
+        >
           <transition appear name="slide-fade" mode="out-in">
-            <div v-if="msg_sending" class="alert alert-primary alert-slide" role="alert">
+            <div
+              v-if="msg_sending"
+              class="alert alert-primary alert-slide"
+              role="alert"
+            >
               Sending message...
             </div>
           </transition>
           <transition appear name="slide-fade" mode="out-in">
-            <div v-if="is_msg_send_successfully" class="alert alert-success alert-slide" role="alert">
+            <div
+              v-if="is_msg_send_successfully"
+              class="alert alert-success alert-slide"
+              role="alert"
+            >
               Message Sent Successfully
             </div>
           </transition>
           <transition appear name="slide-fade" mode="out-in">
-            <div v-if="is_msg_send_fail" class="alert alert-danger alert-slide" role="alert">
+            <div
+              v-if="is_msg_send_fail"
+              class="alert alert-danger alert-slide"
+              role="alert"
+            >
               Message Sending Fail :(
             </div>
           </transition>
@@ -178,40 +192,42 @@ export default {
         <div class="col-md-8">
           <label for="guest_name" class="form-label">Your name here:</label>
           <input
-              type="text"
-              class="form-control"
-              id="guest_name"
-              v-model="guest_name"
-              placeholder="Enter your name"
-              minlength="3"
+            type="text"
+            class="form-control"
+            id="guest_name"
+            v-model="guest_name"
+            placeholder="Enter your name"
+            minlength="3"
           />
         </div>
         <div class="col-md-8">
           <label for="guest_email" class="form-label">Your email here:</label>
           <input
-              type="email"
-              class="form-control"
-              id="guest_email"
-              v-model="guest_email"
-              placeholder="Enter your email"
+            type="email"
+            class="form-control"
+            id="guest_email"
+            v-model="guest_email"
+            placeholder="Enter your email"
           />
         </div>
         <div class="col-md-8">
-          <label for="guest_message" class="form-label">Your message here:</label>
+          <label for="guest_message" class="form-label"
+            >Your message here:</label
+          >
           <textarea
-              class="form-control"
-              id="guest_message"
-              rows="5"
-              v-model="guest_message"
-              minlength="10"
+            class="form-control"
+            id="guest_message"
+            rows="5"
+            v-model="guest_message"
+            minlength="10"
           ></textarea>
         </div>
       </div>
       <div class="form-buttons mt-4 row g-4 justify-content-between">
         <div class="col d-flex justify-content-center">
           <router-link
-              :to="{ name: 'apartment', params: { id: apartment.id } }"
-              class="button-general button-back"
+            :to="{ name: 'apartment', params: { id: apartment.id } }"
+            class="button-general button-back"
           >
             Back
           </router-link>
@@ -219,9 +235,9 @@ export default {
 
         <div class="col d-flex justify-content-center">
           <button
-              @click="showMsgAlert = true"
-              type="submit"
-              class="button-general button-send"
+            @click="showMsgAlert = true"
+            type="submit"
+            class="button-general button-send"
           >
             Send
           </button>
@@ -269,7 +285,6 @@ export default {
   opacity: 0;
 }
 
-
 .alert-container {
   max-height: 0;
   transition: max-height $ms-link-transition-l ease-out;
@@ -281,73 +296,72 @@ export default {
   }
 }
 
-.apartment-wrapper__data {
-  .data__img-wrapper {
-    img {
-      transition: $ms-link-transition-s;
-      width: 100%;
-      aspect-ratio: 3 / 2.5;
+.ms-height {
+  height: calc(100vh - 120px);
+}
+
+.data__info-wrapper {
+  width: 60%;
+  .info-wrapper__details-card {
+    box-shadow: $ms-box-shadow-l;
+    border-radius: $ms-border-radius-m;
+    transition: $ms-link-transition-s;
+    width: 100%;
+    position: relative;
+
+    &:hover {
+      scale: 1.02;
+    }
+
+    .ms-img {
+      width: 200px;
+      aspect-ratio: 2 / 1;
       object-fit: cover;
-      object-position: center;
-      border-radius: $ms-border-radius-m;
-      box-shadow: $ms-box-shadow-l;
+      border-radius: 15px;
+      position: absolute;
+      top: 15px;
+      right: 25px;
+    }
+
+    .details__location--address {
+      transition: $ms-link-transition-s;
+      cursor: default;
 
       &:hover {
-        scale: 1.02;
+        color: $ms-color-purple;
       }
     }
-  }
 
-  .data__info-wrapper {
-    .info-wrapper__details-card {
+    .details__other {
+      color: $ms-color-dark;
       box-shadow: $ms-box-shadow-l;
       border-radius: $ms-border-radius-m;
-      transition: $ms-link-transition-s;
 
-      &:hover {
-        scale: 1.02;
+      .other__card {
+        font-size: 13px;
       }
 
-      .details__location--address {
-        transition: $ms-link-transition-s;
-        cursor: default;
-
-        &:hover {
-          color: $ms-color-purple;
-        }
+      .status__element {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 10px;
       }
 
-      .details__other {
-        color: $ms-color-dark;
-        box-shadow: $ms-box-shadow-l;
-        border-radius: $ms-border-radius-m;
+      .available {
+        color: $ms-color-light;
+        background-color: rgb(1, 125, 1);
+        padding: 4px 10px 6px 10px;
+        border-radius: 10px;
+        display: inline-block;
+      }
 
-        .other__card {
-          font-size: 13px;
-        }
-
-        .status__element {
-          display: flex !important;
-          justify-content: center !important;
-          align-items: center !important;
-          gap: 10px;
-        }
-
-        .available {
-          color: $ms-color-light;
-          background-color: rgb(1, 125, 1);
-          padding: 4px 10px 6px 10px;
-          border-radius: 10px;
-          display: inline-block;
-        }
-
-        .not_available {
-          color: $ms-color-light;
-          background-color: rgb(145, 0, 0);
-          padding: 4px 10px 6px 10px;
-          border-radius: 10px;
-          display: inline-block;
-        }
+      .not_available {
+        color: $ms-color-light;
+        background-color: rgb(145, 0, 0);
+        padding: 4px 10px 6px 10px;
+        border-radius: 10px;
+        display: inline-block;
       }
     }
   }
@@ -396,6 +410,27 @@ export default {
   .button-send {
     background-color: $ms-color-blue;
     color: $ms-color-light;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .data__info-wrapper {
+    .info-wrapper__details-card {
+      .ms-img {
+        width: 100px;
+        aspect-ratio: 1 / 1;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .data__info-wrapper {
+    .info-wrapper__details-card {
+      .ms-img {
+        display: none;
+      }
+    }
   }
 }
 </style>
