@@ -110,19 +110,22 @@ export default {
             />
           </div>
 
-          <div class="col-8 col-sm-12 details__other mt-4 p-3">
-            <div class="other__card d-flex justify-content-center gap-1">
-              <div class="">
-                Rooms: <strong>{{ apartment.rooms }}</strong>
+          <div class="col-sm-12 details__other mt-4 p-3">
+            <div class="other__card row g-2">
+              <div class="col d-flex justify-content-center gap-1">
+                <span>Rooms</span>
+                <i class="fa-solid fa-door-open d-flex align-items-center"></i>
+                <strong>{{ apartment.rooms }}</strong>
               </div>
-              <div class="">
-                Bathrooms: <strong>{{ apartment.bathrooms }}</strong>
+              <div class="col d-flex justify-content-center gap-1">
+                <span>Bathrooms</span>
+                <i class="fa-solid fa-bath d-flex align-items-center"></i>
+                <strong>{{ apartment.bathrooms }}</strong>
               </div>
-              <div class="">
-                Beds: <strong>{{ apartment.beds }}</strong>
-              </div>
-              <div class="">
-                Square Meters: <strong>{{ apartment.square_meters }}</strong>
+              <div class="col d-flex justify-content-center gap-1">
+                <span>Beds</span>
+                <i class="fa-solid fa-bed d-flex align-items-center"></i>
+                <strong>{{ apartment.beds }}</strong>
               </div>
             </div>
             <div class="other__status mt-3 d-flex justify-content-center">
@@ -328,6 +331,17 @@ export default {
 
       .other__card {
         font-size: 13px;
+
+        & > div {
+          cursor: default;
+          transition: $ms-link-transition-m;
+
+          &:hover {
+            scale: $ms-scale-s;
+            color: $ms-color-purple;
+          }
+        }
+
       }
 
       .status__element {
