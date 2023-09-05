@@ -72,14 +72,6 @@ export default {
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
     },
-    getApartmentAvailabilityElement() {
-      return this.apartment.is_available
-          ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
-          : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
-    },
-    getApartmentAddressElement() {
-      return '<div></div>'
-    }
   },
   created() {
     this.getVisitor();
@@ -138,16 +130,7 @@ export default {
             </div>
             <div class="other__status mt-3 row justify-content-around">
               <div
-                  v-html="getApartmentAvailabilityElement()"
-                  class="col-3 status__element"
-                  :class="{
-                available: apartment.is_available === 1,
-                not_available: apartment.is_available === 0,
-              }"
-              ></div>
-              <div
-                  v-if="apartment.is_available"
-                  class="col-6 gap-1 status__address d-flex justify-content-center align-items-center"
+                  class="col-8 col-sm-8 col-md-10 gap-1 status__address d-flex justify-content-center align-items-center"
               >
                 <i class="fa-solid fa-map-location-dot"></i>
                 <div>{{ apartment.address.street + ', ' + apartment.address.city + ', ' + apartment.address.zip }}</div>
@@ -258,16 +241,6 @@ export default {
       </div>
     </div>
   </div>
-
-  <!--  <transition appear name="slide-fade">-->
-  <!--    <div v-if="showMsgAlert" class="float-right">-->
-  <!--      <div class="bg-blue-100 border-1-4 border-blue-500 text-grey-700 p-4" role="alert">-->
-  <!--        <p class="font-bold">Informational message</p>-->
-  <!--        <p>Your friend, recently shared a post.</p>-->
-  <!--        <span>1 hour ago</span>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--  </transition>-->
 </template>
 
 <style lang="scss" scoped>
@@ -379,21 +352,6 @@ export default {
       justify-content: center !important;
       align-items: center !important;
       gap: 10px;
-    }
-
-    .available {
-      color: $ms-color-light;
-      background-color: rgb(1, 125, 1);
-      padding: 4px 10px 6px 10px;
-      border-radius: 10px;
-    }
-
-    .not_available {
-      color: $ms-color-light;
-      background-color: rgb(145, 0, 0);
-      padding: 4px 10px 6px 10px;
-      border-radius: 10px;
-      display: inline-block;
     }
   }
 }
