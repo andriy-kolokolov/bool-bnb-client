@@ -113,19 +113,24 @@ export default {
           <div class="col-sm-12 details__other mt-4 p-3">
             <div class="other__card row g-2">
               <div class="col d-flex justify-content-center gap-1">
-                <span>Rooms</span>
-                <i class="fa-solid fa-door-open d-flex align-items-center"></i>
-                <strong>{{ apartment.rooms }}</strong>
+                <span class="d-flex align-items-center">Rooms</span>
+                <div class="d-flex ms-badge">
+                  <i class="fa-solid fa-door-open d-flex align-items-center"></i>
+                  <strong>{{ apartment.rooms }}</strong>
+                </div>
               </div>
               <div class="col d-flex justify-content-center gap-1">
-                <span>Bathrooms</span>
-                <i class="fa-solid fa-bath d-flex align-items-center"></i>
-                <strong>{{ apartment.bathrooms }}</strong>
+                <span class="d-flex align-items-center">Bathrooms</span>
+                <div class="d-flex ms-badge">
+                  <i class="fa-solid fa-bath d-flex align-items-center"></i>
+                  <strong>{{ apartment.bathrooms }}</strong>
+                </div>
               </div>
               <div class="col d-flex justify-content-center gap-1">
-                <span>Beds</span>
-                <i class="fa-solid fa-bed d-flex align-items-center"></i>
-                <strong>{{ apartment.beds }}</strong>
+                <span class="d-flex align-items-center">Beds</span>
+                <div class="d-flex ms-badge">
+                  <i class="fa-solid fa-bed d-flex align-items-center"></i>
+                  <strong>{{ apartment.beds }}</strong></div>
               </div>
             </div>
             <div class="other__status mt-3 d-flex justify-content-center">
@@ -336,12 +341,13 @@ export default {
           cursor: default;
           transition: $ms-link-transition-m;
 
-          &:hover {
-            scale: $ms-scale-s;
-            color: $ms-color-purple;
+          & > .ms-badge {
+            color: white;
+            background-color: $ms-color-purple;
+            padding: 2px 5px;
+            border-radius: 5px;
           }
         }
-
       }
 
       .status__element {
