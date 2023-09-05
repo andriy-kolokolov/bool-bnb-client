@@ -114,21 +114,21 @@ export default {
             <div class="other__card row g-2">
               <div class="col d-flex justify-content-center gap-1">
                 <span class="d-flex align-items-center">Rooms</span>
-                <div class="d-flex ms-badge">
+                <div class="d-flex gap-1 ms-badge">
                   <i class="fa-solid fa-door-open d-flex align-items-center"></i>
                   <strong>{{ apartment.rooms }}</strong>
                 </div>
               </div>
               <div class="col d-flex justify-content-center gap-1">
                 <span class="d-flex align-items-center">Bathrooms</span>
-                <div class="d-flex ms-badge">
+                <div class="d-flex gap-1 ms-badge">
                   <i class="fa-solid fa-bath d-flex align-items-center"></i>
                   <strong>{{ apartment.bathrooms }}</strong>
                 </div>
               </div>
               <div class="col d-flex justify-content-center gap-1">
                 <span class="d-flex align-items-center">Beds</span>
-                <div class="d-flex ms-badge">
+                <div class="d-flex gap-1 ms-badge">
                   <i class="fa-solid fa-bed d-flex align-items-center"></i>
                   <strong>{{ apartment.beds }}</strong></div>
               </div>
@@ -217,7 +217,7 @@ export default {
                 <textarea
                     class="form-control"
                     id="guest_message"
-                    rows="5"
+                    rows="3"
                     v-model="guest_message"
                     minlength="10"
                 ></textarea>
@@ -397,7 +397,7 @@ export default {
 }
 
 .button-send {
-  background-color: $ms-color-blue;
+  background-color: $ms-color-purple;
   color: $ms-color-light;
 }
 
