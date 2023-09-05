@@ -474,7 +474,7 @@ export default {
   padding: 5px;
   border: 0px;
   border-radius: 20px;
-  background-color: rgb(71, 92, 163);
+  background-color: $ms-color-blue;
   color: white;
 }
 
@@ -483,7 +483,7 @@ export default {
   padding: 5px;
   border: 0px;
   border-radius: 20px;
-  background-color: rgb(71, 92, 163);
+  background-color: $ms-color-blue;
   color: white;
 }
 
@@ -492,7 +492,7 @@ export default {
   padding: 5px;
   border: 0px;
   border-radius: 20px;
-  background-color: #1e1e1e;
+  background-color: $ms-color-dark;
   color: white;
 }
 
@@ -514,7 +514,7 @@ export default {
   .ms-input {
     outline: none;
     width: 300px;
-    border: 2px solid rgb(71, 92, 163);
+    border: 2px solid $ms-color-blue;
     border-radius: 5px;
     padding: 5px 15px 5px 15px;
     font-size: 1.3em;
@@ -522,7 +522,7 @@ export default {
 
   .ms-select-address {
     width: 300px;
-    border: 2px solid rgb(71, 92, 163);
+    border: 2px solid $ms-color-blue;
     border-top: none;
     border-radius: 5px;
     padding: 5px 15px 5px 15px;
@@ -584,7 +584,7 @@ export default {
     width: 17px;
     height: 17px;
     border-radius: 50%;
-    background: rgb(71, 92, 163);
+    background: $ms-color-blue;
     cursor: pointer;
   }
 
@@ -592,7 +592,7 @@ export default {
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    background: rgb(71, 92, 163);
+    background: $ms-color-blue;
     cursor: pointer;
   }
 }
@@ -640,7 +640,7 @@ export default {
   }
 
   & input:checked ~ .checkmark {
-    background-color: rgb(71, 92, 163);
+    background-color: $ms-color-blue;
   }
 
   .checkmark:after {
@@ -748,7 +748,7 @@ export default {
         align-items: center;
         justify-content: center;
         z-index: 0;
-        background-color: rgb(250, 250, 250);
+        background-color: $ms-color-light;
         border-radius: 20px;
         box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
           -5px 5px 5px rgba(120, 120, 120, 0.4);
@@ -765,7 +765,7 @@ export default {
           h5 {
             margin: 0;
             text-align: center;
-            color: rgb(0, 0, 0);
+            color: $ms-color-dark;
           }
 
           h5 {
@@ -778,7 +778,7 @@ export default {
           }
 
           p {
-            color: #9153a9;
+            color: $ms-color-purple;
             font-weight: bold;
             font-size: 0.8rem;
             margin: 0;
@@ -811,8 +811,8 @@ export default {
         .ms-label {
           margin: 0;
           text-align: center;
-          color: rgb(255, 255, 255);
-          background-color: #485ba1;
+          color: $ms-color-light;
+          background-color: $ms-color-blue;
           padding: 4px 10px 6px 10px;
           border-radius: 10px;
           display: inline-block;
@@ -827,10 +827,10 @@ export default {
         .ms-sponsor-label {
           margin: 0;
           text-align: center;
-          color: rgb(255, 255, 255);
+          color: $ms-color-light;
         }
         .sponsor {
-          background-color: rgb(120, 0, 160);
+          background-color: $ms-color-purple;
           padding: 5px 10px 5px 10px;
           border-radius: 10px;
           display: inline-block;
@@ -931,7 +931,7 @@ export default {
           .ms-label {
             margin: 0;
             text-align: center;
-            color: rgb(255, 255, 255);
+            color: $ms-color-light;
 
             i {
               margin-right: 0;
@@ -988,7 +988,7 @@ export default {
           .ms-label {
             margin: 0;
             text-align: center;
-            color: rgb(255, 255, 255);
+            color: $ms-color-light;
 
             i {
               margin-right: 0.5em;
@@ -1080,7 +1080,7 @@ export default {
           .ms-label {
             margin: 0;
             text-align: center;
-            color: rgb(255, 255, 255);
+            color: $ms-color-light;
 
             i {
               margin-right: 0.5em;
