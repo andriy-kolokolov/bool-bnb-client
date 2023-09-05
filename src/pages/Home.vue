@@ -428,6 +428,12 @@ export default {
             <span class="ms-deep-label">{{ apartment.rooms }}</span></span
           >
 
+          <!-- stanze -->
+          <span class="ms-label"
+            ><i class="fa-solid fa-bath"></i>
+            <span class="ms-deep-label">{{ apartment.bathrooms }}</span></span
+          >
+
           <!-- letti -->
           <span class="ms-label"
             ><i class="fa-solid fa-bed"></i>
@@ -740,7 +746,7 @@ export default {
         position: absolute;
         bottom: -15px;
         transition: 0.3s ease;
-        width: 65%;
+        width: 70%;
         height: 14vh;
         align-self: end;
         display: flex;
