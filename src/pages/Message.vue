@@ -1,8 +1,8 @@
 <script>
 import axios from "axios";
-import { store } from "../store/store.js";
-import { TransitionGroup } from "vue";
+import {store} from "../store/store.js";
 import Loading from "../components/Loading.vue";
+import auth from "@/store/auth.js";
 
 export default {
   components: {
@@ -11,16 +11,28 @@ export default {
   data() {
     return {
       store,
+      guest_name: '',
+      guest_email: '',
+      guest_message: '',
       isLoading: true,
-      visitor: null, // return is_authenticated_user ? user : null;
+      visitor: this.getVisitor,
       apartment: null,
       msg_sending: false,
       is_msg_send_successfully: false,
       is_msg_send_fail: false,
+      showMsgAlert: false,
     };
   },
-
   methods: {
+    getVisitor() {
+      if (auth.user === null) {
+        this.visitor = 'guest';
+      } else {
+        this.visitor = auth.user;
+        this.guest_name = auth.user.name + ' ' + auth.user.last_name;
+        this.guest_email = auth.user.email;
+      }
+    },
     refreshSendingStatus() {
       setTimeout(() => {
         this.msg_sending = false;
@@ -31,35 +43,41 @@ export default {
     sendMessage() {
       this.msg_sending = true;
       axios
-        .post(store.baseUrlApi + "send-message", {
-          apartment_id: this.apartment.id,
-          guest_name: "if authenticated username", // todo
-          guest_email: this.email,
-          message: this.message,
-        })
-        .then((response) => {
-          if (response.data.status === true) {
-            this.is_msg_send_successfully = true;
-          } else {
-            this.is_msg_send_fail = true;
-          }
-          this.msg_sending = false;
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(this.refreshSendingStatus);
+          .post(store.baseUrlApi + "send-message", {
+            apartment_id: this.apartment.id,
+            guest_name: this.guest_name,
+            guest_email: this.guest_email,
+            message: this.guest_message,
+          })
+          .then((response) => {
+            setTimeout(() => {
+              this.msg_sending = false;
+            }, 500);
+            if (response.data.status === true) {
+              setTimeout(() => {
+                this.is_msg_send_successfully = true;
+              }, 1200);
+            } else {
+              this.is_msg_send_fail = true;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(this.refreshSendingStatus);
     },
     getApartmentCoverImage(apartment) {
       return this.store.backEndStorageURL + apartment.images[0].image_path;
     },
     getApartmentAvailability() {
       return this.apartment.is_available
-        ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
-        : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
+          ? '<div><i class="fa-solid fa-calendar-check"></i></div> <div>Available</div>'
+          : '<div><i class="fa-solid fa-calendar-xmark"></i></div>  <div>Not Available</div>';
     },
   },
-
+  created() {
+    this.getVisitor();
+  },
   mounted() {
     const id = this.$route.params.id;
     axios.get(`${this.store.baseUrlApi}apartments/${id}`).then((response) => {
@@ -72,25 +90,25 @@ export default {
 </script>
 
 <template>
-  <Loading v-if="this.isLoading" />
+  <Loading v-if="isLoading"/>
   <div
-    v-if="apartment"
-    class="container ms-height d-flex flex-column align-items-center justify-content-center"
+      v-if="apartment"
+      class="container mt-4 d-flex flex-column align-items-center justify-content-center"
   >
     <h2 class="text-center">Contact Apartment Owner</h2>
     <div class="apartment-wrapper__data mt-4 row g-4 justify-content-between">
       <div class="col-md-5 d-flex align-items-center">
         <div class="data__img-wrapper">
           <img
-            class="img-wrapper__img"
-            :src="getApartmentCoverImage(apartment)"
-            alt="{{apartment.name}}"
+              class="img-wrapper__img"
+              :src="getApartmentCoverImage(apartment)"
+              alt="{{apartment.name}}"
           />
         </div>
       </div>
       <div class="col-md-6 d-flex align-items-center data__info-wrapper">
         <div
-          class="info-wrapper__details-card row justify-content-center g-1 p-4"
+            class="info-wrapper__details-card row justify-content-center g-1 p-4"
         >
           <div class="col-12 details__name fs-4 fw-medium">
             {{ apartment.name }}
@@ -126,9 +144,9 @@ export default {
             </div>
             <div class="other__status mt-3 d-flex justify-content-center">
               <div
-                v-html="getApartmentAvailability()"
-                class="status__element"
-                :class="{
+                  v-html="getApartmentAvailability()"
+                  class="status__element"
+                  :class="{
                   available: apartment.is_available === 1,
                   not_available: apartment.is_available === 0,
                 }"
@@ -138,78 +156,89 @@ export default {
         </div>
       </div>
     </div>
-    <div class="contact-wrapper mt-4 row g-4 justify-content-between w-100">
-      <form class="col-sm-12" @submit.prevent="sendMessage">
-        <div class="form-body row">
-          <div class="col-md-12 field w-75 mx-auto">
-            <label for="email" class="form-label">Your email here:</label>
-            <input
+    <form @submit.prevent="sendMessage" class="contact-wrapper mt-5 row g-4 justify-content-between w-100">
+      <div class="form-body row justify-content-center">
+        <div class="col-md-8 alert-container" :class="{ active: msg_sending || is_msg_send_successfully || is_msg_send_fail  }">
+          <transition appear name="slide-fade" mode="out-in">
+            <div v-if="msg_sending" class="alert alert-primary alert-slide" role="alert">
+              Sending message...
+            </div>
+          </transition>
+          <transition appear name="slide-fade" mode="out-in">
+            <div v-if="is_msg_send_successfully" class="alert alert-success alert-slide" role="alert">
+              Message Sent Successfully
+            </div>
+          </transition>
+          <transition appear name="slide-fade" mode="out-in">
+            <div v-if="is_msg_send_fail" class="alert alert-danger alert-slide" role="alert">
+              Message Sending Fail :(
+            </div>
+          </transition>
+        </div>
+        <div class="col-md-8">
+          <label for="guest_name" class="form-label">Your name here:</label>
+          <input
+              type="text"
+              class="form-control"
+              id="guest_name"
+              v-model="guest_name"
+              placeholder="Enter your name"
+              minlength="3"
+          />
+        </div>
+        <div class="col-md-8">
+          <label for="guest_email" class="form-label">Your email here:</label>
+          <input
               type="email"
               class="form-control"
-              id="email"
-              v-model="email"
-            />
-          </div>
-          <div class="col-md-12 field w-75 mx-auto mt-3">
-            <Transition-Group name="fade">
-              <div
-                v-if="msg_sending"
-                class="alert alert-primary"
-                role="alert"
-                key="msg_sending"
-              >
-                Sending message...
-              </div>
-              <div
-                v-if="is_msg_send_successfully"
-                class="alert alert-success"
-                role="alert"
-                key="is_msg_send_successfully"
-              >
-                Message Sent Successfully
-              </div>
-              <div
-                v-if="is_msg_send_fail"
-                class="alert alert-danger"
-                role="alert"
-                key="is_msg_send_fail"
-              >
-                Message Sending Fail :(
-              </div>
-            </Transition-Group>
-            <label for="message" class="form-label">Your message here:</label>
-            <textarea
-              class="form-control"
-              id="message"
-              rows="5"
-              v-model="message"
-            ></textarea>
-          </div>
+              id="guest_email"
+              v-model="guest_email"
+              placeholder="Enter your email"
+          />
         </div>
-        <div class="form-buttons mt-4 row g-4 justify-content-between">
-          <div class="col d-flex justify-content-center">
-            <router-link
+        <div class="col-md-8">
+          <label for="guest_message" class="form-label">Your message here:</label>
+          <textarea
+              class="form-control"
+              id="guest_message"
+              rows="5"
+              v-model="guest_message"
+              minlength="10"
+          ></textarea>
+        </div>
+      </div>
+      <div class="form-buttons mt-4 row g-4 justify-content-between">
+        <div class="col d-flex justify-content-center">
+          <router-link
               :to="{ name: 'apartment', params: { id: apartment.id } }"
               class="button-general button-back"
-            >
-              Back
-            </router-link>
-          </div>
+          >
+            Back
+          </router-link>
+        </div>
 
-          <div class="col d-flex justify-content-center">
-            <button
+        <div class="col d-flex justify-content-center">
+          <button
+              @click="showMsgAlert = true"
               type="submit"
               class="button-general button-send"
-              data-bs-toggle="modal"
-              data-bs-target="#successSend"
-            >
-              Send
-            </button>
-          </div>
+          >
+            Send
+          </button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
+
+  <!--  <transition appear name="slide-fade">-->
+  <!--    <div v-if="showMsgAlert" class="float-right">-->
+  <!--      <div class="bg-blue-100 border-1-4 border-blue-500 text-grey-700 p-4" role="alert">-->
+  <!--        <p class="font-bold">Informational message</p>-->
+  <!--        <p>Your friend, recently shared a post.</p>-->
+  <!--        <span>1 hour ago</span>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </transition>-->
 </template>
 
 <style lang="scss" scoped>
@@ -226,12 +255,30 @@ export default {
   opacity: 0;
 }
 
-.ms-height {
-  min-height: calc(100vh - 120px);
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
 }
 
-h1 {
-  font-weight: 600;
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+
+.alert-container {
+  max-height: 0;
+  transition: max-height $ms-link-transition-l ease-out;
+  overflow: hidden;
+
+  &.active {
+    max-height: 500px;
+    transition: max-height $ms-link-transition-l ease-in;
+  }
 }
 
 .apartment-wrapper__data {
