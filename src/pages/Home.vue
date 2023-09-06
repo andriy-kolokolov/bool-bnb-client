@@ -247,7 +247,6 @@ export default {
     <div
       class="offcanvas-header d-flex gap-3 align-items-center justify-content-center"
     >
-      <h5 class="offcanvas-title" id="offcanvasTopLabel">Search Section</h5>
       <button
         type="button"
         class="btn-close"
