@@ -33,6 +33,7 @@ export default {
 				this.gettingApartments = false;
 				this.isLoading = true;
 				this.arrApartments = response.data;
+				this.filterApartments();
 
 				response.data.forEach((item) => {
 					this.arrCoverImg.push(
@@ -201,7 +202,7 @@ export default {
 				})
 				.then((response) => {
 					this.arrApartments = response.data.apartments;
-					console.log(this.arrApartments);
+					this.filterApartments();
 
 					setTimeout(() => {
 						this.gettingApartments = true;
@@ -213,6 +214,15 @@ export default {
 						}, 220);
 					}, 0);
 				});
+		},
+
+		filterApartments() {
+			this.sponsoredApartments = this.arrApartments.filter(
+				(apartment) => apartment.is_sponsored,
+			);
+			this.nonSponsoredApartments = this.arrApartments.filter(
+				(apartment) => !apartment.is_sponsored,
+			);
 		},
 	},
 	created() {
@@ -380,28 +390,25 @@ export default {
 	<div class="style" v-if="gettingApartments">
 		<router-link
 			:to="`/apartment/${apartment.id}`"
-			v-for="(apartment, i) in arrApartments"
+			v-for="(apartment, i) in sponsoredApartments"
 			:key="apartment.id"
 			class="routerstyle">
-			<div class="sponsored" v-if="apartment.is_sponsored === 1">
-				<ApartmentCard
-					:apartment="apartment"
-					:coverImg="arrCoverImg[i]"
-					:formatDistance="formatDistance" />
-			</div>
+			<ApartmentCard
+				:apartment="apartment"
+				:coverImg="arrCoverImg[i]"
+				:formatDistance="formatDistance" />
 		</router-link>
-
+	</div>
+	<div class="style" v-if="gettingApartments">
 		<router-link
 			:to="`/apartment/${apartment.id}`"
-			v-for="(apartment, i) in arrApartments"
+			v-for="(apartment, i) in nonSponsoredApartments"
 			:key="apartment.id"
 			class="routerstyle">
-			<div class="sponsored" v-if="apartment.is_sponsored === 0">
-				<ApartmentCard
-					:apartment="apartment"
-					:coverImg="arrCoverImg[i]"
-					:formatDistance="formatDistance" />
-			</div>
+			<ApartmentCard
+				:apartment="apartment"
+				:coverImg="arrCoverImg[i]"
+				:formatDistance="formatDistance" />
 		</router-link>
 	</div>
 </template>
