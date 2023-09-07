@@ -114,7 +114,9 @@ export default {
 		<div v-if="apartment" class="container-fluid">
 			<h1>
 				{{ apartment.name }}
-				<span class="badge"> <i class="fa-solid fa-medal"></i></span>
+				<span class="badge" v-if="apartment.is_sponsored">
+					<i class="fa-solid fa-medal"></i
+				></span>
 			</h1>
 			<div class="grid-container">
 				<img
