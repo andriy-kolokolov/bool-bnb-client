@@ -42,6 +42,10 @@ export default {
 				this.isLoading = false;
 				this.isLoad = true;
 			});
+      axios.post(store.baseUrlApi + `apartments/${id}/register-apartment-view`)
+          .then(response => {
+            console.log(response.data)
+          })
 		},
 
 		getCoordinates() {
