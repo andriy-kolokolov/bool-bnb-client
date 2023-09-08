@@ -15,6 +15,8 @@ export default {
       gettingApartments: true,
       isLoading: true,
       arrApartments: [],
+      sponsoredApartments: [],
+      nonSponsoredApartments: [],
       arrServices: [],
       arrCoverImg: [],
       maxBeds: 0,
@@ -199,12 +201,20 @@ export default {
     },
 
     filterApartments() {
-      this.sponsoredApartments = this.arrApartments.filter(
-        (apartment) => apartment.is_sponsored,
-      );
-      this.nonSponsoredApartments = this.arrApartments.filter(
-        (apartment) => !apartment.is_sponsored,
-      );
+      // Verifica se l'array arrApartments è nullo o vuoto prima di filtrarlo
+      if (this.arrApartments && this.arrApartments.length > 0) {
+        this.sponsoredApartments = this.arrApartments.filter(
+          (apartment) => apartment.is_sponsored
+        );
+        this.nonSponsoredApartments = this.arrApartments.filter(
+          (apartment) => !apartment.is_sponsored
+        );
+      } else {
+        // Gestire il caso in cui non ci sono appartamenti
+        // Puoi impostare this.sponsoredApartments e this.nonSponsoredApartments come vuoti o fare altro, a seconda delle tue esigenze
+        this.sponsoredApartments = [];
+        this.nonSponsoredApartments = [];
+      }
     },
   },
   created() {
@@ -214,6 +224,15 @@ export default {
     "store.radius"(newRadius) {
       store.radius = newRadius;
     },
+  },
+  mounted() {
+    // Popola l'array arrApartments con i dati degli appartamenti
+    this.arrApartments = [
+      // Inserisci i dati degli appartamenti qui
+    ];
+
+    // Chiama la funzione di filtro
+    this.filterApartments();
   },
 };
 </script>
