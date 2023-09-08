@@ -8,10 +8,6 @@ export default {};
       <div class="img">
         <img src="../assets/img/logo-b.png" alt="logo" />
       </div>
-
-      <div class="info">
-        <p>Add links</p>
-      </div>
     </div>
   </footer>
 </template>
