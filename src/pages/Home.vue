@@ -204,10 +204,10 @@ export default {
       // Verifica se l'array arrApartments è nullo o vuoto prima di filtrarlo
       if (this.arrApartments && this.arrApartments.length > 0) {
         this.sponsoredApartments = this.arrApartments.filter(
-          (apartment) => apartment.is_sponsored
+          (apartment) => apartment.is_sponsored,
         );
         this.nonSponsoredApartments = this.arrApartments.filter(
-          (apartment) => !apartment.is_sponsored
+          (apartment) => !apartment.is_sponsored,
         );
       } else {
         // Gestire il caso in cui non ci sono appartamenti
@@ -663,7 +663,7 @@ export default {
 
 // ************************* STYLE APARTMENTS CARDS *************************
 .cards-style {
-  width: 95vw;
+  width: 85%;
   min-height: calc(100vh - 120px);
   margin-inline: auto;
   padding-top: 1.5em;
@@ -678,7 +678,7 @@ hr {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 4em;
+  gap: 3em;
   align-content: center;
   justify-content: center;
   margin-inline: auto;
@@ -686,7 +686,8 @@ hr {
   padding-bottom: 3em;
   .routerstyle {
     text-decoration: none;
-    width: calc((100% - 4em) / 7);
+    width: calc((100% - 3em) / 7);
+    padding-bottom: 1em;
     user-select: none;
     display: flex;
     align-items: center;
@@ -694,7 +695,16 @@ hr {
   }
 }
 
+@media only screen and (max-width: 2100px) {
+  .cards-style {
+    width: 95%;
+  }
+}
+
 @media only screen and (max-width: 1750px) {
+  .cards-style {
+    width: 95%;
+  }
   .style {
     gap: 4em;
     .routerstyle {

@@ -60,8 +60,8 @@ export default {
 @use "../assets/partials/ms-variables" as *;
 
 .apartment_cards {
-  max-height: 16rem;
-  max-width: 16rem;
+  max-height: 20rem;
+  max-width: 20rem;
   display: flex;
   align-content: center;
   justify-content: center;
@@ -79,7 +79,7 @@ export default {
 
   &:hover .info {
     bottom: -35px;
-    height: 10vh;
+    height: 8vh;
     transition: 0.3s ease;
   }
 
@@ -94,12 +94,12 @@ export default {
   }
 
   &:hover .info p {
-    transform: translateY(-1.1rem);
+    transform: translateY(-0.7rem);
     transition: 0.3s ease;
   }
 
   &:hover .more_info {
-    bottom: 20px;
+    bottom: 35px;
     transition: 0.3s ease;
   }
 
@@ -126,7 +126,7 @@ export default {
   }
   .sponsor {
     background-color: $ms-color-purple;
-    padding: 5px 10px 5px 10px;
+    padding: 2px 7px;
     border-radius: 10px;
     display: inline-block;
   }
@@ -135,8 +135,8 @@ export default {
     position: absolute;
     bottom: -15px;
     transition: 0.3s ease;
-    width: 75%;
-    height: 13vh;
+    width: 80%;
+    height: 11vh;
     align-self: end;
     display: flex;
     flex-direction: column;
@@ -165,11 +165,13 @@ export default {
       }
 
       h5 {
-        transition: 0.3s ease;
         font-size: clamp(0.5em, 1.2em, 3em);
+        padding-bottom: 0.3em;
+        transition: 0.3s ease;
       }
 
       h6 {
+        width: 102%;
         transition: 0.2s ease;
       }
 
@@ -193,7 +195,7 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 9vh;
+    height: 5vh;
     align-self: end;
     display: flex;
     align-items: start;
