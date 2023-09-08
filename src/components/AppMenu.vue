@@ -50,7 +50,7 @@ export default {
         <li>
           <RouterLink
             to="/"
-            class="dropdown-item"
+            class="dropdown-item fw-bold text-secondary"
             @click="
               btnMenu();
               resetFilters();
@@ -66,6 +66,7 @@ export default {
             >Dashboard</a
           >
         </li>
+        <hr class="m-0 mt-1">
         <li>
           <a
             href="http://localhost:8000/login"
