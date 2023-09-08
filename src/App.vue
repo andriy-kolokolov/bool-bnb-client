@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-  <header>
+  <header class="shadow-lg">
     <AppHeader />
   </header>
 
