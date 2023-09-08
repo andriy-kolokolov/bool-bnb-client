@@ -411,7 +411,7 @@ export default {
   <!-- ************************* APARTMENTS CARDS ************************* -->
   <div class="cards-style" v-if="gettingApartments">
     <div class="center_container" v-if="nonSponsoredApartments.length === 0">
-      <div class="center_content">Oops! No apartments found.</div>
+      <div class="center_content text-secondary">Oops! No apartments found.</div>
     </div>
     <div class="style pt-4" v-if="sponsoredApartments.length > 0">
       <router-link
@@ -470,6 +470,7 @@ export default {
 .center_content {
   text-align: center;
   font-weight: bold;
+  font-size: 2rem;
 }
 
 
