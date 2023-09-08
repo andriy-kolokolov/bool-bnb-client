@@ -409,6 +409,9 @@ export default {
 
   <!-- ************************* APARTMENTS CARDS ************************* -->
   <div class="cards-style" v-if="gettingApartments">
+    <div v-if="nonSponsoredApartments.length === 0">
+      <p>Nessun appartamento trovato.</p>
+    </div>
     <div class="style pt-4" v-if="sponsoredApartments.length > 0">
       <router-link
         :to="`/apartment/${apartment.id}`"
