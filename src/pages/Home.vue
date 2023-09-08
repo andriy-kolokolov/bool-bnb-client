@@ -285,6 +285,7 @@ export default {
               v-model="query"
               @input="getSuggestions"
               @focus="clearInput"
+              @keydown.enter.prevent
             />
             <select
               v-if="suggestions.length > 0"
