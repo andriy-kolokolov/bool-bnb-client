@@ -1,217 +1,228 @@
 <script>
 export default {
-	props: {
-		apartment: Object,
-		coverImg: String,
-		formatDistance: Function,
-	},
+  props: {
+    apartment: Object,
+    coverImg: String,
+    formatDistance: Function,
+  },
 };
 </script>
 
 <template>
-	<div class="apartment_cards">
-		<img class="cover_img" :src="coverImg" :alt="apartment.name" />
-		<div class="info">
-			<div class="info_container">
-				<h5>{{ apartment.name }}</h5>
-				<h6>
-					<i class="fa-solid fa-location-dot"></i>
-					{{ apartment.address.city }}
-				</h6>
-				<p v-if="apartment.distance">
-					{{ formatDistance(apartment.distance) }}
-				</p>
-			</div>
-		</div>
-		<div class="more_info">
-			<!-- stanze -->
-			<span class="ms-label"
-				><i class="fa-solid fa-door-open"></i>
-				<span class="ms-deep-label">{{ apartment.rooms }}</span></span
-			>
+  <div class="apartment_cards">
+    <img class="cover_img" :src="coverImg" :alt="apartment.name" />
+    <!-- isSponsor -->
+    <span
+      class="ms-sponsor-label"
+      :class="{
+        sponsor: apartment.is_sponsored === 1,
+      }"
+      v-if="apartment.is_sponsored === 1"
+    >
+      <!-- {{ apartment.is_sponsored }} -->
+      <i class="fa-solid fa-medal"></i
+    ></span>
+    <div class="info">
+      <div class="info_container">
+        <h5>{{ apartment.name }}</h5>
+        <h6>
+          <i class="fa-solid fa-location-dot"></i>
+          {{ apartment.address.city }}
+        </h6>
+        <p v-if="apartment.distance">
+          {{ formatDistance(apartment.distance) }}
+        </p>
+      </div>
+    </div>
+    <div class="more_info">
+      <!-- stanze -->
+      <span class="ms-label"
+        ><i class="fa-solid fa-door-open"></i>
+        <span class="ms-deep-label">{{ apartment.rooms }}</span></span
+      >
 
-			<!-- stanze -->
-			<span class="ms-label"
-				><i class="fa-solid fa-bath"></i>
-				<span class="ms-deep-label">{{ apartment.bathrooms }}</span></span
-			>
+      <!-- bagni -->
+      <span class="ms-label"
+        ><i class="fa-solid fa-bath"></i>
+        <span class="ms-deep-label">{{ apartment.bathrooms }}</span></span
+      >
 
-			<!-- letti -->
-			<span class="ms-label"
-				><i class="fa-solid fa-bed"></i>
-				<span class="ms-deep-label">{{ apartment.beds }}</span></span
-			>
-			<!-- isSponsor -->
-			<span
-				class="ms-sponsor-label"
-				:class="{
-					sponsor: apartment.is_sponsored === 1,
-					none: apartment.is_sponsored === 0,
-				}">
-				<!-- {{ apartment.is_sponsored }} -->
-				<i class="fa-solid fa-medal"></i
-			></span>
-		</div>
-	</div>
+      <!-- letti -->
+      <span class="ms-label"
+        ><i class="fa-solid fa-bed"></i>
+        <span class="ms-deep-label">{{ apartment.beds }}</span></span
+      >
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @use "../assets/partials/ms-variables" as *;
 
 .apartment_cards {
-	max-height: 16rem;
-	max-width: 16rem;
-	display: flex;
-	align-content: center;
-	justify-content: center;
-	position: relative;
+  max-height: 16rem;
+  max-width: 16rem;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  position: relative;
 
-	&:hover img {
-		transform: translateY(-20px);
-		transition: 0.3s ease;
-	}
+  &:hover img {
+    transform: translateY(-20px);
+    transition: 0.3s ease;
+  }
 
-	&:hover .info {
-		bottom: -35px;
-		height: 12vh;
-		transition: 0.3s ease;
-	}
+  &:hover .ms-sponsor-label {
+    transform: translateY(-20px);
+    transition: 0.3s ease;
+  }
 
-	&:hover .info h6 {
-		opacity: 0;
-		transition: 0.2s ease;
-	}
+  &:hover .info {
+    bottom: -35px;
+    height: 10vh;
+    transition: 0.3s ease;
+  }
 
-	&:hover .info h5 {
-		transform: translateY(1rem);
-		transition: 0.3s ease;
-	}
+  &:hover .info h6 {
+    opacity: 0;
+    transition: 0.2s ease;
+  }
 
-	&:hover .info p {
-		transform: translateY(-0.7rem);
-		transition: 0.3s ease;
-	}
+  &:hover .info h5 {
+    transform: translateY(1rem);
+    transition: 0.3s ease;
+  }
 
-	&:hover .more_info {
-		bottom: 40px;
-		transition: 0.3s ease;
-	}
+  &:hover .info p {
+    transform: translateY(-1.1rem);
+    transition: 0.3s ease;
+  }
 
-	img {
-		width: 100%;
-		aspect-ratio: 1 / 1;
-		border-radius: 20px;
-		object-fit: cover;
-		transform: translateY(0px);
-		z-index: -100;
-		transition: 0.3s ease;
-		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.3),
-			-5px 5px 5px rgba(120, 120, 120, 0.3);
-	}
+  &:hover .more_info {
+    bottom: 20px;
+    transition: 0.3s ease;
+  }
 
-	.info {
-		position: absolute;
-		bottom: -15px;
-		transition: 0.3s ease;
-		width: 70%;
-		height: 14vh;
-		align-self: end;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		z-index: 0;
-		background-color: $ms-color-light;
-		border-radius: 20px;
-		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
-			-5px 5px 5px rgba(120, 120, 120, 0.4);
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    object-fit: cover;
+    transform: translateY(0px);
+    z-index: -100;
+    transition: 0.3s ease;
+    box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.3),
+      -5px 5px 5px rgba(120, 120, 120, 0.3);
+  }
 
-		.info_container {
-			width: 90%;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			gap: 0.5rem;
+  .ms-sponsor-label {
+    margin: 0;
+    transition: 0.3s ease;
+    text-align: center;
+    color: $ms-color-light;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+  .sponsor {
+    background-color: $ms-color-purple;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+    display: inline-block;
+  }
 
-			h6,
-			h5 {
-				margin: 0;
-				text-align: center;
-				color: $ms-color-dark;
-			}
+  .info {
+    position: absolute;
+    bottom: -15px;
+    transition: 0.3s ease;
+    width: 75%;
+    height: 13vh;
+    align-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    background-color: $ms-color-light;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
+      -5px 5px 5px rgba(120, 120, 120, 0.4);
 
-			h5 {
-				transition: 0.3s ease;
-				font-size: clamp(0.5em, 1.2em, 3em);
-			}
+    .info_container {
+      width: 90%;
+      height: 95%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
 
-			h6 {
-				transition: 0.2s ease;
-			}
+      h6,
+      h5 {
+        margin: 0;
+        text-align: center;
+        color: $ms-color-dark;
+      }
 
-			p {
-				color: $ms-color-purple;
-				font-weight: bold;
-				font-size: 0.8rem;
-				margin: 0;
-				transition: 0.2s ease;
+      h5 {
+        transition: 0.3s ease;
+        font-size: clamp(0.5em, 1.2em, 3em);
+      }
 
-				&:hover .ms-distance {
-					padding-bottom: 1rem;
-					font-size: 1.3rem;
-				}
-			}
-		}
-	}
+      h6 {
+        transition: 0.2s ease;
+      }
 
-	.more_info {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 9vh;
-		align-self: end;
-		display: flex;
-		align-items: start;
-		justify-content: center;
-		gap: 0.3em;
-		z-index: -50;
-		transition: 0.3s ease;
-		border-bottom-left-radius: 20px;
-		border-bottom-right-radius: 20px;
+      p {
+        color: $ms-color-purple;
+        font-weight: bold;
+        font-size: 0.8rem;
+        margin: 0;
+        transition: 0.2s ease;
 
-		.ms-label {
-			margin: 0;
-			text-align: center;
-			color: $ms-color-light;
-			background-color: $ms-color-blue;
-			padding: 4px 10px 6px 10px;
-			border-radius: 10px;
-			display: inline-block;
-			padding: 4px 10px 6px 10px;
-			border-radius: 10px;
+        &:hover .ms-distance {
+          padding-bottom: 1rem;
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }
 
-			i {
-				margin-right: 0.5em;
-			}
-		}
+  .more_info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 9vh;
+    align-self: end;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    gap: 0.3em;
+    z-index: -50;
+    transition: 0.3s ease;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 
-		.ms-sponsor-label {
-			margin: 0;
-			text-align: center;
-			color: $ms-color-light;
-		}
-		.sponsor {
-			background-color: $ms-color-purple;
-			padding: 5px 10px 5px 10px;
-			border-radius: 10px;
-			display: inline-block;
-		}
+    .ms-label {
+      margin: 0;
+      text-align: center;
+      color: $ms-color-light;
+      background-color: $ms-color-blue;
+      padding: 4px 10px 6px 10px;
+      border-radius: 10px;
+      display: inline-block;
+      padding: 4px 10px 6px 10px;
+      border-radius: 10px;
 
-		.none {
-			display: none;
-		}
-	}
+      i {
+        margin-right: 0.2em;
+      }
+    }
+
+    .none {
+      display: none;
+    }
+  }
 }
 </style>
