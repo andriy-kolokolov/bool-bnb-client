@@ -410,8 +410,8 @@ export default {
 
   <!-- ************************* APARTMENTS CARDS ************************* -->
   <div class="cards-style" v-if="gettingApartments">
-    <div v-if="nonSponsoredApartments.length === 0">
-      <p>Nessun appartamento trovato.</p>
+    <div class="center_container" v-if="nonSponsoredApartments.length === 0">
+      <div class="center_content">Oops! No apartments found.</div>
     </div>
     <div class="style pt-4" v-if="sponsoredApartments.length > 0">
       <router-link
@@ -458,6 +458,20 @@ export default {
 .v-leave-to {
   opacity: 0;
 }
+
+// NO RESULTS MESSAGE
+.center_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.center_content {
+  text-align: center;
+  font-weight: bold;
+}
+
 
 // ****************************** STYLE SEARCH ******************************
 .mySearch {
