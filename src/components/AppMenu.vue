@@ -1,5 +1,6 @@
 <script>
 import { store } from "@/store/store.js";
+
 export default {
   data() {
     return {
@@ -28,13 +29,12 @@ export default {
       store.selectedRooms = 1;
       store.selectedBeds = 1;
       store.selectedServices = [];
-    },
+    }
   },
 };
 </script>
 
 <template>
-  <!-- routes -->
   <div class="routes btn-group">
     <div class="menu-dropdown">
       <button
@@ -64,21 +64,6 @@ export default {
             href="http://localhost:8000/admin"
             class="dropdown-item ms-menu-link"
             >Dashboard</a
-          >
-        </li>
-        <hr class="m-0 mt-1">
-        <li>
-          <a
-            href="http://localhost:8000/login"
-            class="dropdown-item ms-menu-link"
-            >Login</a
-          >
-        </li>
-        <li>
-          <a
-            href="http://localhost:8000/register"
-            class="dropdown-item ms-menu-link"
-            >Register</a
           >
         </li>
       </ul>
@@ -142,28 +127,6 @@ export default {
                 </button>
               </li>
               <li>
-                <button data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a
-                    href="http://localhost:8000/login"
-                    class="drop-item"
-                    @click="btnMenu()"
-                  >
-                    Login
-                  </a>
-                </button>
-              </li>
-              <li>
-                <button data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a
-                    href="http://localhost:8000/register"
-                    class="drop-item"
-                    @click="btnMenu()"
-                  >
-                    Register
-                  </a>
-                </button>
-              </li>
-              <li>
                 <button
                   data-bs-dismiss="offcanvas"
                   aria-label="Close"
@@ -176,6 +139,11 @@ export default {
       </div>
     </div>
   </div>
+
+
+
+
+
 </template>
 
 <style lang="scss" scoped>

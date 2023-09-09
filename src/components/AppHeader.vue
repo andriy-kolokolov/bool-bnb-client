@@ -12,7 +12,6 @@ export default {
       resetPerformed: false,
     };
   },
-
   methods: {
     resetFilters() {
       this.resetVariables();
