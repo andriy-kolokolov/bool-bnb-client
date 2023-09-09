@@ -66,21 +66,6 @@ export default {
             >Dashboard</a
           >
         </li>
-        <hr class="m-0 mt-1">
-        <li>
-          <a
-            href="http://localhost:8000/login"
-            class="dropdown-item ms-menu-link"
-            >Login</a
-          >
-        </li>
-        <li>
-          <a
-            href="http://localhost:8000/register"
-            class="dropdown-item ms-menu-link"
-            >Register</a
-          >
-        </li>
       </ul>
     </div>
     <!-- altra routes -->
@@ -140,35 +125,6 @@ export default {
                     Dashboard
                   </a>
                 </button>
-              </li>
-              <li>
-                <button data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a
-                    href="http://localhost:8000/login"
-                    class="drop-item"
-                    @click="btnMenu()"
-                  >
-                    Login
-                  </a>
-                </button>
-              </li>
-              <li>
-                <button data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a
-                    href="http://localhost:8000/register"
-                    class="drop-item"
-                    @click="btnMenu()"
-                  >
-                    Register
-                  </a>
-                </button>
-              </li>
-              <li>
-                <button
-                  data-bs-dismiss="offcanvas"
-                  aria-label="Close"
-                  @click="btnMenu()"
-                ></button>
               </li>
             </ul>
           </div>
