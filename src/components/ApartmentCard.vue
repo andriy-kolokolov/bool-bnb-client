@@ -135,8 +135,8 @@ export default {
     position: absolute;
     bottom: -15px;
     transition: 0.3s ease;
-    width: 80%;
-    height: 11vh;
+    width: 70%;
+    height: 30%;
     align-self: end;
     display: flex;
     flex-direction: column;
@@ -165,13 +165,14 @@ export default {
       }
 
       h5 {
-        font-size: clamp(0.5em, 1.2em, 3em);
+        font-size: 15px;
         padding-bottom: 0.3em;
         transition: 0.3s ease;
       }
 
       h6 {
         width: 102%;
+        font-size: 10px;
         transition: 0.2s ease;
       }
 
