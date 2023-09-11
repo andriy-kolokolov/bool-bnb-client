@@ -155,7 +155,7 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 0.35rem;
 
       h6,
       h5 {
@@ -166,13 +166,12 @@ export default {
 
       h5 {
         font-size: 15px;
-        padding-bottom: 0.3em;
         transition: 0.3s ease;
       }
 
       h6 {
         width: 102%;
-        font-size: 10px;
+        font-size: 13px;
         transition: 0.2s ease;
       }
 
