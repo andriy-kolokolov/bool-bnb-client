@@ -22,6 +22,26 @@ export default {
       <!-- {{ apartment.is_sponsored }} -->
       <i class="fa-solid fa-medal"></i
     ></span>
+    <!-- altre info -->
+    <div class="more_info-up">
+      <!-- stanze -->
+      <span class="ms-label"
+        ><i class="fa-solid fa-door-open"></i>
+        <span class="ms-deep-label">{{ apartment.rooms }}</span></span
+      >
+
+      <!-- bagni -->
+      <span class="ms-label"
+        ><i class="fa-solid fa-bath"></i>
+        <span class="ms-deep-label">{{ apartment.bathrooms }}</span></span
+      >
+
+      <!-- letti -->
+      <span class="ms-label"
+        ><i class="fa-solid fa-bed"></i>
+        <span class="ms-deep-label">{{ apartment.beds }}</span></span
+      >
+    </div>
     <div class="info">
       <div class="info_container">
         <h5>{{ apartment.name }}</h5>
@@ -77,9 +97,15 @@ export default {
     transition: 0.3s ease;
   }
 
+  &:hover .more_info-up {
+    transform: translateY(-20px);
+    transition: 0.3s ease;
+  }
+
   &:hover .info {
-    bottom: -35px;
-    height: 8vh;
+    bottom: -25px;
+    height: 27%;
+    padding-bottom: 0.6rem;
     transition: 0.3s ease;
   }
 
@@ -99,7 +125,7 @@ export default {
   }
 
   &:hover .more_info {
-    bottom: 35px;
+    bottom: 30px;
     transition: 0.3s ease;
   }
 
@@ -135,7 +161,7 @@ export default {
     position: absolute;
     bottom: -15px;
     transition: 0.3s ease;
-    width: 70%;
+    width: 78%;
     height: 30%;
     align-self: end;
     display: flex;
@@ -195,7 +221,7 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 5vh;
+    height: 20%;
     align-self: end;
     display: flex;
     align-items: start;
@@ -224,6 +250,55 @@ export default {
 
     .none {
       display: none;
+    }
+  }
+
+  .more_info-up {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 100%;
+    height: 20%;
+    align-self: end;
+    // display: flex;
+    align-items: start;
+    justify-content: end;
+    gap: 0.2em;
+    z-index: -50;
+    transition: 0.3s ease;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    .ms-label {
+      margin: 0;
+      text-align: center;
+      color: $ms-color-light;
+      background-color: $ms-color-blue;
+      padding: 2px 6px 4px 6px;
+      border-radius: 10px;
+      display: inline-block;
+      border-radius: 10px;
+
+      i {
+        margin-right: 0.2em;
+      }
+    }
+
+    .none {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .apartment_cards {
+    .more_info {
+      display: none;
+    }
+
+    .more_info-up {
+      display: flex;
     }
   }
 }
