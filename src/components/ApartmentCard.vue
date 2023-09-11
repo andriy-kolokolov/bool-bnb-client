@@ -1,5 +1,12 @@
 <script>
+import {store} from "@/store/store.js";
+
 export default {
+  computed: {
+    store() {
+      return store
+    }
+  },
   props: {
     apartment: Object,
     coverImg: String,
@@ -10,7 +17,7 @@ export default {
 
 <template>
   <div class="apartment_cards">
-    <img class="cover_img" :src="coverImg" :alt="apartment.name" />
+    <img class="cover_img" :src="store.backEndStorageURL + apartment.images[0].image_path" :alt="apartment.name" />
     <!-- isSponsor -->
     <span
       class="ms-sponsor-label"

@@ -3,8 +3,14 @@ import axios from "axios";
 import {store} from "../store/store.js";
 import Loading from "../components/Loading.vue";
 import ApartmentCard from "../components/ApartmentCard.vue";
+import loading from "@/components/Loading.vue";
 
 export default {
+  computed: {
+    loading() {
+      return loading
+    }
+  },
 	components: {
 		Loading,
 		ApartmentCard,
@@ -38,10 +44,6 @@ export default {
 				this.filterApartments();
 
 				response.data.forEach((item) => {
-					this.arrCoverImg.push(
-						store.backEndStorageURL + item.images[0].image_path,
-					);
-
 					// Controllo l'appartamento con più stanze
 					if (item.rooms) {
 						if (item.rooms > this.maxRooms) {
@@ -92,7 +94,7 @@ export default {
 					setTimeout(() => {
 						this.isLoading = false;
 						document.body.style.overflow = "auto";
-					}, 220);
+					}, 520);
 				}, 0);
 			});
 		},
@@ -195,7 +197,7 @@ export default {
 						setTimeout(() => {
 							this.isLoading = false;
 							document.body.style.overflow = "auto";
-						}, 220);
+						}, 520);
 					}, 0);
 				});
 		},
@@ -394,19 +396,18 @@ export default {
 				Oops! No apartments found.
 			</div>
 		</div>
-		<h3 class="text-center">Featured Apartments</h3>
-		<div class="style pt-4" v-if="sponsoredApartments.length > 0">
-			<router-link
+    <h3 v-if="!isLoading" class="text-center">Featured Apartments</h3>
+    <div class="style pt-4" v-if="sponsoredApartments.length > 0">
+      <router-link
 				:to="`/apartment/${apartment.id}`"
 				v-for="(apartment, i) in sponsoredApartments"
 				:key="apartment.id"
 				class="routerstyle">
 				<ApartmentCard
 					:apartment="apartment"
-					:coverImg="arrCoverImg[i]"
 					:formatDistance="formatDistance" />
 			</router-link>
-		</div>
+    </div>
 		<hr class="pb-4 mx-auto" v-if="sponsoredApartments.length > 0" />
 		<div class="style" v-if="gettingApartments">
 			<router-link
@@ -416,7 +417,6 @@ export default {
 				class="routerstyle">
 				<ApartmentCard
 					:apartment="apartment"
-					:coverImg="arrCoverImg[i]"
 					:formatDistance="formatDistance" />
 			</router-link>
 		</div>
