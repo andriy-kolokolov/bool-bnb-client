@@ -115,7 +115,7 @@ export default {
 
 <template>
 	<Loading v-if="this.isLoading" />
-	<div class="no__scroll" v-if="this.isLoad">
+	<div v-if="this.isLoad">
 		<div v-if="apartment" class="container-fluid">
 			<h1>
 				{{ apartment.name }}
@@ -314,10 +314,6 @@ h1 {
 		background-color: $ms-color-purple;
 		color: $ms-color-light;
 	}
-}
-
-.no__scroll {
-	overflow-x: hidden;
 }
 
 .grid-container {
