@@ -34,7 +34,7 @@ export default {
 </script>
 
 <template>
-  <nav>
+  <nav class="shadow-lg">
     <div class="myContainer">
       <!-- Logo -->
       <RouterLink to="/" class="image" @click="resetFilters">

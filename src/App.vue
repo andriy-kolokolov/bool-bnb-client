@@ -1,6 +1,6 @@
 <script>
-import {RouterLink, RouterView} from "vue-router";
-import {store} from "@/store/store.js";
+import { RouterLink, RouterView } from "vue-router";
+import { store } from "@/store/store.js";
 import AppHeader from "./components/AppHeader.vue";
 import AppFooter from "./components/AppFooter.vue";
 
@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-  <header class="shadow-lg">
+  <header>
     <AppHeader />
   </header>
 

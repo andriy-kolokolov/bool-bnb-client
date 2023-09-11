@@ -50,7 +50,7 @@ export default {
         <li>
           <RouterLink
             to="/"
-            class="dropdown-item fw-bold text-secondary"
+            class="dropdown-item"
             @click="
               btnMenu();
               resetFilters();
