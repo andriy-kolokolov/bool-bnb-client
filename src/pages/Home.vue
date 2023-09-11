@@ -6,11 +6,11 @@ import ApartmentCard from "../components/ApartmentCard.vue";
 import loading from "@/components/Loading.vue";
 
 export default {
-  computed: {
-    loading() {
-      return loading
-    }
-  },
+	computed: {
+		loading() {
+			return loading;
+		},
+	},
 	components: {
 		Loading,
 		ApartmentCard,
@@ -396,23 +396,23 @@ export default {
 				Oops! No apartments found.
 			</div>
 		</div>
-    <h3 v-if="!isLoading" class="text-center">Featured Apartments</h3>
-    <div class="style pt-4" v-if="sponsoredApartments.length > 0">
-      <router-link
+		<h3 v-if="!isLoading" class="text-center">Featured Apartments</h3>
+		<div class="style pt-4" v-if="sponsoredApartments.length > 0">
+			<router-link
 				:to="`/apartment/${apartment.id}`"
-				v-for="(apartment, i) in sponsoredApartments"
+				v-for="apartment in sponsoredApartments"
 				:key="apartment.id"
 				class="routerstyle">
 				<ApartmentCard
 					:apartment="apartment"
 					:formatDistance="formatDistance" />
 			</router-link>
-    </div>
+		</div>
 		<hr class="pb-4 mx-auto" v-if="sponsoredApartments.length > 0" />
 		<div class="style" v-if="gettingApartments">
 			<router-link
 				:to="`/apartment/${apartment.id}`"
-				v-for="(apartment, i) in nonSponsoredApartments"
+				v-for="apartment in nonSponsoredApartments"
 				:key="apartment.id"
 				class="routerstyle">
 				<ApartmentCard
