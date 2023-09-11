@@ -42,10 +42,11 @@ export default {
 				this.isLoading = false;
 				this.isLoad = true;
 			});
-      axios.post(store.baseUrlApi + `apartments/${id}/register-apartment-view`)
-          .then(response => {
-            console.log(response.data)
-          })
+			axios
+				.post(store.baseUrlApi + `apartments/${id}/register-apartment-view`)
+				.then((response) => {
+					console.log(response.data);
+				});
 		},
 
 		getCoordinates() {
@@ -114,7 +115,7 @@ export default {
 
 <template>
 	<Loading v-if="this.isLoading" />
-	<div v-if="this.isLoad">
+	<div class="no__scroll" v-if="this.isLoad">
 		<div v-if="apartment" class="container-fluid">
 			<h1>
 				{{ apartment.name }}
@@ -226,7 +227,7 @@ export default {
 								params: {id: apartment.id},
 							}"
 							class="button-general message-button">
-							Send a Message
+							Contact the Host
 						</router-link>
 					</div>
 				</div>
@@ -315,6 +316,10 @@ h1 {
 	}
 }
 
+.no__scroll {
+	overflow-x: hidden;
+}
+
 .grid-container {
 	width: 100%;
 	display: grid;
@@ -330,6 +335,14 @@ h1 {
 		object-position: center;
 		box-shadow: 5px 5px 5px rgba(120, 120, 120, 0.4),
 			-5px 5px 5px rgba(120, 120, 120, 0.4);
+		transform: scale(1);
+		filter: brightness(1);
+		transition: all 300ms ease-in-out;
+
+		&:hover {
+			transform: scale(1.03);
+			filter: brightness(1.15);
+		}
 	}
 
 	.img-wrapper__img {
