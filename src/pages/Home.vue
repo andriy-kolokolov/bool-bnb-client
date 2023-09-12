@@ -370,7 +370,7 @@ export default {
 						</label>
 					</div>
 					<div
-						class="mt-5 d-flex gap-3 align-items-center justify-content-center">
+						class="mt-5 pb-4 d-flex gap-3 align-items-center justify-content-center">
 						<button
 							class="back-btn"
 							data-bs-dismiss="offcanvas"
@@ -396,7 +396,7 @@ export default {
 				Oops! No apartments found.
 			</div>
 		</div>
-		<h3 v-if="!isLoading" class="text-center">Featured Apartments</h3>
+		<h3 v-else class="text-center">Featured Apartments</h3>
 		<div class="style pt-4" v-if="sponsoredApartments.length > 0">
 			<router-link
 				:to="`/apartment/${apartment.id}`"
