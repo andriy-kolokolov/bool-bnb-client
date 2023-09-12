@@ -558,7 +558,7 @@ export default {
 	outline: none;
 	opacity: 0.7;
 	-webkit-transition: 0.2s;
-	-webkit-appearance: none;
+	appearance: none;
 	transition: opacity 0.2s;
 
 	&:hover {
