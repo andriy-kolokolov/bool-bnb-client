@@ -8,6 +8,9 @@ export default {};
       <div class="img">
         <img src="../assets/img/logo-b.png" alt="logo" />
       </div>
+      <div class="h-100 d-flex align-items-center">
+        <p class="m-0">&copy; 2023 - BoolBnb</p>
+      </div>
     </div>
   </footer>
 </template>
